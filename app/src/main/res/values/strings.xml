@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">Bluetooth</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name" translatable="false">Bluetooth</string>
+    <string name="title_device">Device Manager</string>
+    <string name="title_phone">Bluetooth Phone</string>
+    <string name="title_music">Bluetooth Music</string>
+    <string name="title_address">Address Book</string>
+    <string name="bluetooth_switch">Bluetooth Switch</string>
+    <string name="bluetooth_name">Bluetooth Name</string>
+    <string name="bluetooth_rename">Rename</string>
+    <string name="bluetooth_scan">Scan</string>
 </resources>
