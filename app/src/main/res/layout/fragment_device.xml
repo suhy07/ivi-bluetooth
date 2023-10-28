@@ -35,10 +35,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-    <TextView
+    <EditText
         android:id="@+id/tv_bluetooth_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:enabled="false"
+        android:singleLine="true"
         android:text="@string/bluetooth_name"
         android:textSize="@dimen/text_size"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -54,8 +56,19 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline3">
-    </Button>
+        app:layout_constraintTop_toTopOf="@+id/guideline3"></Button>
+
+    <ProgressBar
+        android:id="@+id/pb_scan"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <Button
         android:id="@+id/btn_bluetooth_scan"
@@ -79,6 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -181,4 +195,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 </androidx.constraintlayout.widget.ConstraintLayout>

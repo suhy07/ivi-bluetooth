@@ -20,18 +20,25 @@ android {
         }
     }
 
-    buildTypes {
-        debug {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            resValue("bool", "enableNonFinalResIds", "false")
-        }
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            resValue("bool", "enableNonFinalResIds", "false")
+    signingConfigs {
+        create("keyStore") {
+            storeFile = file("../platform8.0.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
         }
     }
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("keyStore")
+            // 其他 debug 构建类型的配置
+        }
+        release {
+            signingConfig = signingConfigs.getByName("keyStore")
+            // 其他 release 构建类型的配置
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -60,4 +67,5 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.5.3")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation(files("libs/sdk-release.aar"))
 }

@@ -1,7 +1,5 @@
 package com.jancar.bluetooth;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private BottomNavigationView bottomNavigationView;
     private final Global global = Global.getInstance();
+    String[] permissions = {
+            android.Manifest.permission.BLUETOOTH,
+            android.Manifest.permission.BLUETOOTH_SCAN,
+            android. Manifest.permission.BLUETOOTH_ADMIN,
+            android.Manifest.permission.BLUETOOTH_CONNECT,
+            android.Manifest.permission.BLUETOOTH_PRIVILEGED
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +41,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         init();
-    // 检查是否已获得蓝牙权限
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            // 如果没有蓝牙权限，请求蓝牙权限
 
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.BLUETOOTH}, global.REQUEST_ENABLE_BT);
+        // 检查是否已获得蓝牙权限
+        for (String permission: permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                // 如果没有蓝牙权限，请求蓝牙权限
+                Log.d("permission", permission);
+                ActivityCompat.requestPermissions(this, new String[] { permission }, global.REQUEST_ENABLE_BT);
+
+            }
         }
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == global.REQUEST_ENABLE_BT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 用户授予了蓝牙权限，可以继续执行相关操作
+                // 权限已被授予，可以执行需要权限的操作
             } else {
-                // 用户拒绝了蓝牙权限，需要处理拒绝的情况
+                // 权限被拒绝，可能需要向用户解释为什么需要这些权限
             }
         }
     }
+
 
 
     private void initView(){
@@ -96,6 +105,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private class BluetoothManager {
-    }
 }

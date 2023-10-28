@@ -1,27 +1,36 @@
 package com.jancar.bluetooth.adapters;
 
+import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
+import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.model.BluetoothDevice;
+import android.bluetooth.BluetoothDevice;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author suhy
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
-    private List<BluetoothDevice> deviceList;
+    private Set<BluetoothDevice> deviceSet;
 
-    public DeviceAdapter(List<BluetoothDevice> deviceList) {
-        this.deviceList = deviceList;
+    public DeviceAdapter(Set<BluetoothDevice> deviceSet) {
+        this.deviceSet = deviceSet;
     }
+
+    public void setDeviceSet(Set<BluetoothDevice> devices) {
+        this.deviceSet = devices;
+    }
+
 
     @NonNull
     @Override
@@ -32,24 +41,35 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        BluetoothDevice device = deviceList.get(position);
+        BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
         holder.deviceName.setText(device.getName());
         holder.deviceAddress.setText(device.getAddress());
+        holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
+//        holder.connectStatus.setText(getConnectStatus(device.getConnectStatus()));
+        
+        holder.itemView.setOnClickListener( v -> {
+            
+        });
     }
 
     @Override
     public int getItemCount() {
-        return deviceList.size();
+        return deviceSet.size();
     }
 
-    static class DeviceViewHolder extends RecyclerView.ViewHolder {
+    class DeviceViewHolder extends RecyclerView.ViewHolder {
         TextView deviceName;
         TextView deviceAddress;
+        TextView pairingStatus;
+        TextView connectStatus;
 
         DeviceViewHolder(@NonNull View itemView) {
             super(itemView);
-            deviceName = itemView.findViewById(R.id.deviceName);
-            deviceAddress = itemView.findViewById(R.id.deviceAddress);
+            deviceName = itemView.findViewById(R.id.tv_device_name);
+            deviceAddress = itemView.findViewById(R.id.tv_device_address);
+            pairingStatus = itemView.findViewById(R.id.tv_device_pairing_status);
+            connectStatus = itemView.findViewById(R.id.tv_device_connect_status);
         }
     }
+
 }

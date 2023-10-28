@@ -1,12 +1,6 @@
-/*
- * Copyright (c) 2023. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
 package com.jancar.bluetooth.model;
+
+import java.util.Objects;
 
 /**
  * @author suhy
@@ -14,6 +8,49 @@ package com.jancar.bluetooth.model;
 public class BluetoothDevice {
     private String name;
     private String address;
+    private int pairStatus = android.bluetooth.BluetoothDevice.BOND_NONE;
+    private boolean connectStatus = false;
+
+    public BluetoothDevice() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BluetoothDevice)){
+            return false;
+        }
+        BluetoothDevice that = (BluetoothDevice) o;
+        return Objects.equals(address, that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address);
+    }
+
+    public int getPairStatus() {
+        return pairStatus;
+    }
+
+    public void setPairStatus(int pairStatus) {
+        this.pairStatus = pairStatus;
+    }
+
+    public boolean getConnectStatus() {
+        return connectStatus;
+    }
+
+    public void setConnectStatus(boolean connectStatus) {
+        this.connectStatus = connectStatus;
+    }
+
+    public BluetoothDevice(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public String getName() {
         return name;
