@@ -9,4 +9,13 @@
     <string name="bluetooth_rename">Rename</string>
     <string name="bluetooth_scan">Scan</string>
     <string name="str_finish">Finish</string>
+    <string name="choose_options">Please select an action:</string>
+    <string name="connect">Connect</string>
+    <string name="unpair">Unpair</string>
+    <string name="pair_status_paired">Paired</string>
+    <string name="pair_status_pairing">Pairing</string>
+    <string name="pair_status_unpaired">Unpaired</string>
+    <string name="pair_status_unknown">Unknown</string>
+    <string name="conn_status_connected">Connected</string>
+    <string name="conn_status_not">Not Connected</string>
 </resources>

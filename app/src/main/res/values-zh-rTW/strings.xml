@@ -3,9 +3,18 @@
     <string name="title_phone">藍牙電話</string>
     <string name="title_music">藍牙音樂</string>
     <string name="title_address">電話簿</string>
-    <string name="bluetooth_switch">Bluetooth Switch</string>
-    <string name="bluetooth_name">Bluetooth Name</string>
-    <string name="bluetooth_rename">Rename</string>
-    <string name="bluetooth_scan">Scan</string>
-    <string name="bluetooth_finish">Finish</string>
+    <string name="bluetooth_switch">藍牙開關</string>
+    <string name="bluetooth_name">設備名稱</string>
+    <string name="bluetooth_rename">重命名</string>
+    <string name="bluetooth_scan">掃描設備</string>
+    <string name="str_finish">完成</string>
+    <string name="choose_options">請選擇操作:</string>
+    <string name="connect">連接</string>
+    <string name="unpair">取消配對</string>
+    <string name="pair_status_paired">已配對</string>
+    <string name="pair_status_pairing">正在配對</string>
+    <string name="pair_status_unpaired">未配對</string>
+    <string name="pair_status_unknown">未知狀態</string>
+    <string name="conn_status_connected">已連接</string>
+    <string name="conn_status_not">未連接</string>
 </resources>
