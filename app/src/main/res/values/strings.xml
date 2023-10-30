@@ -15,6 +15,7 @@
     <string name="pair_status_paired">Paired</string>
     <string name="pair_status_pairing">Pairing</string>
     <string name="pair_status_unpaired">Unpaired</string>
+    <string name="pair_status_failed">Pair failed</string>
     <string name="pair_status_unknown">Unknown</string>
     <string name="conn_status_connected">Connected</string>
     <string name="conn_status_not">Not Connected</string>

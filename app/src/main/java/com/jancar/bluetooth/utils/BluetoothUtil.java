@@ -11,24 +11,45 @@ package com.jancar.bluetooth.utils;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 
 
+import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author suhy
  */
 public class BluetoothUtil {
 
-
     private static BluetoothSocket bluetoothSocket;
+
+
+    private static Context context;
+
+    private static BluetoothUtil mInstance = null;
+    private BluetoothUtil() {
+
+    }
+
+    public static BluetoothUtil getInstance() {
+        if (mInstance == null){
+            synchronized (BluetoothUtil.class) {
+                if (mInstance == null) {
+                    mInstance = new BluetoothUtil();
+                }
+            }
+        }
+        return mInstance;
+    }
 
     public static void connectToDevice(String deviceAddress, BluetoothAdapter bluetoothAdapter) {
         Global global = Global.getInstance();
         BluetoothDevice targetDevice = bluetoothAdapter.getRemoteDevice(deviceAddress);
-
         try {
             bluetoothSocket = targetDevice.createRfcommSocketToServiceRecord(global.MY_UUID);
             bluetoothSocket.connect();
@@ -43,20 +64,28 @@ public class BluetoothUtil {
             }
         }
     }
+
+    public static Set<BluetoothDevice> getBondedDevices (BluetoothAdapter bluetoothAdapter) {
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        return pairedDevices;
+    }
     public static String getPairingStatus (int bondState) {
         String pairingStatus;
         switch (bondState) {
             case BluetoothDevice.BOND_BONDED:
-                pairingStatus = "已配对";
+                pairingStatus = context.getString(R.string.pair_status_paired);
                 break;
             case BluetoothDevice.BOND_BONDING:
-                pairingStatus = "正在配对";
+                pairingStatus = context.getString(R.string.pair_status_pairing);
                 break;
             case BluetoothDevice.BOND_NONE:
-                pairingStatus = "未配对";
+                pairingStatus = context.getString(R.string.pair_status_unpaired);
+                break;
+            case -1:
+                pairingStatus = context.getString(R.string.pair_status_failed);
                 break;
             default:
-                pairingStatus = "未知状态";
+                pairingStatus = context.getString(R.string.pair_status_unknown);
                 break;
         }
         return pairingStatus;
@@ -65,10 +94,14 @@ public class BluetoothUtil {
     public static String getConnectStatus (boolean status){
         String connectStatus;
         if(status){
-            connectStatus = "已连接";
+            connectStatus = context.getString(R.string.conn_status_connected);
         } else {
-            connectStatus = "未连接";
+            connectStatus = context.getString(R.string.conn_status_not);
         }
         return connectStatus;
+    }
+
+    public static void setContext(Context context) {
+        BluetoothUtil.context = context;
     }
 }

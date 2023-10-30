@@ -17,15 +17,17 @@ import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * @author suhy
  */
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private MainViewModel viewModel;
     private BottomNavigationView bottomNavigationView;
-    private final Global global = Global.getInstance();
     String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android.Manifest.permission.BLUETOOTH_SCAN,
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 // 如果没有蓝牙权限，请求蓝牙权限
                 Log.d("permission", permission);
-                ActivityCompat.requestPermissions(this, new String[] { permission }, global.REQUEST_ENABLE_BT);
+                ActivityCompat.requestPermissions(this, new String[] { permission }, Global.REQUEST_ENABLE_BT);
 
             }
         }
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == global.REQUEST_ENABLE_BT) {
+        if (requestCode == Global.REQUEST_ENABLE_BT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 权限已被授予，可以执行需要权限的操作
             } else {

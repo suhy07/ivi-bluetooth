@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
 import android.bluetooth.BluetoothDevice;
-import com.jancar.bluetooth.service.BluetoothScanService;
+
+import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 
@@ -48,8 +49,8 @@ public class DeviceFragment extends Fragment {
     private int timeout = 12000;
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
-    private Set<BluetoothDevice> deviceList = new HashSet<>();
-    private BluetoothScanService scanService;
+    private Set<BluetoothDevice> deviceSet = new HashSet<>();
+    private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
@@ -70,11 +71,17 @@ public class DeviceFragment extends Fragment {
             deviceAdapter.setDeviceSet(devices);
             deviceAdapter.notifyDataSetChanged();
         });
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //获取已配对的设备
+        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices(bluetoothAdapter));
         deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
             bluetoothSwitch.setChecked(onOff);
             if (onOff) {
                 bluetoothAdapter.enable();
+                //获取已配对的设备
+//                deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices(bluetoothAdapter));
             } else {
+//                deviceViewModel.setDeviceSet(new HashSet<>());
                 bluetoothAdapter.disable();
             }
         });
@@ -83,6 +90,7 @@ public class DeviceFragment extends Fragment {
             bluetoothAdapter.setName(bluetoothName);
         });
         deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
+        deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
         bluetoothSwitch.setOnCheckedChangeListener((v, b) -> deviceViewModel.setOnOff(b));
         renameBtn.setOnClickListener(v->{
             if (!bluetoothAdapter.isEnabled()) {
@@ -101,8 +109,8 @@ public class DeviceFragment extends Fragment {
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
             }
-            if (scanService != null) {
-                scanService.startScan();
+            if (bluetoothService != null) {
+                bluetoothService.startScan();
                 scanPb.setVisibility(View.VISIBLE);
                 new Thread(()->{
                     try {
@@ -116,13 +124,6 @@ public class DeviceFragment extends Fragment {
                 }).start();
             }
         });
-        if (bluetoothAdapter == null) {
-            // Device doesn't support Bluetooth
-            Log.d("bluetoothAdapter", "Device doesn't support Bluetooth");
-            return view;
-        }
-        deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
-        deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
         return view;
     }
     private void initView(View view){
@@ -135,31 +136,29 @@ public class DeviceFragment extends Fragment {
     }
 
     private void init(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceList);
-        recyclerView.setAdapter(deviceAdapter);
         // 初始化 ViewModel
         deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
         // 初始化 Service
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                Log.d("onServiceConnected","onServiceConnected");
-                BluetoothScanService.LocalBinder binder = (BluetoothScanService.LocalBinder) iBinder;
-                scanService = binder.getService();
-                scanService.setDeviceViewModel(deviceViewModel);
+                BluetoothService.LocalBinder binder = (BluetoothService.LocalBinder) iBinder;
+                bluetoothService = binder.getService();
+                bluetoothService.setDeviceViewModel(deviceViewModel);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
-                scanService = null;
+                bluetoothService = null;
             }
         };
-        Intent serviceIntent = new Intent(getActivity(), BluetoothScanService.class);
+        Intent serviceIntent = new Intent(getActivity(), BluetoothService.class);
         // 启动服务
         getActivity().startService(serviceIntent);
         getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
+        recyclerView.setAdapter(deviceAdapter);
     }
 
     @Override

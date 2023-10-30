@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import android.bluetooth.BluetoothDevice;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,7 +36,7 @@ public class DeviceViewModel extends ViewModel {
         this.onOff.setValue(onOff);
     }
 
-    public void setDeviceList(Set<BluetoothDevice> devices) {
+    public void setDeviceSet(Set<BluetoothDevice> devices) {
         deviceList.setValue(devices);
     }
 

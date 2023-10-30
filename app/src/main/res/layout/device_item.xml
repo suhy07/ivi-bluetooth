@@ -54,7 +54,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="right"
             android:text="not connect"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="600dp"
             tools:layout_editor_absoluteY="85dp" />
     </LinearLayout>

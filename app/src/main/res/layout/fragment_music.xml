@@ -17,8 +17,8 @@
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:background="@drawable/ic_player"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
@@ -33,7 +33,7 @@
         android:layout_height="90dp"
         android:gravity="center"
         android:text="歌曲名"
-        android:textSize="@dimen/text_size_num"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline4"

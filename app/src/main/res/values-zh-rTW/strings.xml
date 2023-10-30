@@ -14,6 +14,7 @@
     <string name="pair_status_paired">已配對</string>
     <string name="pair_status_pairing">正在配對</string>
     <string name="pair_status_unpaired">未配對</string>
+    <string name="pair_status_failed">配對失敗</string>
     <string name="pair_status_unknown">未知狀態</string>
     <string name="conn_status_connected">已連接</string>
     <string name="conn_status_not">未連接</string>
