@@ -1,15 +1,12 @@
 package com.jancar.bluetooth.adapters;
 
-import static com.jancar.bluetooth.utils.BluetoothUtil.connectToDevice;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.Context;;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +15,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.service.ConnectThread;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import android.bluetooth.BluetoothDevice;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -39,19 +37,23 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private Set<BluetoothDevice> deviceSet;
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
-    private BluetoothDevice targetDevice;
-    private BluetoothSocket bluetoothSocket;
+    private Map<String, Boolean> connectStatusMap;
 
-    public DeviceAdapter(Set<BluetoothDevice> deviceSet, DeviceViewModel deviceViewModel) {
+    public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<String, Boolean> connectStatusMap,DeviceViewModel deviceViewModel) {
         this.deviceSet = deviceSet;
         this.deviceViewModel = deviceViewModel;
+        this.connectStatusMap = connectStatusMap;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
     }
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
         this.deviceSet = devices;
     }
 
+    public void setConnStatus(Map<String, Boolean> connStatus) {
+        this.connectStatusMap = connStatus;
+    }
 
     @NonNull
     @Override
@@ -70,27 +72,20 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
 
+        // 检查连接状态并设置相应的 UI
+        boolean isConnected = connectStatusMap.getOrDefault(deviceAddress, false);
+        holder.connectStatus.setText(getConnectStatus(isConnected));
+
         holder.itemView.setOnClickListener( v -> {
-            Log.d("status", device.getBondState() + "");
-            holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
             if (device.getBondState() == BluetoothDevice.BOND_BONDED){
-                ConnectThread connectThread = new ConnectThread(device);
-                connectThread.start();
-                holder.connectStatus.setText(getConnectStatus(bluetoothSocket.isConnected()));
+                // 尝试连接到蓝牙设备
+                new ConnectThread(device).start();
+//                holder.connectStatus.setText(getConnectStatus(bluetoothSocket.isConnected()));
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+                holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
                 device.createBond();
-                new Thread(()->{
-                    try {
-                        Thread.sleep(15000);
-                        if(device.getBondState() == BluetoothDevice.BOND_BONDING){
-                            holder.pairingStatus.setText(getPairingStatus(-1));
-                        }
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).start();
             } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
-                return;
+                holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
             }
         });
         holder.itemView.setOnLongClickListener((view) -> {
@@ -102,53 +97,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     @Override
     public int getItemCount() {
         return deviceSet.size();
-    }
-
-    // 内部类，用于连接蓝牙设备
-    private class ConnectThread extends Thread {
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            mmDevice = device;
-            BluetoothSocket tmp = null;
-
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(Global.MY_UUID);
-            } catch (IOException e) {
-                Log.e("TAG", "Socket's create() method failed", e);
-            }
-            bluetoothSocket = tmp;
-        }
-
-        public void run() {
-            // 取消发现设备的操作，以免影响连接
-            if (bluetoothAdapter.isDiscovering()) {
-                bluetoothAdapter.cancelDiscovery();
-            }
-
-            try {
-                // 连接到蓝牙设备
-                bluetoothSocket.connect();
-            } catch (IOException connectException) {
-                try {
-                    bluetoothSocket.close();
-                } catch (IOException closeException) {
-                    Log.e("TAG", "Could not close the client socket", closeException);
-                }
-                return;
-            }
-
-            // 连接成功，可以在 mmSocket 上进行数据传输
-//            manageConnectedSocket(mmSocket);
-        }
-
-        public void cancel() {
-            try {
-                bluetoothSocket.close();
-            } catch (IOException e) {
-                Log.e("TAG", "Could not close the client socket", e);
-            }
-        }
     }
 
     class DeviceViewHolder extends RecyclerView.ViewHolder {
@@ -186,7 +134,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             // 处理连接操作
             dialog.dismiss();
         });
-
         // 处理取消配对按钮点击事件
         unpairButton.setOnClickListener(v -> {
             // 处理取消配对操作
@@ -195,13 +142,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                         .getMethod("removeBond", (Class[]) null);
                 m.invoke(device, (Object[]) null);
             } catch (Exception e) {
-                Log.d(getClass().getName(), e.getMessage());
+                Log.d("?!" , e.getMessage());
             }
-            deviceSet.add(device);
-            deviceViewModel.setDeviceSet(deviceSet);
             dialog.dismiss();
         });
-
         dialog.show();
     }
 

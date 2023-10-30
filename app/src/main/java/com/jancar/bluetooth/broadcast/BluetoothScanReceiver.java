@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // 处理发现的设备，例如打印名称和地址
             if (deviceViewModel != null) {
-                bluetoothDevices = deviceViewModel.getDeviceList().getValue();
+                bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 bluetoothDevices.add(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);
             }

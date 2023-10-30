@@ -5,12 +5,10 @@ import android.widget.Toast;
 
 import com.jancar.bluetooth.utils.BluetoothUtil;
 
-import dagger.hilt.android.HiltAndroidApp;
 
 /**
  * @author suhy
  */
-@HiltAndroidApp
 public class MainApplication extends Application {
     private static MainApplication mInstance = null;
     public static MainApplication getInstance() {

@@ -4,6 +4,8 @@
     <string name="title_phone">Bluetooth Phone</string>
     <string name="title_music">Bluetooth Music</string>
     <string name="title_address">Address Book</string>
+    <string name="title_contact">Contact</string>
+    <string name="title_call_log">Call Log</string>
     <string name="bluetooth_switch">Bluetooth Switch</string>
     <string name="bluetooth_name">Bluetooth Name</string>
     <string name="bluetooth_rename">Rename</string>

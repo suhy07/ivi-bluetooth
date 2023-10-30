@@ -22,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 /**
  * @author suhy
  */
-@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;

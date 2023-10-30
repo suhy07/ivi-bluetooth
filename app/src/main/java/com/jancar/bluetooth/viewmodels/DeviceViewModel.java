@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel;
 
 import android.bluetooth.BluetoothDevice;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -16,13 +18,16 @@ import java.util.Set;
 public class DeviceViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> onOff;
-    private MutableLiveData<Set<BluetoothDevice>> deviceList;
+    private MutableLiveData<Set<BluetoothDevice>> deviceSet;
+    private MutableLiveData<Map<String, Boolean>> connStatus;
     private MutableLiveData<String> bluetoothName;
 
     public DeviceViewModel() {
         onOff = new MutableLiveData<>();
-        deviceList = new MutableLiveData<>();
-        deviceList.setValue(new HashSet<>());
+        deviceSet = new MutableLiveData<>();
+        deviceSet.setValue(new HashSet<>());
+        connStatus = new MutableLiveData<>();
+        connStatus.setValue(new HashMap<>());
         bluetoothName = new MutableLiveData<>();
     }
 
@@ -37,7 +42,11 @@ public class DeviceViewModel extends ViewModel {
     }
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
-        deviceList.setValue(devices);
+        deviceSet.setValue(devices);
+    }
+
+    public void setConnStatus(Map<String, Boolean> connStatus) {
+        this.connStatus.setValue(connStatus);
     }
 
     public LiveData<String> getBluetoothName() {
@@ -48,10 +57,12 @@ public class DeviceViewModel extends ViewModel {
         return onOff;
     }
 
-    public LiveData<Set<BluetoothDevice>> getDeviceList() {
-        return deviceList;
+    public LiveData<Set<BluetoothDevice>> getDeviceSet() {
+        return deviceSet;
     }
 
-
+    public LiveData<Map<String, Boolean>> getConnStatus() {
+        return connStatus;
+    }
 
 }

@@ -12,7 +12,7 @@ public class Global {
     }
 
     public static Global getInstance() {
-        if (mInstance == null){
+        if (mInstance == null) {
             synchronized (Global.class) {
                 if (mInstance == null) {
                     mInstance = new Global();
@@ -22,6 +22,12 @@ public class Global {
         return mInstance;
     }
 
+    public static UUID getUUID() {
+        if (MY_UUID == null) {
+            MY_UUID = UUID.randomUUID();
+        }
+        return MY_UUID;
+    }
     public final static int REQUEST_ENABLE_BT = 1;
-    public final static UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static UUID MY_UUID;
 }

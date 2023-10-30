@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="80dp"
     android:orientation="vertical">
     <View
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
         <LinearLayout
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="right"
-            android:text="not connect"
+            android:text="Not Connected"
             android:textSize="20sp"
             tools:layout_editor_absoluteX="600dp"
             tools:layout_editor_absoluteY="85dp" />

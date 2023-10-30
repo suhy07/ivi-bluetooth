@@ -20,14 +20,19 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("onReceive", "onReceive");
+
         String action = intent.getAction();
         if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
             if (bondState == BluetoothDevice.BOND_BONDED) {
-                // 配对完成
-                bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceList().getValue());
+                Log.d("?!", "配对完成");
+                bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+                bluetoothDevices.add(device);
+                deviceViewModel.setDeviceSet(bluetoothDevices);
+            } else if (bondState == BluetoothDevice.BOND_NONE) {
+                Log.d("?!", "取消配对");
+                bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 bluetoothDevices.add(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);
             }

@@ -6,10 +6,12 @@ import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.constraintlayout.helper.widget.Layer;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,12 +31,15 @@ import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -50,6 +56,7 @@ public class DeviceFragment extends Fragment {
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
     private Set<BluetoothDevice> deviceSet = new HashSet<>();
+    private Map<String, Boolean> conn = new HashMap<>();
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private BluetoothManager bluetoothManager;
@@ -67,21 +74,40 @@ public class DeviceFragment extends Fragment {
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
-        deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {
+        deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
+            Log.d("?!","观察到devices列表变化");
             deviceAdapter.setDeviceSet(devices);
+            Map<String, Boolean> conn = new HashMap<>();
+            for(BluetoothDevice device : devices) {
+                String address = device.getAddress();
+                if (conn.get(address) != null) {
+                    conn.put(address, false);
+                }
+            }
+            deviceAdapter.notifyDataSetChanged();
+        });
+        deviceViewModel.getConnStatus().observe(getViewLifecycleOwner(), conn -> {
+            Log.d("?!","观察到conn列表变化");
+            deviceAdapter.setConnStatus(conn);
             deviceAdapter.notifyDataSetChanged();
         });
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //获取已配对的设备
-        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices(bluetoothAdapter));
+        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
         deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
             bluetoothSwitch.setChecked(onOff);
             if (onOff) {
                 bluetoothAdapter.enable();
-                //获取已配对的设备
-//                deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices(bluetoothAdapter));
+                renameBtn.setEnabled(true);
+                renameBtn.setText(getText(R.string.bluetooth_rename));
+                scanBtn.setEnabled(true);
             } else {
-//                deviceViewModel.setDeviceSet(new HashSet<>());
+                deviceViewModel.setDeviceSet(new HashSet<>());
+                renameBtn.setEnabled(false);
+                renameBtn.setText(getText(R.string.bluetooth_rename));
+                scanBtn.setEnabled(false);
+                nameTv.setEnabled(false);
+                scanPb.setVisibility(View.INVISIBLE);
                 bluetoothAdapter.disable();
             }
         });
@@ -157,7 +183,7 @@ public class DeviceFragment extends Fragment {
         getActivity().startService(serviceIntent);
         getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
+        deviceAdapter = new DeviceAdapter(deviceSet, conn, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
     }
 

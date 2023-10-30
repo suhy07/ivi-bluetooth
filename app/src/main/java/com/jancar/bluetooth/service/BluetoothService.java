@@ -22,24 +22,23 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothPairReceiver;
+import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
-
-import java.util.Set;
-
-import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author suhy
  */
-@AndroidEntryPoint
+
 public class BluetoothService extends Service {
     private BluetoothAdapter bluetoothAdapter;
-    private final BluetoothScanReceiver bluetoothConnectReceiver = new BluetoothScanReceiver();
+    private final BluetoothScanReceiver bluetoothScanReceiver = new BluetoothScanReceiver();
     private final BluetoothPairReceiver bluetoothPairReceiver = new BluetoothPairReceiver();
+    private final BluetoothStateReceiver bluetoothStateReceiver = new BluetoothStateReceiver();
+    private final BluetoothConnectionReceiver bluetoothConnectionReceiver = new BluetoothConnectionReceiver();
     public DeviceViewModel deviceViewModel;
-    Set<android.bluetooth.BluetoothDevice> bluetoothDevices;
 
     public class LocalBinder extends Binder {
         public BluetoothService getService() {
@@ -54,10 +53,18 @@ public class BluetoothService extends Service {
         super.onCreate();
         // 注册广播接收器来处理设备发现
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(bluetoothConnectReceiver, filter);
-//        // 注册广播接收器来处理设备配对
-//        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-//        registerReceiver(bluetoothPairReceiver, filter1);
+        registerReceiver(bluetoothScanReceiver, filter);
+        // 注册广播接收器来处理设备配对
+        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        registerReceiver(bluetoothPairReceiver, filter1);
+        // 监听蓝牙状态改变
+        IntentFilter filter2 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(bluetoothStateReceiver, filter2);
+        // 监听连接状态
+        IntentFilter filter3 = new IntentFilter();
+        filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(bluetoothConnectionReceiver, filter3);
     }
 
     @Override
@@ -68,8 +75,10 @@ public class BluetoothService extends Service {
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
-        bluetoothConnectReceiver.setDeviceViewModel(deviceViewModel);
+        bluetoothScanReceiver.setDeviceViewModel(deviceViewModel);
         bluetoothPairReceiver.setDeviceViewModel(deviceViewModel);
+        bluetoothStateReceiver.setDeviceViewModel(deviceViewModel);
+        bluetoothConnectionReceiver.setDeviceViewModel(deviceViewModel);
     }
 
     public void startScan() {
@@ -87,17 +96,14 @@ public class BluetoothService extends Service {
         }
         bluetoothAdapter.startDiscovery();
     }
-    public void stopScan() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(bluetoothConnectReceiver);
+        unregisterReceiver(bluetoothScanReceiver);
         unregisterReceiver(bluetoothPairReceiver);
+        unregisterReceiver(bluetoothStateReceiver);
+        unregisterReceiver(bluetoothConnectionReceiver);
     }
 
 }

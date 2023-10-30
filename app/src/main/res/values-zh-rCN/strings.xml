@@ -3,6 +3,8 @@
     <string name="title_phone">蓝牙电话</string>
     <string name="title_music">蓝牙音乐</string>
     <string name="title_address">电话簿</string>
+    <string name="title_contact">联系人</string>
+    <string name="title_call_log">通话记录</string>
     <string name="bluetooth_switch">蓝牙开关</string>
     <string name="bluetooth_name">设备名称</string>
     <string name="bluetooth_rename">重命名</string>

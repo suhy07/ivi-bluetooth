@@ -12,14 +12,19 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.util.Log;
 
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author suhy
@@ -27,8 +32,7 @@ import java.util.Set;
 public class BluetoothUtil {
 
     private static BluetoothSocket bluetoothSocket;
-
-
+    private final static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private static Context context;
 
     private static BluetoothUtil mInstance = null;
@@ -47,11 +51,11 @@ public class BluetoothUtil {
         return mInstance;
     }
 
-    public static void connectToDevice(String deviceAddress, BluetoothAdapter bluetoothAdapter) {
+    public static void connectToDevice(String deviceAddress) {
         Global global = Global.getInstance();
         BluetoothDevice targetDevice = bluetoothAdapter.getRemoteDevice(deviceAddress);
         try {
-            bluetoothSocket = targetDevice.createRfcommSocketToServiceRecord(global.MY_UUID);
+            bluetoothSocket = targetDevice.createRfcommSocketToServiceRecord(Global.getUUID());
             bluetoothSocket.connect();
 
         } catch (IOException e) {
@@ -65,10 +69,11 @@ public class BluetoothUtil {
         }
     }
 
-    public static Set<BluetoothDevice> getBondedDevices (BluetoothAdapter bluetoothAdapter) {
+    public static Set<BluetoothDevice> getBondedDevices () {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         return pairedDevices;
     }
+
     public static String getPairingStatus (int bondState) {
         String pairingStatus;
         switch (bondState) {
@@ -99,6 +104,27 @@ public class BluetoothUtil {
             connectStatus = context.getString(R.string.conn_status_not);
         }
         return connectStatus;
+    }
+
+    public static void getContacts(OutputStream outputStream, InputStream inputStream,
+                                   AddressViewModel addressViewModel) {
+        try {
+            // 发送请求获取通讯录数据
+            // 根据通讯协议修改请求内容
+            outputStream.write("GET_CONTACTS".getBytes());
+            outputStream.flush();
+
+            // 读取并解析通讯录数据
+            StringBuilder contactData = new StringBuilder();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                contactData.append(new String(buffer, 0, bytesRead));
+            }
+
+        } catch (IOException e) {
+            Log.e("?!", "Error while reading contact data", e);
+        }
     }
 
     public static void setContext(Context context) {
