@@ -35,7 +35,8 @@ public class AddressFragment extends Fragment {
 
         tabLayout = root.findViewById(R.id.tabLayout);
         viewPager = root.findViewById(R.id.viewPager);
-        tabAdapter = new AddressTabPagerAdapter(this);
+        mViewModel = new ViewModelProvider(this).get(AddressViewModel.class);
+        tabAdapter = new AddressTabPagerAdapter(this, mViewModel);
         viewPager.setAdapter(tabAdapter);
 
         // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager2 关联
@@ -51,12 +52,4 @@ public class AddressFragment extends Fragment {
 
         return root;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(AddressViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }

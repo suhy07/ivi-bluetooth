@@ -27,16 +27,21 @@ public class CallLogFragment extends Fragment {
     private List<CallLog> logList = new ArrayList<>();
     private AddressViewModel addressViewModel;
 
+    public CallLogFragment(AddressViewModel addressViewModel) {
+        this.addressViewModel = addressViewModel;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
-        for(int i = 0; i < 10; i++){
-            logList.add(new CallLog(""+ i, ""+i));
-        }
         recyclerView = rootView.findViewById(R.id.rv_call_log);
         callLogAdapter = new CallLogAdapter(logList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(callLogAdapter);
+        addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
+            callLogAdapter.setCallLogs(callLogs);
+            callLogAdapter.notifyDataSetChanged();
+        });
         return rootView;
     }
 

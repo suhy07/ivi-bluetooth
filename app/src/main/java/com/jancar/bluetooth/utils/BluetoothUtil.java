@@ -1,17 +1,17 @@
-/*
- * Copyright (c) 2023. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
 package com.jancar.bluetooth.utils;
+
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
+import static com.jancar.bluetooth.global.Global.REQUEST_ENABLE_BT;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothPbap;
+import android.bluetooth.BluetoothPbapClient;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 
@@ -22,6 +22,8 @@ import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -34,6 +36,9 @@ public class BluetoothUtil {
     private static BluetoothSocket bluetoothSocket;
     private final static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private static Context context;
+    private static Context contextf;
+    private static Context contexta;
+    private static String TAG = "?!";
 
     private static BluetoothUtil mInstance = null;
     private BluetoothUtil() {
@@ -106,28 +111,98 @@ public class BluetoothUtil {
         return connectStatus;
     }
 
-    public static void getContacts(OutputStream outputStream, InputStream inputStream,
-                                   AddressViewModel addressViewModel) {
-        try {
-            // 发送请求获取通讯录数据
-            // 根据通讯协议修改请求内容
-            outputStream.write("GET_CONTACTS".getBytes());
-            outputStream.flush();
+    BluetoothPbapClient mPbapClient;
+    boolean isPbapProfileReady;
 
-            // 读取并解析通讯录数据
-            StringBuilder contactData = new StringBuilder();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                contactData.append(new String(buffer, 0, bytesRead));
+    public void getProfileProxy() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        boolean isPbapService = bluetoothAdapter.getProfileProxy(contexta, new ProxyServiceListener(), BluetoothProfile.PBAP_CLIENT);
+        Log.i(TAG, "getProfileProxy" + isPbapService);
+    }
+
+    private final class ProxyServiceListener implements BluetoothProfile.ServiceListener{
+
+        @Override
+        public void onServiceConnected(int profile, BluetoothProfile proxy) {
+            Log.d(TAG,"Bluetooth service connected profile == " + profile);
+            if (profile == BluetoothProfile.PBAP_CLIENT) {
+                mPbapClient = (BluetoothPbapClient) proxy;
+                isPbapProfileReady = true;
             }
+        }
 
-        } catch (IOException e) {
-            Log.e("?!", "Error while reading contact data", e);
+        @Override
+        public void onServiceDisconnected(int profile) {
+            Log.d(TAG, "BluetoothPbapClient Profile Proxy Disconnected");
+            if (profile == BluetoothProfile.PBAP_CLIENT) {
+                isPbapProfileReady = false;
+//                mPbapClient = null;
+            }
         }
     }
 
+    // 连接
+    public void connect(BluetoothDevice device) {
+        if (null != mPbapClient) {
+            Method m = null;
+            try {
+                Method connectMethod = mPbapClient.getClass().getMethod("connect", BluetoothDevice.class);
+                boolean isConnected = (boolean) connectMethod.invoke(mPbapClient, device);
+                if (isConnected) {
+                    // 连接成功
+                } else {
+                    // 连接失败
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+        Log.i(TAG, "mPbapClient == null");
+    }
+    //断连
+    public void disconnect(BluetoothDevice device) {
+        if (mPbapClient != null) {
+            try {
+                Method disconnectMethod = mPbapClient.getClass().getMethod("disconnect", BluetoothDevice.class);
+                boolean isDisconnected = (boolean) disconnectMethod.invoke(mPbapClient, device);
+                if (isDisconnected) {
+                    // 断连成功
+                } else {
+                    // 断连失败
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                // 处理反射调用异常
+            }
+        } else {
+            // mPbapClient 为 null，无法断连
+            Log.i(TAG, "mPbapClient == null");
+        }
+    }
+
+    //判断连接状态
+    public int getConnectionState() {
+        if (null != mPbapClient) {
+            List<BluetoothDevice> deviceList = mPbapClient.getConnectedDevices();
+            if (deviceList.isEmpty()) {
+                return BluetoothProfile.STATE_DISCONNECTED;
+            } else {
+                return mPbapClient.getConnectionState(deviceList.remove(0));
+            }
+        }
+        return BluetoothProfile.STATE_DISCONNECTED;
+    }
+
+
     public static void setContext(Context context) {
         BluetoothUtil.context = context;
+    }
+
+    public static void setContextf(Context contextf) {
+        BluetoothUtil.contextf = contextf;
+    }
+
+    public static void setContexta(Context contexta) {
+        BluetoothUtil.contexta = contexta;
     }
 }

@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -104,6 +105,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+        BluetoothUtil.setContexta(this);
     }
-
 }

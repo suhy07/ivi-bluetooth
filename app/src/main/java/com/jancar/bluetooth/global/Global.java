@@ -29,5 +29,5 @@ public class Global {
         return MY_UUID;
     }
     public final static int REQUEST_ENABLE_BT = 1;
-    private static UUID MY_UUID;
+    private static UUID MY_UUID = UUID.fromString("00001105-0000-1000-8000-00805f9B34FB");
 }

@@ -43,7 +43,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return contactList.size();
     }
 
-    static class ContactViewHolder extends RecyclerView.ViewHolder {
+    public static class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactName;
         TextView contactNumber;
 
@@ -52,5 +52,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             contactName = itemView.findViewById(R.id.tv_contact_name);
             contactNumber = itemView.findViewById(R.id.tv_contact_number);
         }
+    }
+
+    public void setContactList(List<Contact> contactList) {
+        this.contactList = contactList;
     }
 }

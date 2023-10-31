@@ -5,6 +5,7 @@ import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;;
 import android.util.Log;
@@ -18,7 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.service.AcceptThread;
 import com.jancar.bluetooth.service.ConnectThread;
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import android.bluetooth.BluetoothDevice;
@@ -79,8 +82,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.itemView.setOnClickListener( v -> {
             if (device.getBondState() == BluetoothDevice.BOND_BONDED){
                 // 尝试连接到蓝牙设备
-                new ConnectThread(device).start();
-//                holder.connectStatus.setText(getConnectStatus(bluetoothSocket.isConnected()));
+                BluetoothUtil bluetoothUtil = BluetoothUtil.getInstance();
+                bluetoothUtil.getProfileProxy();
+//                bluetoothUtil.connect(device);
+//                new ConnectThread(device).start();
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
                 device.createBond();
@@ -132,15 +137,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         // 处理连接按钮点击事件
         connectButton.setOnClickListener(v -> {
             // 处理连接操作
+
             dialog.dismiss();
         });
         // 处理取消配对按钮点击事件
         unpairButton.setOnClickListener(v -> {
             // 处理取消配对操作
             try {
-                Method m = device.getClass()
-                        .getMethod("removeBond", (Class[]) null);
-                m.invoke(device, (Object[]) null);
+                device.removeBond();
+//                Method m = device.getClass()
+//                        .getMethod("removeBond", (Class[]) null);
+//
             } catch (Exception e) {
                 Log.d("?!" , e.getMessage());
             }

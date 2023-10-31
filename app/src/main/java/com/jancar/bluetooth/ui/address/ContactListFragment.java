@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.model.Contact;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +25,28 @@ public class ContactListFragment extends Fragment {
     private ContactAdapter contactListAdapter;
     private RecyclerView recyclerView;
     private List<Contact> contactList = new ArrayList<>();
+    private AddressViewModel addressViewModel;
+
+    public ContactListFragment(AddressViewModel addressViewModel){
+        this.addressViewModel = addressViewModel;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
-        for(int i = 0; i < 10; i++){
-            contactList.add(new Contact(""+ i, ""+i));
-        }
         recyclerView = rootView.findViewById(R.id.rv_contact);
         contactListAdapter = new ContactAdapter(contactList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(contactListAdapter);
+        addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
+            contactListAdapter.setContactList(contactList);
+            contactListAdapter.notifyDataSetChanged();
+        });
         return rootView;
     }
 
+    public void setAddressViewModel(AddressViewModel addressViewModel) {
+        this.addressViewModel = addressViewModel;
+    }
 
 }

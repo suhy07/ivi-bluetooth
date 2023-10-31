@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.jancar.bluetooth"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.jancar.bluetooth"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 28
         versionCode = 1
         versionName = "1.0"
 
@@ -47,7 +47,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"

@@ -43,7 +43,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         return callLogs.size();
     }
 
-    static class CallLogViewHolder extends RecyclerView.ViewHolder {
+    public static class CallLogViewHolder extends RecyclerView.ViewHolder {
         TextView callName;
         TextView callTime;
 
@@ -53,4 +53,9 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
             callTime = itemView.findViewById(R.id.tv_call_time);
         }
     }
+
+    public void setCallLogs(List<CallLog> callLogs) {
+        this.callLogs = callLogs;
+    }
+
 }

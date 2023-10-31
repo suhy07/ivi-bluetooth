@@ -8,23 +8,26 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.jancar.bluetooth.ui.address.CallLogFragment;
 import com.jancar.bluetooth.ui.address.ContactListFragment;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 /**
  * @author suhy
  */
 public class AddressTabPagerAdapter extends FragmentStateAdapter {
 
-    public AddressTabPagerAdapter(Fragment fragment) {
+    private AddressViewModel addressViewModel;
+    public AddressTabPagerAdapter(Fragment fragment, AddressViewModel addressViewModel) {
         super(fragment);
+        this.addressViewModel = addressViewModel;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            return new ContactListFragment();
+            return new ContactListFragment(addressViewModel);
         } else if (position == 1) {
-            return new CallLogFragment();
+            return new CallLogFragment(addressViewModel);
         }
         return null;
     }
