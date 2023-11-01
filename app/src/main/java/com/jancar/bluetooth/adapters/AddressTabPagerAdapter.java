@@ -1,39 +1,48 @@
 package com.jancar.bluetooth.adapters;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+
+
+import android.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
+import com.jancar.bluetooth.ui.address.AddressFragment;
 import com.jancar.bluetooth.ui.address.CallLogFragment;
 import com.jancar.bluetooth.ui.address.ContactListFragment;
+import com.jancar.bluetooth.ui.device.DeviceFragment;
+import com.jancar.bluetooth.ui.music.MusicFragment;
+import com.jancar.bluetooth.ui.phone.PhoneFragment;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
+
 
 /**
  * @author suhy
  */
-public class AddressTabPagerAdapter extends FragmentStateAdapter {
+public class AddressTabPagerAdapter extends FragmentPagerAdapter {
 
     private AddressViewModel addressViewModel;
-    public AddressTabPagerAdapter(Fragment fragment, AddressViewModel addressViewModel) {
-        super(fragment);
-        this.addressViewModel = addressViewModel;
+
+    public AddressTabPagerAdapter(FragmentManager fm) {
+        super(fm);
     }
 
-    @NonNull
+
     @Override
-    public Fragment createFragment(int position) {
-        if (position == 0) {
-            return new ContactListFragment(addressViewModel);
-        } else if (position == 1) {
-            return new CallLogFragment(addressViewModel);
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return new ContactListFragment();
+            case 1:
+                return new CallLogFragment();
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
-    public int getItemCount() {
+    public int getCount() {
         return 2;
     }
 }

@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\wenxiaoxin\\.gradle\\caches\\transforms-2\\files-2.1\\eab914ae2b0ae69bba8b5cdf1163eae3\\appcompat-v7-28.0.0\\res\\values-night-v8\\values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,125,209,293,389,491,593",
+                        "endColumns": "69,83,83,95,101,101,93",
+                        "endOffsets": "120,204,288,384,486,588,682"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\values-night\\themes.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "100",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "464"
+                    },
+                    "to": {
+                        "startLines": "9",
+                        "startColumns": "4",
+                        "startOffsets": "687",
+                        "endLines": "16",
+                        "endColumns": "12",
+                        "endOffsets": "1051"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,38 +1,32 @@
 package com.jancar.bluetooth;
 
+import android.annotation.NonNull;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 
-import dagger.hilt.android.AndroidEntryPoint;
-
 /**
  * @author suhy
  */
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager2 viewPager;
+    private ViewPager viewPager;
     private MainViewModel viewModel;
     private BottomNavigationView bottomNavigationView;
     String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
-            android.Manifest.permission.BLUETOOTH_SCAN,
             android. Manifest.permission.BLUETOOTH_ADMIN,
-            android.Manifest.permission.BLUETOOTH_CONNECT,
             android.Manifest.permission.BLUETOOTH_PRIVILEGED
     };
 
@@ -75,19 +69,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel =   new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
 
         bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(this));
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
+        // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
             @Override
             public void onPageSelected(int position) {
-                // 更新底部导航栏的选中项
                 viewModel.setSelectedPage(position);
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
             }
-        });
-        viewModel.getSelectedPage().observe(this, position -> {
-            bottomNavigationView.getMenu().getItem(position).setChecked(true);
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_address) {
@@ -104,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+        viewModel.getSelectedPage().observe(this, position -> {
+            bottomNavigationView.getMenu().getItem(position).setChecked(true);
         });
         BluetoothUtil.setContexta(this);
     }

@@ -1,20 +1,16 @@
 package com.jancar.bluetooth.ui.address;
 
-import androidx.lifecycle.ViewModelProvider;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
@@ -26,7 +22,7 @@ public class AddressFragment extends Fragment {
 
     private AddressViewModel mViewModel;
     private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    private ViewPager viewPager;
     private AddressTabPagerAdapter tabAdapter;
 
     @Override
@@ -35,20 +31,17 @@ public class AddressFragment extends Fragment {
 
         tabLayout = root.findViewById(R.id.tabLayout);
         viewPager = root.findViewById(R.id.viewPager);
-        mViewModel = new ViewModelProvider(this).get(AddressViewModel.class);
-        tabAdapter = new AddressTabPagerAdapter(this, mViewModel);
+        mViewModel =   new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(AddressViewModel.class);
+        tabAdapter = new AddressTabPagerAdapter(getFragmentManager());
         viewPager.setAdapter(tabAdapter);
+        // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager 关联
+        tabLayout.setupWithViewPager(viewPager);
 
-        // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager2 关联
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    if (position == 0) {
-                        tab.setText(getText(R.string.title_contact));
-                    } else if (position == 1) {
-                        tab.setText(getText(R.string.title_call_log));
-                    }
-                }
-        ).attach();
+        String[] tabTitles = {getString(R.string.title_contact), getString(R.string.title_call_log)};
+        for (int i = 0; i < tabTitles.length; i++) {
+            tabLayout.getTabAt(i).setText(tabTitles[i]);
+        }
 
         return root;
     }

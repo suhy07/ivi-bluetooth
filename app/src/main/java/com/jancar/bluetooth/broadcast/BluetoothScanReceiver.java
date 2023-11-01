@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class BluetoothScanReceiver extends BroadcastReceiver {
     DeviceViewModel deviceViewModel;
-    Set<android.bluetooth.BluetoothDevice> bluetoothDevices;
+    Set<BluetoothDevice> bluetoothDevices;
 
     @Override
     public void onReceive(Context context, Intent intent) {

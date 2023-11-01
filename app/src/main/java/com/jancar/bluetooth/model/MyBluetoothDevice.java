@@ -9,7 +9,7 @@ import android.bluetooth.BluetoothDevice;
  */
 public class MyBluetoothDevice {
     private BluetoothDevice bluetoothDevice;
-    private int pairStatus = android.bluetooth.BluetoothDevice.BOND_NONE;
+    private int pairStatus = BluetoothDevice.BOND_NONE;
     private boolean connectStatus = false;
 
     public MyBluetoothDevice() {

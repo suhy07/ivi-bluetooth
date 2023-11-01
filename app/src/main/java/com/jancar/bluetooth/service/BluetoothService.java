@@ -18,9 +18,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.ScanSettings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
-import androidx.core.app.ActivityCompat;
 
 import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
@@ -86,11 +85,6 @@ public class BluetoothService extends Service {
         ScanSettings settings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .build();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) !=
-                PackageManager.PERMISSION_GRANTED) {
-            Log.d("no","noPermission");
-            return;
-        }
         if (!bluetoothAdapter.isEnabled()){
            bluetoothAdapter.enable();
         }

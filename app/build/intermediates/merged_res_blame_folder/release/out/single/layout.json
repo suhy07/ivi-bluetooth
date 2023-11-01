@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_contact.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_contact.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\device_item.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\device_item.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_call_log.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_call_log.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\contact_item.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\contact_item.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\activity_main2.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\activity_main2.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\call_log_item.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\call_log_item.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_phone.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_phone.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_device.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_device.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_home.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_dashboard.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_dashboard.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_music.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_music.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_address.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_address.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\fragment_notifications.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_notifications.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\stripped.dir\\layout\\dialog_options.xml",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\dialog_options.xml"
+    }
+]

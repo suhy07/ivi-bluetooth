@@ -3,11 +3,11 @@ package com.jancar.bluetooth.adapters;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
 
+import android.annotation.NonNull;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.service.AcceptThread;
-import com.jancar.bluetooth.service.ConnectThread;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import android.bluetooth.BluetoothDevice;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

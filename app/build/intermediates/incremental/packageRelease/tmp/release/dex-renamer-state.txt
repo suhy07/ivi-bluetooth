@@ -1,0 +1,4 @@
+#Wed Nov 01 10:39:20 CST 2023
+base.0=D\:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,32 +1,24 @@
 package com.jancar.bluetooth.utils;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
-import static com.jancar.bluetooth.global.Global.REQUEST_ENABLE_BT;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothPbap;
 import android.bluetooth.BluetoothPbapClient;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author suhy

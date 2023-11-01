@@ -1,9 +1,9 @@
 package com.jancar.bluetooth.viewmodels;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;

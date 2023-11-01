@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.device;
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
@@ -11,6 +12,10 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +24,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import androidx.constraintlayout.helper.widget.Layer;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
@@ -67,10 +65,6 @@ public class DeviceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_device, container, false);
         initView(view);
         init();
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.BLUETOOTH_CONNECT) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return view;
-        }
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
@@ -164,7 +158,8 @@ public class DeviceFragment extends Fragment {
     private void init(){
         // 初始化 ViewModel
         BluetoothUtil.setContextf(getContext());
-        deviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
+        deviceViewModel =   new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
         // 初始化 Service
         serviceConnection = new ServiceConnection() {
             @Override

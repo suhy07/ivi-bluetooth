@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
-import androidx.constraintlayout.helper.widget.Layer;
 
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author suhy

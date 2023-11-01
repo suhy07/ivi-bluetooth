@@ -1,0 +1,97 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.jancar.bluetooth"
+4    android:sharedUserId="android.uid.system"
+5    android:versionCode="168"
+6    android:versionName="1.6.8" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="24"
+9-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml
+10        android:targetSdkVersion="28" />
+10-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml
+11
+12    <uses-permission android:name="android.permission.BLUETOOTH" />
+12-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:7:5-68
+12-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:7:22-65
+13    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+13-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:8:5-74
+13-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:8:22-71
+14    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+14-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:9:5-73
+14-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:9:22-70
+15    <uses-permission android:name="android.permission.BLUETOOTH_STACK" />
+15-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:10:5-74
+15-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:10:22-71
+16    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+16-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:11:5-76
+16-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:11:22-73
+17    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+17-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:12:5-78
+17-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:12:22-75
+18    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+18-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:13:5-79
+18-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:13:22-76
+19    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+19-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:14:5-79
+19-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:14:22-76
+20    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+20-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:15:5-81
+20-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:15:22-78
+21    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+21-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:16:5-78
+21-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:16:22-75
+22    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+22-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:17:5-80
+22-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:17:22-77
+23
+24    <application
+24-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:19:5-42:19
+25        android:name="com.jancar.bluetooth.MainApplication"
+25-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:20:9-40
+26        android:allowBackup="true"
+26-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:21:9-35
+27        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+27-->[com.android.support:support-compat:28.0.0] C:\Users\wenxiaoxin\.gradle\caches\transforms-2\files-2.1\06f6df44c76c4a181cad1895980d5a87\support-compat-28.0.0\AndroidManifest.xml:22:18-91
+28        android:extractNativeLibs="false"
+29        android:icon="@mipmap/ic_launcher"
+29-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:22:9-43
+30        android:label="@string/app_name"
+30-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:23:9-41
+31        android:roundIcon="@mipmap/ic_launcher_round"
+31-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:24:9-54
+32        android:supportsRtl="true"
+32-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:25:9-35
+33        android:testOnly="true"
+34        android:theme="@style/Theme.Bluetooth" >
+34-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:26:9-47
+35        <activity
+35-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:28:9-39:20
+36            android:name="com.jancar.bluetooth.MainActivity"
+36-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:29:13-41
+37            android:exported="true"
+37-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:30:13-36
+38            android:fitsSystemWindows="true"
+38-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:31:13-45
+39            android:label="@string/app_name"
+39-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:32:13-45
+40            android:windowSoftInputMode="adjustNothing" >
+40-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:33:13-56
+41            <intent-filter>
+41-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:34:13-38:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:35:17-69
+42-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:35:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:37:17-77
+44-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:37:27-74
+45            </intent-filter>
+46        </activity>
+47
+48        <service android:name="com.jancar.bluetooth.service.BluetoothService" />
+48-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:41:9-61
+48-->D:\Users\suhy\Desktop\suhy\git\MyBluetooth - 副本\app\src\main\AndroidManifest.xml:41:18-58
+49    </application>
+50
+51</manifest>

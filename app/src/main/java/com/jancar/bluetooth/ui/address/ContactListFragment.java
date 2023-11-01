@@ -1,13 +1,13 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.ContactAdapter;
@@ -26,10 +26,6 @@ public class ContactListFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Contact> contactList = new ArrayList<>();
     private AddressViewModel addressViewModel;
-
-    public ContactListFragment(AddressViewModel addressViewModel){
-        this.addressViewModel = addressViewModel;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

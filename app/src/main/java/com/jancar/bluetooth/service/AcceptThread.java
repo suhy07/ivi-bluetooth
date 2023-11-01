@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 
-import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
 import com.jancar.bluetooth.global.Global;
@@ -12,8 +11,10 @@ import com.jancar.bluetooth.global.Global;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
 
+/**
+ * @author suhy
+ */
 public class AcceptThread extends Thread {
     private final BluetoothServerSocket mmServerSocket;
 
