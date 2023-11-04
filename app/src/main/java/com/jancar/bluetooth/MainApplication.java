@@ -11,6 +11,7 @@ import com.jancar.bluetooth.utils.BluetoothUtil;
  */
 public class MainApplication extends Application {
     private static MainApplication mInstance = null;
+
     public static MainApplication getInstance() {
         if (mInstance == null){
             synchronized (MainApplication.class) {

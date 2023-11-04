@@ -4,8 +4,24 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_call_log.xml"
     },
     {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_launcher_background.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\xml_backup_rules.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_back.png.flat",
@@ -32,6 +48,14 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_phone.xml"
     },
     {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_address.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_address.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_dashboard.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_dashboard.xml"
+    },
+    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_music.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_music.xml"
     },
@@ -40,12 +64,24 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_notifications.xml"
     },
     {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_call.png.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_call.png"
+    },
+    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_music.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_music.xml"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_device.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_device.xml"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xxxhdpi_ic_launcher.webp.flat",
@@ -64,6 +100,14 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_pause.xml"
     },
     {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\navigation_mobile_navigation.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\navigation\\mobile_navigation.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_next.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_next.xml"
+    },
+    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_home_black_24dp.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_home_black_24dp.xml"
     },
@@ -80,12 +124,20 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_prev.xml"
     },
     {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\xml_data_extraction_rules.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\xml\\data_extraction_rules.xml"
+    },
+    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_device_item.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\device_item.xml"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_player.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_player.xml"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_notifications_black_24dp.xml.flat",
@@ -104,76 +156,20 @@
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_play.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_play.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_launcher_background.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_address.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_address.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_dashboard.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_dashboard.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_call.png.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_call.png"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_device.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\fragment_device.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_activity_main2.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\activity_main2.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\navigation_mobile_navigation.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\navigation\\mobile_navigation.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_next.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_next.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\xml_data_extraction_rules.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\xml\\data_extraction_rules.xml"
-    },
-    {
-        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_player.xml.flat",
-        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_player.xml"
-    },
-    {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_device.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_device.xml"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_call_log_item.xml.flat",
         "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\layout\\call_log_item.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\drawable_ic_play.xml.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\drawable\\ic_play.xml"
+    },
+    {
+        "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
         "merged": "D:\\Users\\suhy\\Desktop\\suhy\\git\\MyBluetooth - 副本\\app\\build\\intermediates\\res\\merged\\release\\layout_fragment_phone.xml.flat",

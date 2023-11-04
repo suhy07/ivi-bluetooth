@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 /**
@@ -37,12 +38,30 @@ public class AddressFragment extends Fragment {
         viewPager.setAdapter(tabAdapter);
         // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager 关联
         tabLayout.setupWithViewPager(viewPager);
-
+        // 设置切换动画的持续时间
+        viewPager.setPageTransformer(true, (view, position) -> {
+            if (position <= 1 && position >= -1) {
+                view.setTranslationX(view.getWidth() * -position);
+                view.setAlpha(1 - Math.abs(position));
+            }
+        });
         String[] tabTitles = {getString(R.string.title_contact), getString(R.string.title_call_log)};
         for (int i = 0; i < tabTitles.length; i++) {
             tabLayout.getTabAt(i).setText(tabTitles[i]);
         }
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+    }
+
+    public void updateListContact() {
+
+//        updateTipVisible();
     }
 }

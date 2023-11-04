@@ -4,21 +4,32 @@ package com.jancar.bluetooth.utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothPbapClient;
-import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.util.Log;
+import android.os.RemoteException;
+import android.text.TextUtils;
+import android.util.SparseArray;
 
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.model.Contact;
+import com.jancar.btservice.bluetooth.BluetoothVCardBook;
+import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+
+import jancar.core.util.HandlerUI;
 
 /**
  * @author suhy
@@ -27,18 +38,18 @@ public class BluetoothUtil {
 
     private static BluetoothSocket bluetoothSocket;
     private final static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+    private boolean mIsNewConnectedDevice = false;
     private static Context context;
-    private static Context contextf;
-    private static Context contexta;
-    private static String TAG = "?!";
 
     private static BluetoothUtil mInstance = null;
+
     private BluetoothUtil() {
 
     }
 
     public static BluetoothUtil getInstance() {
-        if (mInstance == null){
+        if (mInstance == null) {
             synchronized (BluetoothUtil.class) {
                 if (mInstance == null) {
                     mInstance = new BluetoothUtil();
@@ -66,12 +77,12 @@ public class BluetoothUtil {
         }
     }
 
-    public static Set<BluetoothDevice> getBondedDevices () {
+    public static Set<BluetoothDevice> getBondedDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         return pairedDevices;
     }
 
-    public static String getPairingStatus (int bondState) {
+    public static String getPairingStatus(int bondState) {
         String pairingStatus;
         switch (bondState) {
             case BluetoothDevice.BOND_BONDED:
@@ -93,9 +104,9 @@ public class BluetoothUtil {
         return pairingStatus;
     }
 
-    public static String getConnectStatus (boolean status){
+    public static String getConnectStatus(boolean status) {
         String connectStatus;
-        if(status){
+        if (status) {
             connectStatus = context.getString(R.string.conn_status_connected);
         } else {
             connectStatus = context.getString(R.string.conn_status_not);
@@ -103,98 +114,8 @@ public class BluetoothUtil {
         return connectStatus;
     }
 
-    BluetoothPbapClient mPbapClient;
-    boolean isPbapProfileReady;
-
-    public void getProfileProxy() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        boolean isPbapService = bluetoothAdapter.getProfileProxy(contexta, new ProxyServiceListener(), BluetoothProfile.PBAP_CLIENT);
-        Log.i(TAG, "getProfileProxy" + isPbapService);
-    }
-
-    private final class ProxyServiceListener implements BluetoothProfile.ServiceListener{
-
-        @Override
-        public void onServiceConnected(int profile, BluetoothProfile proxy) {
-            Log.d(TAG,"Bluetooth service connected profile == " + profile);
-            if (profile == BluetoothProfile.PBAP_CLIENT) {
-                mPbapClient = (BluetoothPbapClient) proxy;
-                isPbapProfileReady = true;
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(int profile) {
-            Log.d(TAG, "BluetoothPbapClient Profile Proxy Disconnected");
-            if (profile == BluetoothProfile.PBAP_CLIENT) {
-                isPbapProfileReady = false;
-//                mPbapClient = null;
-            }
-        }
-    }
-
-    // 连接
-    public void connect(BluetoothDevice device) {
-        if (null != mPbapClient) {
-            Method m = null;
-            try {
-                Method connectMethod = mPbapClient.getClass().getMethod("connect", BluetoothDevice.class);
-                boolean isConnected = (boolean) connectMethod.invoke(mPbapClient, device);
-                if (isConnected) {
-                    // 连接成功
-                } else {
-                    // 连接失败
-                }
-            } catch (Exception e) {
-                Log.d(TAG, e.getMessage());
-            }
-        }
-        Log.i(TAG, "mPbapClient == null");
-    }
-    //断连
-    public void disconnect(BluetoothDevice device) {
-        if (mPbapClient != null) {
-            try {
-                Method disconnectMethod = mPbapClient.getClass().getMethod("disconnect", BluetoothDevice.class);
-                boolean isDisconnected = (boolean) disconnectMethod.invoke(mPbapClient, device);
-                if (isDisconnected) {
-                    // 断连成功
-                } else {
-                    // 断连失败
-                }
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                // 处理反射调用异常
-            }
-        } else {
-            // mPbapClient 为 null，无法断连
-            Log.i(TAG, "mPbapClient == null");
-        }
-    }
-
-    //判断连接状态
-    public int getConnectionState() {
-        if (null != mPbapClient) {
-            List<BluetoothDevice> deviceList = mPbapClient.getConnectedDevices();
-            if (deviceList.isEmpty()) {
-                return BluetoothProfile.STATE_DISCONNECTED;
-            } else {
-                return mPbapClient.getConnectionState(deviceList.remove(0));
-            }
-        }
-        return BluetoothProfile.STATE_DISCONNECTED;
-    }
-
-
     public static void setContext(Context context) {
         BluetoothUtil.context = context;
     }
 
-    public static void setContextf(Context contextf) {
-        BluetoothUtil.contextf = contextf;
-    }
-
-    public static void setContexta(Context contexta) {
-        BluetoothUtil.contexta = contexta;
-    }
 }

@@ -157,7 +157,6 @@ public class DeviceFragment extends Fragment {
 
     private void init(){
         // 初始化 ViewModel
-        BluetoothUtil.setContextf(getContext());
         deviceViewModel =   new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
         // 初始化 Service

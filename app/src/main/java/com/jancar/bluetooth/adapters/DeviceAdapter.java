@@ -7,6 +7,7 @@ import android.annotation.NonNull;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;;
+import android.os.RemoteException;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +18,14 @@ import android.widget.TextView;
 
 
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.ui.device.DeviceFragment;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.btservice.bluetooth.BluetoothVCardBook;
+import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 
 import android.bluetooth.BluetoothDevice;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,7 +61,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_item, parent, false);
         return new DeviceViewHolder(view);
     }
-
+    com.jancar.sdk.bluetooth.BluetoothManager manager;
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
@@ -74,11 +78,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         holder.itemView.setOnClickListener( v -> {
             if (device.getBondState() == BluetoothDevice.BOND_BONDED){
-                // 尝试连接到蓝牙设备
-                BluetoothUtil bluetoothUtil = BluetoothUtil.getInstance();
-                bluetoothUtil.getProfileProxy();
-//                bluetoothUtil.connect(device);
-//                new ConnectThread(device).start();
+
+
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
                 device.createBond();

@@ -1386,10 +1386,8 @@ id multiply
 id nav_address
 id nav_controller_view_tag
 id nav_device
-id nav_host_fragment_activity_main2
 id nav_music
 id nav_phone
-id nav_view
 id navigation_dashboard
 id navigation_header_container
 id navigation_home
@@ -1584,7 +1582,6 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
-layout activity_main2
 layout call_log_item
 layout contact_item
 layout design_bottom_navigation_item

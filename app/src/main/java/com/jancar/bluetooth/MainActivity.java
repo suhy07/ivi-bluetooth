@@ -109,6 +109,5 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedPage().observe(this, position -> {
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
         });
-        BluetoothUtil.setContexta(this);
     }
 }
