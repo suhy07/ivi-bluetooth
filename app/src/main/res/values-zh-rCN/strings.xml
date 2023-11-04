@@ -20,4 +20,5 @@
     <string name="pair_status_failed">配对失败</string>
     <string name="conn_status_connected">已连接</string>
     <string name="conn_status_not">未连接</string>
+    <string name="str_refresh">刷新</string>
 </resources>

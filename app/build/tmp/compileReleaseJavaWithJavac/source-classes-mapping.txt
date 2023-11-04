@@ -3,8 +3,8 @@ com/jancar/bluetooth/viewmodels/DeviceViewModel.java
 com/jancar/bluetooth/MainActivity.java
  com.jancar.bluetooth.MainActivity
  com.jancar.bluetooth.MainActivity$1
-com/jancar/bluetooth/adapters/AddressTabPagerAdapter.java
- com.jancar.bluetooth.adapters.AddressTabPagerAdapter
+com/jancar/bluetooth/global/Global.java
+ com.jancar.bluetooth.global.Global
 com/jancar/bluetooth/ui/address/AddressFragment.java
  com.jancar.bluetooth.ui.address.AddressFragment
 com/jancar/bluetooth/databinding/DeviceItemBinding.java
@@ -23,11 +23,11 @@ com/jancar/bluetooth/databinding/FragmentContactBinding.java
  com.jancar.bluetooth.databinding.FragmentContactBinding
 com/jancar/bluetooth/MainApplication.java
  com.jancar.bluetooth.MainApplication
+ com.jancar.bluetooth.MainApplication$1
 com/jancar/bluetooth/viewmodels/MusicViewModel.java
  com.jancar.bluetooth.viewmodels.MusicViewModel
-com/jancar/bluetooth/adapters/ContactAdapter.java
- com.jancar.bluetooth.adapters.ContactAdapter
- com.jancar.bluetooth.adapters.ContactAdapter$ContactViewHolder
+com/jancar/bluetooth/databinding/CallLogItemBinding.java
+ com.jancar.bluetooth.databinding.CallLogItemBinding
 com/jancar/bluetooth/databinding/FragmentPhoneBinding.java
  com.jancar.bluetooth.databinding.FragmentPhoneBinding
 com/jancar/bluetooth/service/AcceptThread.java
@@ -38,23 +38,20 @@ com/jancar/bluetooth/viewmodels/PhoneViewModel.java
  com.jancar.bluetooth.viewmodels.PhoneViewModel
 com/jancar/bluetooth/adapters/MainFragmentPagerAdapter.java
  com.jancar.bluetooth.adapters.MainFragmentPagerAdapter
-com/jancar/bluetooth/adapters/CallLogAdapter.java
- com.jancar.bluetooth.adapters.CallLogAdapter
- com.jancar.bluetooth.adapters.CallLogAdapter$CallLogViewHolder
+com/jancar/bluetooth/databinding/FragmentDashboardBinding.java
+ com.jancar.bluetooth.databinding.FragmentDashboardBinding
 com/jancar/bluetooth/model/Contact.java
  com.jancar.bluetooth.model.Contact
-com/jancar/bluetooth/ui/device/DeviceFragment.java
- com.jancar.bluetooth.ui.device.DeviceFragment
- com.jancar.bluetooth.ui.device.DeviceFragment$1
+com/jancar/bluetooth/viewmodels/MainViewModel.java
+ com.jancar.bluetooth.viewmodels.MainViewModel
 com/jancar/bluetooth/ui/phone/PhoneFragment.java
  com.jancar.bluetooth.ui.phone.PhoneFragment
 com/jancar/bluetooth/databinding/FragmentNotificationsBinding.java
  com.jancar.bluetooth.databinding.FragmentNotificationsBinding
 com/jancar/bluetooth/broadcast/BluetoothPairReceiver.java
  com.jancar.bluetooth.broadcast.BluetoothPairReceiver
-com/jancar/bluetooth/adapters/DeviceAdapter.java
- com.jancar.bluetooth.adapters.DeviceAdapter
- com.jancar.bluetooth.adapters.DeviceAdapter$DeviceViewHolder
+com/jancar/bluetooth/viewmodels/AddressViewModel.java
+ com.jancar.bluetooth.viewmodels.AddressViewModel
 com/jancar/bluetooth/databinding/ActivityMainBinding.java
  com.jancar.bluetooth.databinding.ActivityMainBinding
 com/jancar/bluetooth/ui/music/MusicFragment.java
@@ -63,10 +60,10 @@ com/jancar/bluetooth/databinding/FragmentDeviceBinding.java
  com.jancar.bluetooth.databinding.FragmentDeviceBinding
 com/jancar/bluetooth/broadcast/BluetoothConnectionReceiver.java
  com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver
-com/jancar/bluetooth/ui/address/CallLogFragment.java
- com.jancar.bluetooth.ui.address.CallLogFragment
-com/jancar/bluetooth/ui/address/ContactListFragment.java
- com.jancar.bluetooth.ui.address.ContactListFragment
+com/jancar/bluetooth/databinding/ContactItemBinding.java
+ com.jancar.bluetooth.databinding.ContactItemBinding
+com/jancar/bluetooth/BuildConfig.java
+ com.jancar.bluetooth.BuildConfig
 com/jancar/bluetooth/databinding/FragmentAddressBinding.java
  com.jancar.bluetooth.databinding.FragmentAddressBinding
 com/jancar/bluetooth/service/BluetoothService.java
@@ -78,17 +75,28 @@ com/jancar/bluetooth/broadcast/BluetoothStateReceiver.java
  com.jancar.bluetooth.broadcast.BluetoothStateReceiver
 com/jancar/bluetooth/broadcast/BluetoothScanReceiver.java
  com.jancar.bluetooth.broadcast.BluetoothScanReceiver
-com/jancar/bluetooth/BuildConfig.java
- com.jancar.bluetooth.BuildConfig
-com/jancar/bluetooth/databinding/ContactItemBinding.java
- com.jancar.bluetooth.databinding.ContactItemBinding
-com/jancar/bluetooth/databinding/CallLogItemBinding.java
- com.jancar.bluetooth.databinding.CallLogItemBinding
-com/jancar/bluetooth/viewmodels/AddressViewModel.java
- com.jancar.bluetooth.viewmodels.AddressViewModel
-com/jancar/bluetooth/global/Global.java
- com.jancar.bluetooth.global.Global
-com/jancar/bluetooth/viewmodels/MainViewModel.java
- com.jancar.bluetooth.viewmodels.MainViewModel
-com/jancar/bluetooth/databinding/FragmentDashboardBinding.java
- com.jancar.bluetooth.databinding.FragmentDashboardBinding
+com/jancar/bluetooth/adapters/CallLogAdapter.java
+ com.jancar.bluetooth.adapters.CallLogAdapter
+ com.jancar.bluetooth.adapters.CallLogAdapter$CallLogViewHolder
+com/jancar/bluetooth/ui/device/DeviceFragment.java
+ com.jancar.bluetooth.ui.device.DeviceFragment
+ com.jancar.bluetooth.ui.device.DeviceFragment$1
+com/jancar/bluetooth/ui/address/ContactListFragment.java
+ com.jancar.bluetooth.ui.address.ContactListFragment
+ com.jancar.bluetooth.ui.address.ContactListFragment$1
+ com.jancar.bluetooth.ui.address.ContactListFragment$2
+com/jancar/bluetooth/adapters/DeviceAdapter.java
+ com.jancar.bluetooth.adapters.DeviceAdapter
+ com.jancar.bluetooth.adapters.DeviceAdapter$1
+ com.jancar.bluetooth.adapters.DeviceAdapter$2
+ com.jancar.bluetooth.adapters.DeviceAdapter$DeviceViewHolder
+com/jancar/bluetooth/adapters/ContactAdapter.java
+ com.jancar.bluetooth.adapters.ContactAdapter
+ com.jancar.bluetooth.adapters.ContactAdapter$ContactViewHolder
+com/jancar/bluetooth/adapters/AddressTabPagerAdapter.java
+ com.jancar.bluetooth.adapters.AddressTabPagerAdapter
+com/jancar/bluetooth/utils/TimeUtil.java
+ com.jancar.bluetooth.utils.TimeUtil
+com/jancar/bluetooth/ui/address/CallLogFragment.java
+ com.jancar.bluetooth.ui.address.CallLogFragment
+ com.jancar.bluetooth.ui.address.CallLogFragment$1

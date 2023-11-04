@@ -4,6 +4,8 @@ import android.app.Application;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.sdk.BaseManager;
+import com.jancar.sdk.bluetooth.BluetoothManager;
 
 
 /**
@@ -11,7 +13,7 @@ import com.jancar.bluetooth.utils.BluetoothUtil;
  */
 public class MainApplication extends Application {
     private static MainApplication mInstance = null;
-
+    private BluetoothManager bluetoothManager = null;
     public static MainApplication getInstance() {
         if (mInstance == null){
             synchronized (MainApplication.class) {
@@ -22,6 +24,26 @@ public class MainApplication extends Application {
         }
         return mInstance;
     }
+
+    public BluetoothManager getBluetoothManager() {
+        if (bluetoothManager == null) {
+            bluetoothManager = new BluetoothManager(this, connectListener);
+        }
+        return bluetoothManager;
+    }
+
+    private BaseManager.ConnectListener connectListener = new BaseManager.ConnectListener() {
+        @Override
+        public void onServiceConnected() {
+
+        }
+
+        @Override
+        public void onServiceDisconnected() {
+
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();

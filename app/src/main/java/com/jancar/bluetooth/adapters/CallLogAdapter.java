@@ -58,4 +58,9 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         this.callLogs = callLogs;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 }

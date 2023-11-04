@@ -20,4 +20,5 @@
     <string name="pair_status_unknown">未知狀態</string>
     <string name="conn_status_connected">已連接</string>
     <string name="conn_status_not">未連接</string>
+    <string name="str_refresh">刷新</string>
 </resources>

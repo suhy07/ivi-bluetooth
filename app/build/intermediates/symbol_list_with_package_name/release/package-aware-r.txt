@@ -1253,6 +1253,8 @@ id bounce
 id btn_bluetooth_name
 id btn_bluetooth_scan
 id btn_close
+id btn_refresh_call_log
+id btn_refresh_contact
 id button
 id button10
 id button11
@@ -1378,7 +1380,6 @@ id masked
 id message
 id middle
 id mini
-id mobile_navigation
 id motion_base
 id mtrl_child_content_container
 id mtrl_internal_children_alpha_tag
@@ -1388,10 +1389,7 @@ id nav_controller_view_tag
 id nav_device
 id nav_music
 id nav_phone
-id navigation_dashboard
 id navigation_header_container
-id navigation_home
-id navigation_notifications
 id never
 id none
 id normal
@@ -1624,7 +1622,6 @@ layout support_simple_spinner_dropdown_item
 menu bottom_nav_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
-navigation mobile_navigation
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -1696,15 +1693,12 @@ string path_password_strike_through
 string search_menu_title
 string status_bar_notification_info_overflow
 string str_finish
-string title_activity_main
+string str_refresh
 string title_address
 string title_call_log
 string title_contact
-string title_dashboard
 string title_device
-string title_home
 string title_music
-string title_notifications
 string title_phone
 string unpair
 style AlertDialog_AppCompat

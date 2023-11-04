@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.viewbinding.ViewBinding;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import com.jancar.bluetooth.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -16,20 +17,24 @@ import java.lang.String;
 
 public final class FragmentContactBinding implements ViewBinding {
   @NonNull
-  private final RelativeLayout rootView;
+  private final LinearLayout rootView;
+
+  @NonNull
+  public final Button btnRefreshContact;
 
   @NonNull
   public final RecyclerView rvContact;
 
-  private FragmentContactBinding(@NonNull RelativeLayout rootView,
+  private FragmentContactBinding(@NonNull LinearLayout rootView, @NonNull Button btnRefreshContact,
       @NonNull RecyclerView rvContact) {
     this.rootView = rootView;
+    this.btnRefreshContact = btnRefreshContact;
     this.rvContact = rvContact;
   }
 
   @Override
   @NonNull
-  public RelativeLayout getRoot() {
+  public LinearLayout getRoot() {
     return rootView;
   }
 
@@ -54,13 +59,19 @@ public final class FragmentContactBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btn_refresh_contact;
+      Button btnRefreshContact = rootView.findViewById(id);
+      if (btnRefreshContact == null) {
+        break missingId;
+      }
+
       id = R.id.rv_contact;
       RecyclerView rvContact = rootView.findViewById(id);
       if (rvContact == null) {
         break missingId;
       }
 
-      return new FragmentContactBinding((RelativeLayout) rootView, rvContact);
+      return new FragmentContactBinding((LinearLayout) rootView, btnRefreshContact, rvContact);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

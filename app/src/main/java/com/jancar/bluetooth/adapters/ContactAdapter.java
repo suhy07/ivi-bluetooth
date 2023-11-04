@@ -57,4 +57,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void setContactList(List<Contact> contactList) {
         this.contactList = contactList;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -58,6 +59,7 @@ public class DeviceFragment extends Fragment {
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private BluetoothManager bluetoothManager;
+    private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
 
     @Override
@@ -66,6 +68,7 @@ public class DeviceFragment extends Fragment {
         initView(view);
         init();
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
+        jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
         deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
@@ -91,7 +94,8 @@ public class DeviceFragment extends Fragment {
         deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
             bluetoothSwitch.setChecked(onOff);
             if (onOff) {
-                bluetoothAdapter.enable();
+//                bluetoothAdapter.enable();
+                jancarBluetoothManager.powerOn();
                 renameBtn.setEnabled(true);
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 scanBtn.setEnabled(true);
@@ -102,7 +106,8 @@ public class DeviceFragment extends Fragment {
                 scanBtn.setEnabled(false);
                 nameTv.setEnabled(false);
                 scanPb.setVisibility(View.INVISIBLE);
-                bluetoothAdapter.disable();
+//                bluetoothAdapter.disable();
+                jancarBluetoothManager.powerOff();
             }
         });
         deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {

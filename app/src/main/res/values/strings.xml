@@ -21,8 +21,5 @@
     <string name="pair_status_unknown">Unknown</string>
     <string name="conn_status_connected">Connected</string>
     <string name="conn_status_not">Not Connected</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="str_refresh">refresh</string>
 </resources>

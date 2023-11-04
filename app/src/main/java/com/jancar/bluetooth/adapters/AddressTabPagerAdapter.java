@@ -24,8 +24,9 @@ public class AddressTabPagerAdapter extends FragmentPagerAdapter {
 
     private AddressViewModel addressViewModel;
 
-    public AddressTabPagerAdapter(FragmentManager fm) {
+    public AddressTabPagerAdapter(FragmentManager fm, AddressViewModel addressViewModel) {
         super(fm);
+        this.addressViewModel = addressViewModel;
     }
 
 
@@ -33,9 +34,13 @@ public class AddressTabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new ContactListFragment();
+                ContactListFragment contactListFragment = new ContactListFragment();
+                contactListFragment.setAddressViewModel(addressViewModel);
+                return contactListFragment;
             case 1:
-                return new CallLogFragment();
+                CallLogFragment callLogFragment = new CallLogFragment();
+                callLogFragment.setAddressViewModel(addressViewModel);
+                return callLogFragment;
             default:
                 return null;
         }

@@ -17,14 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.ui.device.DeviceFragment;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
+import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 
 import android.bluetooth.BluetoothDevice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +38,7 @@ import java.util.Set;
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
+    private final static String TAG = DeviceAdapter.class.getName();
     private Set<BluetoothDevice> deviceSet;
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
@@ -78,8 +83,33 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         holder.itemView.setOnClickListener( v -> {
             if (device.getBondState() == BluetoothDevice.BOND_BONDED){
+                MainApplication.getInstance().getBluetoothManager().openBluetoothModule(new IBluetoothExecCallback.Stub() {
+                    @Override
+                    public void onSuccess(String s) {
+                        Log.d(TAG, "onSuccess");
+                    }
 
+                    @Override
+                    public void onFailure(int i) {
+                        Log.d(TAG, "onFailure");
+                    }
+                });
+                MainApplication.getInstance().getBluetoothManager().getPhoneContacts(new IBluetoothVCardCallback.Stub() {
+                    @Override
+                    public void onProgress(List<BluetoothVCardBook> list) {
+                        Log.d(TAG, list.toString());
+                    }
 
+                    @Override
+                    public void onFailure(int i) {
+                        Log.d(TAG, "onFailure");
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        Log.d(TAG, s);
+                    }
+                });
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
                 device.createBond();
@@ -150,4 +180,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         dialog.show();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

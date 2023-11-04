@@ -77,6 +77,10 @@ public class BluetoothUtil {
         }
     }
 
+    public static void getIsConnect() {
+
+    }
+
     public static Set<BluetoothDevice> getBondedDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         return pairedDevices;
