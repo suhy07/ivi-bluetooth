@@ -10,14 +10,20 @@ import android.arch.lifecycle.ViewModel;
  */
 public class PhoneViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+
+    private final MutableLiveData<String> callNumber;
 
     public PhoneViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        this.callNumber = new MutableLiveData<>();
+        this.callNumber.setValue("");
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<String> getCallNumber() {
+        return callNumber;
     }
+
+    public void setCallNumber(String str) {
+        this.callNumber.setValue(str);
+    }
+
 }

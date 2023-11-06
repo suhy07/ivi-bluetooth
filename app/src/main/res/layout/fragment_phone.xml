@@ -6,8 +6,11 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/tv_call_number"
         android:layout_width="500dp"
         android:layout_height="100dp"
+        android:enabled="false"
+        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -25,7 +28,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_num1"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="1"
@@ -36,7 +39,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_num2"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="2"
@@ -47,7 +50,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_num3"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="3"
@@ -58,7 +61,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_num4"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="4"
@@ -69,7 +72,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/btn_num5"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="5"
@@ -80,7 +83,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btn_num6"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="6"
@@ -91,7 +94,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/btn_num7"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="7"
@@ -102,7 +105,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/btn_num8"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="8"
@@ -113,7 +116,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/btn_num9"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="9"
@@ -124,7 +127,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/btn_a"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="*"
@@ -135,7 +138,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/btn_num0"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="0"
@@ -146,7 +149,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/btn_b"
         android:layout_width="@dimen/btn_num_width"
         android:layout_height="@dimen/btn_num_height"
         android:text="#"
@@ -157,6 +160,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <ImageButton
+        android:id="@+id/btn_call"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@drawable/ic_call"
@@ -166,6 +170,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <ImageButton
+        android:id="@+id/btn_cancel"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@drawable/ic_back"

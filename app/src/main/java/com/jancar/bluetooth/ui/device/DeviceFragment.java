@@ -162,7 +162,7 @@ public class DeviceFragment extends Fragment {
 
     private void init(){
         // 初始化 ViewModel
-        deviceViewModel =   new ViewModelProvider(this,
+        deviceViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
         // 初始化 Service
         serviceConnection = new ServiceConnection() {
