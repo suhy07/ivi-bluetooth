@@ -46,6 +46,7 @@ import java.util.Set;
  */
 public class DeviceFragment extends Fragment {
 
+    private final static String TAG = "DeviceFragment";
     private RecyclerView recyclerView;
     private Switch bluetoothSwitch;
     private Button renameBtn, scanBtn;
@@ -72,7 +73,7 @@ public class DeviceFragment extends Fragment {
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
         deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
-            Log.d("?!","观察到devices列表变化");
+            Log.d(TAG,"观察到devices列表变化");
             deviceAdapter.setDeviceSet(devices);
             Map<String, Boolean> conn = new HashMap<>();
             for(BluetoothDevice device : devices) {
@@ -84,7 +85,7 @@ public class DeviceFragment extends Fragment {
             deviceAdapter.notifyDataSetChanged();
         });
         deviceViewModel.getConnStatus().observe(getViewLifecycleOwner(), conn -> {
-            Log.d("?!","观察到conn列表变化");
+            Log.d(TAG,"观察到conn列表变化");
             deviceAdapter.setConnStatus(conn);
             deviceAdapter.notifyDataSetChanged();
         });

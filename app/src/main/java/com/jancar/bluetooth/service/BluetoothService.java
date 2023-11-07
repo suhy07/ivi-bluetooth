@@ -10,6 +10,7 @@ package com.jancar.bluetooth.service;
 
 import android.Manifest;
 import android.app.Service;
+import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,6 +22,7 @@ import android.bluetooth.le.ScanSettings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.jancar.bluetooth.broadcast.BluetoothAudioReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothPairReceiver;

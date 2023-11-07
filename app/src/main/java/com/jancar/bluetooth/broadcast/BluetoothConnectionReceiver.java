@@ -17,8 +17,9 @@ import java.util.Map;
  */
 public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
-    DeviceViewModel deviceViewModel;
-    Map<String, Boolean> conn;
+    private final static String TAG = "BluetoothConnectionReceiver";
+    private DeviceViewModel deviceViewModel;
+    private Map<String, Boolean> conn;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
@@ -28,14 +29,14 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             String deviceAddress = device.getAddress();
             conn.put(deviceAddress, true);
-            Log.d("?!", "连接成功");
+            Log.d(TAG, "连接成功");
             // 处理已连接的设备
         } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
             // 蓝牙设备已断开连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             String deviceAddress = device.getAddress();
             conn.put(deviceAddress, false);
-            Log.d("?!", "断开连接");
+            Log.d(TAG, "断开连接");
             // 处理已断开连接的设备
         }
         deviceViewModel.setConnStatus(conn);

@@ -2,6 +2,8 @@ package com.jancar.bluetooth;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
+import android.bluetooth.BluetoothA2dp;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
+import com.jancar.bluetooth.broadcast.BluetoothAudioReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
@@ -24,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MainViewModel viewModel;
     private BottomNavigationView bottomNavigationView;
-    String[] permissions = {
+    private final String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android. Manifest.permission.BLUETOOTH_ADMIN,
             android.Manifest.permission.BLUETOOTH_PRIVILEGED
     };
-
+    private final BluetoothAudioReceiver bluetoothAudioReceiver = new BluetoothAudioReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+        //注册广播接收者监听A2DP状态改变
+        IntentFilter filter4 = new IntentFilter(BluetoothA2dp.
+                ACTION_CONNECTION_STATE_CHANGED);
+        filter4.addAction(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED);
+        registerReceiver(bluetoothAudioReceiver, filter4);
     }
 
     @Override
