@@ -1,8 +1,8 @@
-package com.jancar.bluetooth;
+package com.jancar.bluetooth.ui;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
-import android.bluetooth.BluetoothA2dp;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,34 +13,38 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
-import com.jancar.bluetooth.broadcast.BluetoothAudioReceiver;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
+import com.jancar.bluetooth.viewmodels.PhoneViewModel;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author suhy
  */
 public class MainActivity extends AppCompatActivity {
 
+    private final static String TAG = "MainActivity";
     private ViewPager viewPager;
     private MainViewModel viewModel;
+    private PhoneViewModel phoneViewModel;
     private BottomNavigationView bottomNavigationView;
     private final String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android. Manifest.permission.BLUETOOTH_ADMIN,
             android.Manifest.permission.BLUETOOTH_PRIVILEGED
     };
-    private final BluetoothAudioReceiver bluetoothAudioReceiver = new BluetoothAudioReceiver();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
         init();
-
         // 检查是否已获得蓝牙权限
         for (String permission: permissions) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -50,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-        //注册广播接收者监听A2DP状态改变
-        IntentFilter filter4 = new IntentFilter(BluetoothA2dp.
-                ACTION_CONNECTION_STATE_CHANGED);
-        filter4.addAction(BluetoothA2dp.ACTION_PLAYING_STATE_CHANGED);
-        registerReceiver(bluetoothAudioReceiver, filter4);
     }
 
     @Override
@@ -69,7 +68,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
+        Log.i(TAG, event.toString());
+        if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
+                event.mStatus == IVIBluetooth.CallStatus.OUTGOING) {
+            boolean isComing = (event.mStatus == IVIBluetooth.CallStatus.INCOMING);
+            String number = event.mPhoneNumber;
+            String name = Global.findNameByNumber(number);
+            Intent intent = new Intent(MainActivity.this, CallActivity.class);
+            intent.putExtra(Global.EXTRA_IS_COMING, isComing);
+            intent.putExtra(Intent.EXTRA_PHONE_NUMBER, number);
+            intent.putExtra(Global.EXTRA_NAME, name);
+            startActivity(intent);
+        }
+    }
 
     private void initView(){
         viewPager = findViewById(R.id.viewPager);
@@ -77,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        viewModel =   new ViewModelProvider(this,
+        EventBus.getDefault().register(this);
+        viewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-
         bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
         viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
         // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
@@ -99,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_address) {
+            if (item.getItemId() == R.id.nav_device) {
                 viewPager.setCurrentItem(0, false);
                 return true;
-            } else if (item.getItemId() == R.id.nav_device) {
+            } else if (item.getItemId() == R.id.nav_address) {
                 viewPager.setCurrentItem(1, false);
                 return true;
             } else if (item.getItemId() == R.id.nav_music) {
@@ -117,5 +130,11 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSelectedPage().observe(this, position -> {
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

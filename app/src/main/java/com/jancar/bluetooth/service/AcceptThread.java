@@ -16,19 +16,18 @@ import java.io.OutputStream;
  * @author suhy
  */
 public class AcceptThread extends Thread {
+    private final static String TAG = "AcceptThread";
     private final BluetoothServerSocket mmServerSocket;
-
+    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     public AcceptThread() {
         // Use a temporary object that is later assigned to mmServerSocket
         // because mmServerSocket is final.
         BluetoothServerSocket tmp = null;
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         try {
             // MY_UUID is the app's UUID string, also used by the client code.
-            tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord
-                    (bluetoothAdapter.getName(), Global.getUUID());
+            tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord("NAME", Global.getUUID());
         } catch (IOException e) {
-            Log.e("?!", "Socket's listen() method failed", e);
+            Log.e(TAG, "Socket's listen() method failed", e);
         }
         mmServerSocket = tmp;
     }
@@ -40,7 +39,7 @@ public class AcceptThread extends Thread {
             try {
                 socket = mmServerSocket.accept();
             } catch (IOException e) {
-                Log.e("?!", "Socket's accept() method failed", e);
+                Log.e(TAG, "Socket's accept() method failed", e);
                 break;
             }
 
@@ -48,29 +47,11 @@ public class AcceptThread extends Thread {
                 // A connection was accepted. Perform work associated with
                 // the connection in a separate thread.
 //                manageMyConnectedSocket(socket);
-                // 获取输出流，以便发送请求
-                OutputStream outputStream = null;
                 try {
-                    outputStream = socket.getOutputStream();
-                    // 发送请求获取通讯录数据
-                    String request = "GET_CONTACTS"; // 根据通讯协议定义请求
-                    outputStream.write(request.getBytes());
-                    outputStream.flush();
-
-                    // 获取输入流，以便接收数据
-                    InputStream inputStream = socket.getInputStream();
-
-                    // 读取并处理从另一侧设备发送的通讯录数据
-                    StringBuilder contactData = new StringBuilder();
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        contactData.append(new String(buffer, 0, bytesRead));
-                    }
+                    mmServerSocket.close();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    Log.e(TAG, e.getMessage());
                 }
-//                mmServerSocket.close();
                 break;
             }
         }
@@ -81,8 +62,9 @@ public class AcceptThread extends Thread {
         try {
             mmServerSocket.close();
         } catch (IOException e) {
-            Log.e("?!", "Could not close the connect socket", e);
+            Log.e(TAG, "Could not close the connect socket", e);
         }
     }
 }
+
 

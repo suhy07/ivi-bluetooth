@@ -19,6 +19,7 @@ import java.io.OutputStream;
  * @author suhy
  */
 public class ConnectThread extends Thread {
+    private final static String TAG = "ConnectThread";
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -30,25 +31,25 @@ public class ConnectThread extends Thread {
         try {
             tmp = device.createRfcommSocketToServiceRecord(Global.getUUID());
         } catch (IOException e) {
-            Log.e("?!" , "Socket's create() method failed", e);
+            Log.e(TAG , "Socket's create() method failed", e);
         }
         mmSocket = tmp;
     }
 
     public void run() {
         bluetoothAdapter.cancelDiscovery();
-        Log.d("?!", "bluetoothAdapter.cancelDiscovery();");
+        Log.d(TAG, "bluetoothAdapter.cancelDiscovery();");
         try {
             mmSocket.connect();
         } catch (IOException connectException) {
-            Log.d("?!", connectException.getMessage());
+            Log.d(TAG, connectException.getMessage());
         }
     }
     public void cancel() {
         try {
             mmSocket.close();
         } catch (IOException e) {
-            Log.e("?!", "Could not close the client socket", e);
+            Log.e(TAG, "Could not close the client socket", e);
         }
     }
 }

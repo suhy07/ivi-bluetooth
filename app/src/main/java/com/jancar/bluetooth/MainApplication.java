@@ -49,6 +49,9 @@ public class MainApplication extends Application {
         super.onCreate();
         mInstance = this;
         BluetoothUtil.setContext(this);
+        getBluetoothManager();
+        bluetoothManager.setAutoLink(true, null);
+        bluetoothManager.openBluetoothModule(null);
     }
 
     public static void showToast(String val) {

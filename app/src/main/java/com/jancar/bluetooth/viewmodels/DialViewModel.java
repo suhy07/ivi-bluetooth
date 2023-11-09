@@ -1,23 +1,21 @@
 package com.jancar.bluetooth.viewmodels;
 
-
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-/**
- * @author suhy
- */
-public class PhoneViewModel extends ViewModel {
+public class DialViewModel extends ViewModel {
 
     private final MutableLiveData<String> callNumber;
     private final MutableLiveData<String> callName;
+    private final MutableLiveData<String> etNum;
 
-    public PhoneViewModel() {
+    public DialViewModel() {
         this.callNumber = new MutableLiveData<>();
         this.callNumber.setValue("");
         this.callName = new MutableLiveData<>();
         this.callName.setValue("");
+        this.etNum = new MutableLiveData<>();
+        this.etNum.setValue("");
     }
 
     public MutableLiveData<String> getCallNumber() {
@@ -34,5 +32,13 @@ public class PhoneViewModel extends ViewModel {
 
     public void setCallName(String str) {
         this.callName.setValue(str);
+    }
+
+    public MutableLiveData<String> getEtNum() {
+        return etNum;
+    }
+
+    public void setEtNum(String str) {
+        this.etNum.setValue(str);
     }
 }

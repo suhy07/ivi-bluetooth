@@ -10,15 +10,16 @@ import android.arch.lifecycle.ViewModel;
 public class MusicViewModel extends ViewModel {
 
     private final MutableLiveData<String> musicName;
-
-
     private final MutableLiveData<String> artist;
+    private final MutableLiveData<Integer> a2dpStatus;
 
     public MusicViewModel() {
         musicName = new MutableLiveData<>();
         musicName.setValue("");
         artist = new MutableLiveData<>();
         artist.setValue("");
+        a2dpStatus = new MutableLiveData<>();
+        a2dpStatus.setValue(-1);
     }
 
     public void setMusicName(String musicName) {
@@ -37,4 +38,11 @@ public class MusicViewModel extends ViewModel {
         return artist;
     }
 
+    public MutableLiveData<Integer> getA2dpStatus() {
+        return a2dpStatus;
+    }
+
+    public void setA2dpStatus(int a2dpStatus) {
+        this.a2dpStatus.setValue(a2dpStatus);
+    }
 }

@@ -6,13 +6,19 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/tv_call_name"
+        android:id="@+id/tv_call_log_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/tv_call_time"
+        android:id="@+id/tv_call_log_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_call_log_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp" />

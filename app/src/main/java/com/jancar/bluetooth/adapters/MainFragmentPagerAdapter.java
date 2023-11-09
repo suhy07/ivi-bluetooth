@@ -24,9 +24,10 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new AddressFragment();
-            case 1:
                 return new DeviceFragment();
+
+            case 1:
+                return new AddressFragment();
             case 2:
                 return new MusicFragment();
             case 3:

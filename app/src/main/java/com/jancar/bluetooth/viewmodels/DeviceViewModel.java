@@ -19,15 +19,12 @@ public class DeviceViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> onOff;
     private MutableLiveData<Set<BluetoothDevice>> deviceSet;
-    private MutableLiveData<Map<String, Boolean>> connStatus;
     private MutableLiveData<String> bluetoothName;
 
     public DeviceViewModel() {
         onOff = new MutableLiveData<>();
         deviceSet = new MutableLiveData<>();
         deviceSet.setValue(new HashSet<>());
-        connStatus = new MutableLiveData<>();
-        connStatus.setValue(new HashMap<>());
         bluetoothName = new MutableLiveData<>();
     }
 
@@ -45,10 +42,6 @@ public class DeviceViewModel extends ViewModel {
         deviceSet.setValue(devices);
     }
 
-    public void setConnStatus(Map<String, Boolean> connStatus) {
-        this.connStatus.setValue(connStatus);
-    }
-
     public LiveData<String> getBluetoothName() {
         return bluetoothName;
     }
@@ -59,10 +52,6 @@ public class DeviceViewModel extends ViewModel {
 
     public LiveData<Set<BluetoothDevice>> getDeviceSet() {
         return deviceSet;
-    }
-
-    public LiveData<Map<String, Boolean>> getConnStatus() {
-        return connStatus;
     }
 
 }

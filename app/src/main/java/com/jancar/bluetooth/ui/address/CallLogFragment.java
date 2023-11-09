@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
@@ -21,6 +22,7 @@ import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
+import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
@@ -37,6 +39,7 @@ public class CallLogFragment extends Fragment {
     private CallLogAdapter callLogAdapter;
     private RecyclerView recyclerView;
     private Button refreshBtn;
+    private ProgressBar callLogPb;
     private List<CallLog> logList = new ArrayList<>();
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
@@ -47,11 +50,15 @@ public class CallLogFragment extends Fragment {
         initView(rootView);
         init();
         addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
+            Log.d(TAG, "观察到calllog变化");
             callLogAdapter.setCallLogs(callLogs);
+            callLogPb.setVisibility(View.GONE);
             callLogAdapter.notifyDataSetChanged();
         });
         refreshBtn.setOnClickListener(v -> {
+            bluetoothManager.openBluetoothModule(stub1);
             bluetoothManager.getAllCallRecord(stub);
+            callLogPb.setVisibility(View.VISIBLE);
         });
         return rootView;
     }
@@ -59,6 +66,7 @@ public class CallLogFragment extends Fragment {
     private void initView(View rootView) {
         recyclerView = rootView.findViewById(R.id.rv_call_log);
         refreshBtn = rootView.findViewById(R.id.btn_refresh_call_log);
+        callLogPb = rootView.findViewById(R.id.pb_call_log);
     }
     private void init(){
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
@@ -86,6 +94,18 @@ public class CallLogFragment extends Fragment {
         public void onSuccess(String s) {
 
         }
+    };
+    private IBluetoothExecCallback.Stub stub1 = new IBluetoothExecCallback.Stub() {
+        @Override
+        public void onFailure(int i) {
+            Log.d(TAG, i + "");
+        }
+
+        @Override
+        public void onSuccess(String s) {
+            Log.d(TAG, s + "");
+        }
+
     };
 
     public void setAddressViewModel(AddressViewModel addressViewModel) {

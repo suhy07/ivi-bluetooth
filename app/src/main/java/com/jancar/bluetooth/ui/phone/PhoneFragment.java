@@ -3,6 +3,7 @@ package com.jancar.bluetooth.ui.phone;
 import android.annotation.NonNull;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -18,9 +19,13 @@ import android.widget.ImageButton;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.ui.CallActivity;
+import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
+import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.List;
 
@@ -35,6 +40,8 @@ public class PhoneFragment extends Fragment {
     private ImageButton callBtn, cancelBtn;
     private EditText callNum;
     private PhoneViewModel phoneViewModel;
+    private BluetoothManager bluetoothManager;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_phone, container, false);
@@ -60,10 +67,11 @@ public class PhoneFragment extends Fragment {
         callBtn = rootView.findViewById(R.id.btn_call);
         cancelBtn = rootView.findViewById(R.id.btn_cancel);
         cancelBtn = rootView.findViewById(R.id.btn_cancel);
-        callNum = rootView.findViewById(R.id.tv_call_number);
+        callNum = rootView.findViewById(R.id.tv_phone_number);
     }
 
     private void init() {
+        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
         phoneViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
         for(int i = 0; i < btnCount; i++) {
@@ -80,18 +88,15 @@ public class PhoneFragment extends Fragment {
             phoneViewModel.setCallNumber(s.substring(0, len - 1));
         });
         callBtn.setOnClickListener(v -> {
-            String s = phoneViewModel.getCallNumber().getValue();
-            MainApplication.getInstance().getBluetoothManager().callPhone(s, new IBluetoothExecCallback.Stub() {
-                @Override
-                public void onSuccess(String s) {
-                    Log.i(TAG, s);
-                }
-
-                @Override
-                public void onFailure(int i) {
-                    Log.i(TAG, i + "");
-                }
-            });
+            String number = phoneViewModel.getCallNumber().getValue();
+            String name = Global.findNameByNumber(number);
+            boolean isComing = false;
+            bluetoothManager.callPhone(number, stub);
+            Intent intent = new Intent(getActivity(), CallActivity.class);
+            intent.putExtra(Global.EXTRA_IS_COMING, isComing);
+            intent.putExtra(Global.EXTRA_NUMBER, number);
+            intent.putExtra(Global.EXTRA_NAME, name);
+            startActivity(intent);
         });
     }
 
@@ -105,6 +110,18 @@ public class PhoneFragment extends Fragment {
         callNum += s;
         phoneViewModel.setCallNumber(callNum);
     }
+
+    private final IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
+        @Override
+        public void onSuccess(String s) {
+            Log.i(TAG, s);
+        }
+
+        @Override
+        public void onFailure(int i) {
+            Log.i(TAG, i + "");
+        }
+    };
 
     @Override
     public void onDestroyView() {

@@ -33,6 +33,7 @@ import android.bluetooth.BluetoothDevice;
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 
@@ -55,8 +56,8 @@ public class DeviceFragment extends Fragment {
     private int timeout = 12000;
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
+    private AddressViewModel addressViewModel;
     private Set<BluetoothDevice> deviceSet = new HashSet<>();
-    private Map<String, Boolean> conn = new HashMap<>();
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private BluetoothManager bluetoothManager;
@@ -84,18 +85,13 @@ public class DeviceFragment extends Fragment {
             }
             deviceAdapter.notifyDataSetChanged();
         });
-        deviceViewModel.getConnStatus().observe(getViewLifecycleOwner(), conn -> {
-            Log.d(TAG,"观察到conn列表变化");
-            deviceAdapter.setConnStatus(conn);
-            deviceAdapter.notifyDataSetChanged();
-        });
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //获取已配对的设备
         deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
         deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
             bluetoothSwitch.setChecked(onOff);
             if (onOff) {
-//                bluetoothAdapter.enable();
+                bluetoothAdapter.enable();
                 jancarBluetoothManager.powerOn();
                 renameBtn.setEnabled(true);
                 renameBtn.setText(getText(R.string.bluetooth_rename));
@@ -107,7 +103,7 @@ public class DeviceFragment extends Fragment {
                 scanBtn.setEnabled(false);
                 nameTv.setEnabled(false);
                 scanPb.setVisibility(View.INVISIBLE);
-//                bluetoothAdapter.disable();
+                bluetoothAdapter.disable();
                 jancarBluetoothManager.powerOff();
             }
         });
@@ -184,7 +180,7 @@ public class DeviceFragment extends Fragment {
         getActivity().startService(serviceIntent);
         getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, conn, deviceViewModel);
+        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
     }
 

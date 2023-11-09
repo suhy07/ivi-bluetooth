@@ -15,6 +15,7 @@ import java.util.Set;
  * @author suhy
  */
 public class BluetoothPairReceiver extends BroadcastReceiver {
+    private final static String TAG = "BluetoothPairReceiver";
     DeviceViewModel deviceViewModel;
     Set<BluetoothDevice> bluetoothDevices;
 
@@ -26,12 +27,12 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
             if (bondState == BluetoothDevice.BOND_BONDED) {
-                Log.d("?!", "配对完成");
+                Log.d(TAG, "配对完成");
                 bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 bluetoothDevices.add(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);
             } else if (bondState == BluetoothDevice.BOND_NONE) {
-                Log.d("?!", "取消配对");
+                Log.d(TAG, "取消配对");
                 bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 bluetoothDevices.add(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);

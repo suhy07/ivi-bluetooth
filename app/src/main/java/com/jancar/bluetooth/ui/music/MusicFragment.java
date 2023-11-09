@@ -2,19 +2,8 @@ package com.jancar.bluetooth.ui.music;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
-import android.bluetooth.BluetoothA2dp;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothProfile;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.media.MediaMetadata;
-import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.service.media.MediaBrowserService;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,17 +18,11 @@ import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
-
-import android.media.session.MediaController;
-import android.media.session.MediaSessionManager;
+import com.jancar.sdk.car.IVICar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author suhy
@@ -60,13 +43,24 @@ public class MusicFragment extends Fragment {
         if (isFirst) {
             initView(rootView);
             init();
+
+            bluetoothManager.connect();
+            bluetoothManager.openBluetoothModule(stub);
             musicViewModel.getMusicName().observe(this, s -> {
                 musicNameTv.setText(s);
             });
             musicViewModel.getArtist().observe(this, s -> {
                 artistTv.setText(s);
             });
+            musicViewModel.getA2dpStatus().observe(this, integer -> {
+                if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
+                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
+                } else {
+                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
+                }
+            });
             playBtn.setOnClickListener(v -> {
+                Log.i(TAG,"click Play");
                 bluetoothManager.playAndPause(iBluetoothExecCallback);
                 updateMusicName();
             });
@@ -94,6 +88,22 @@ public class MusicFragment extends Fragment {
         Log.i(TAG, event.toString());
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventModuleConnectStatus(IVIBluetooth.EventModuleConnectStatus event) {
+        musicViewModel.setA2dpStatus(event.a2dpStatus);
+        Log.i(TAG, event.toString());
+        Log.i(TAG, event.isStopped + "");
+    }
+
+//    public static boolean bCcdOn = false;
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onCcdChanged(IVICar.Ccd ccd) {
+//        bCcdOn = ccd.isOn();
+//        Log.i(TAG,  "来电1");
+////        switchScreenCall();
+//    }
+
     private void initView(View rootView) {
         musicNameTv = rootView.findViewById(R.id.tv_music_name);
         artistTv = rootView.findViewById(R.id.tv_artist);
@@ -115,7 +125,6 @@ public class MusicFragment extends Fragment {
         @Override
         public void onSuccess(String s) {
             Log.i(TAG, s);
-            musicViewModel.setMusicName(s);
         }
 
         @Override
@@ -144,6 +153,7 @@ public class MusicFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
 }

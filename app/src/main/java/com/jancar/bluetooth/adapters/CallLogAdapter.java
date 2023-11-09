@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.CallLog;
 
@@ -34,7 +35,12 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
     @Override
     public void onBindViewHolder(@NonNull CallLogViewHolder holder, int position) {
         CallLog callLog = callLogs.get(position);
-        holder.callName.setText(callLog.getCallName());
+        String name = callLog.getCallName();
+        if(name.equals("")) {
+            name = MainApplication.getInstance().getString(R.string.str_unknown_call);
+        }
+        holder.callName.setText(name);
+        holder.callNum.setText(callLog.getCallNumber());
         holder.callTime.setText(callLog.getCallTime());
     }
 
@@ -45,12 +51,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
 
     public static class CallLogViewHolder extends RecyclerView.ViewHolder {
         TextView callName;
+        TextView callNum;
         TextView callTime;
 
         CallLogViewHolder(@NonNull View itemView) {
             super(itemView);
-            callName = itemView.findViewById(R.id.tv_call_name);
-            callTime = itemView.findViewById(R.id.tv_call_time);
+            callName = itemView.findViewById(R.id.tv_call_log_name);
+            callNum = itemView.findViewById(R.id.tv_call_log_number);
+            callTime = itemView.findViewById(R.id.tv_call_log_time);
         }
     }
 

@@ -6,6 +6,7 @@
     <string name="title_address">Address Book</string>
     <string name="title_contact">Contact</string>
     <string name="title_call_log">Call Log</string>
+    <string name="title_dial">Call interface</string>
     <string name="bluetooth_switch">Bluetooth Switch</string>
     <string name="bluetooth_name">Bluetooth Name</string>
     <string name="bluetooth_rename">Rename</string>
@@ -13,7 +14,9 @@
     <string name="str_finish">Finish</string>
     <string name="choose_options">Please select an action:</string>
     <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
     <string name="unpair">Unpair</string>
+    <string name="pair_status_pair">Pair</string>
     <string name="pair_status_paired">Paired</string>
     <string name="pair_status_pairing">Pairing</string>
     <string name="pair_status_unpaired">Unpaired</string>
@@ -21,5 +24,11 @@
     <string name="pair_status_unknown">Unknown</string>
     <string name="conn_status_connected">Connected</string>
     <string name="conn_status_not">Not Connected</string>
-    <string name="str_refresh">refresh</string>
+    <string name="str_refresh">Refresh</string>
+    <string name="str_hang_up">Hang up</string>
+    <string name="str_answer">Answer</string>
+    <string name="str_swtich">Switch audio source</string>
+    <string name="str_unknown_call">Unknown call</string>
+    <string name="str_dialing">Dialing</string>
+    <string name="str_incoming">Incoming call</string>
 </resources>
