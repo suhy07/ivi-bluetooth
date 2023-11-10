@@ -40,40 +40,38 @@ public class MusicFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_music, container, false);
-        if (isFirst) {
-            initView(rootView);
-            init();
+        Log.i(TAG, "onCreateView");
+        initView(rootView);
+        init();
+        bluetoothManager.connect();
+        bluetoothManager.openBluetoothModule(stub);
+        musicViewModel.getMusicName().observe(this, s -> {
+            musicNameTv.setText(s);
+        });
+        musicViewModel.getArtist().observe(this, s -> {
+            artistTv.setText(s);
+        });
+        musicViewModel.getA2dpStatus().observe(this, integer -> {
+            if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
+                playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
+            } else {
+                playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
+            }
+        });
+        playBtn.setOnClickListener(v -> {
+            Log.i(TAG,"click Play");
+            bluetoothManager.playAndPause(iBluetoothExecCallback);
+            updateMusicName();
+        });
+        prevBtn.setOnClickListener(v -> {
+            bluetoothManager.prevBtMusic(iBluetoothExecCallback);
+            updateMusicName();
+        });
+        nextBtn.setOnClickListener(v -> {
+            bluetoothManager.nextBtMusic(stub);
+            updateMusicName();
+        });
 
-            bluetoothManager.connect();
-            bluetoothManager.openBluetoothModule(stub);
-            musicViewModel.getMusicName().observe(this, s -> {
-                musicNameTv.setText(s);
-            });
-            musicViewModel.getArtist().observe(this, s -> {
-                artistTv.setText(s);
-            });
-            musicViewModel.getA2dpStatus().observe(this, integer -> {
-                if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
-                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
-                } else {
-                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
-                }
-            });
-            playBtn.setOnClickListener(v -> {
-                Log.i(TAG,"click Play");
-                bluetoothManager.playAndPause(iBluetoothExecCallback);
-                updateMusicName();
-            });
-            prevBtn.setOnClickListener(v -> {
-                bluetoothManager.prevBtMusic(iBluetoothExecCallback);
-                updateMusicName();
-            });
-            nextBtn.setOnClickListener(v -> {
-                bluetoothManager.nextBtMusic(stub);
-                updateMusicName();
-            });
-            isFirst = false;
-        }
         return rootView;
     }
 
@@ -96,14 +94,6 @@ public class MusicFragment extends Fragment {
         Log.i(TAG, event.isStopped + "");
     }
 
-//    public static boolean bCcdOn = false;
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onCcdChanged(IVICar.Ccd ccd) {
-//        bCcdOn = ccd.isOn();
-//        Log.i(TAG,  "来电1");
-////        switchScreenCall();
-//    }
-
     private void initView(View rootView) {
         musicNameTv = rootView.findViewById(R.id.tv_music_name);
         artistTv = rootView.findViewById(R.id.tv_artist);
@@ -113,9 +103,11 @@ public class MusicFragment extends Fragment {
     }
 
     private void init() {
-        EventBus.getDefault().register(this);
-        musicViewModel = new ViewModelProvider(this,
-                new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+//        musicViewModel = new ViewModelProvider(this,
+//                new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
     }
 
@@ -151,9 +143,13 @@ public class MusicFragment extends Fragment {
     };
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
+    public void setMusicViewModel(MusicViewModel musicViewModel) {
+        this.musicViewModel = musicViewModel;
+    }
 }

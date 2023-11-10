@@ -57,6 +57,7 @@ public class CallLogFragment extends Fragment {
         });
         refreshBtn.setOnClickListener(v -> {
             bluetoothManager.openBluetoothModule(stub1);
+            bluetoothManager.stopContactOrHistoryLoad(stub1);
             bluetoothManager.getAllCallRecord(stub);
             callLogPb.setVisibility(View.VISIBLE);
         });

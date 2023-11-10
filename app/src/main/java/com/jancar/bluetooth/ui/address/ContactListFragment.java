@@ -58,6 +58,7 @@ public class ContactListFragment extends Fragment {
         });
         refreshBtn.setOnClickListener(v -> {
             bluetoothManager.openBluetoothModule(stub1);
+            bluetoothManager.stopContactOrHistoryLoad(stub1);
             bluetoothManager.getPhoneContacts(stub);
             contactPb.setVisibility(View.VISIBLE);
         });

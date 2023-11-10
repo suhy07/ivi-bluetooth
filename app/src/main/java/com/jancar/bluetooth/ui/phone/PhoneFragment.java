@@ -72,8 +72,8 @@ public class PhoneFragment extends Fragment {
 
     private void init() {
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
-        phoneViewModel = new ViewModelProvider(this,
-                new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
+//        phoneViewModel = new ViewModelProvider(this,
+//                new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
         for(int i = 0; i < btnCount; i++) {
             int finalI = i;
             num[i].setOnClickListener(v -> {
@@ -126,5 +126,9 @@ public class PhoneFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    public void setPhoneViewModel(PhoneViewModel phoneViewModel) {
+        this.phoneViewModel = phoneViewModel;
     }
 }

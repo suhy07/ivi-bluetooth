@@ -77,16 +77,6 @@ public class BluetoothService extends Service {
         bluetoothConnectionReceiver.setDeviceViewModel(deviceViewModel);
     }
 
-    public void startScan() {
-        Log.d("start", "startScan");
-        ScanSettings settings = new ScanSettings.Builder()
-                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                .build();
-        if (!bluetoothAdapter.isEnabled()){
-           bluetoothAdapter.enable();
-        }
-        bluetoothAdapter.startDiscovery();
-    }
 
     @Override
     public void onDestroy() {

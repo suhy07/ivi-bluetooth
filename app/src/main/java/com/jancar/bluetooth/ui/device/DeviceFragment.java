@@ -56,16 +56,14 @@ public class DeviceFragment extends Fragment {
     private int timeout = 12000;
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
-    private AddressViewModel addressViewModel;
     private Set<BluetoothDevice> deviceSet = new HashSet<>();
-    private BluetoothService bluetoothService;
-    private ServiceConnection serviceConnection;
     private BluetoothManager bluetoothManager;
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_device, container, false);
         initView(view);
         init();
@@ -128,23 +126,21 @@ public class DeviceFragment extends Fragment {
             }
         });
         scanBtn.setOnClickListener(v -> {
-            if (!bluetoothAdapter.isEnabled()) {
+            if (!bluetoothAdapter.isEnabled()){
                 bluetoothAdapter.enable();
             }
-            if (bluetoothService != null) {
-                bluetoothService.startScan();
-                scanPb.setVisibility(View.VISIBLE);
-                new Thread(()->{
-                    try {
-                        Thread.sleep(timeout);
-                        getActivity().runOnUiThread(()->{
-                            scanPb.setVisibility(View.INVISIBLE);
-                        });
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).start();
-            }
+            bluetoothAdapter.startDiscovery();
+            scanPb.setVisibility(View.VISIBLE);
+            new Thread(()->{
+                try {
+                    Thread.sleep(timeout);
+                    getActivity().runOnUiThread(()->{
+                        scanPb.setVisibility(View.INVISIBLE);
+                    });
+                } catch (InterruptedException e) {
+                    Log.i(TAG, e.getMessage());
+                }
+            }).start();
         });
         return view;
     }
@@ -161,24 +157,6 @@ public class DeviceFragment extends Fragment {
         // 初始化 ViewModel
         deviceViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
-        // 初始化 Service
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                BluetoothService.LocalBinder binder = (BluetoothService.LocalBinder) iBinder;
-                bluetoothService = binder.getService();
-                bluetoothService.setDeviceViewModel(deviceViewModel);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                bluetoothService = null;
-            }
-        };
-        Intent serviceIntent = new Intent(getActivity(), BluetoothService.class);
-        // 启动服务
-        getActivity().startService(serviceIntent);
-        getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
@@ -189,11 +167,12 @@ public class DeviceFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void setBluetoothManager(BluetoothManager bluetoothManager) {
-        this.bluetoothManager = bluetoothManager;
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
     }
 
-    public void setBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
-        this.bluetoothAdapter = bluetoothAdapter;
+    public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
+        this.deviceViewModel = deviceViewModel;
     }
 }

@@ -2,10 +2,14 @@ package com.jancar.bluetooth.ui;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,7 +20,11 @@ import android.util.Log;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
+import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
+import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -31,16 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
     private ViewPager viewPager;
-    private MainViewModel viewModel;
+    private MainViewModel mainViewModel;
+    private DeviceViewModel deviceViewModel;
+    private AddressViewModel addressViewModel;
+    private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
+    private BluetoothService bluetoothService;
+    private ServiceConnection serviceConnection;
     private BottomNavigationView bottomNavigationView;
     private final String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android. Manifest.permission.BLUETOOTH_ADMIN,
             android.Manifest.permission.BLUETOOTH_PRIVILEGED
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
@@ -54,6 +69,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume");
     }
 
     @Override
@@ -90,11 +117,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        EventBus.getDefault().register(this);
-        viewModel = new ViewModelProvider(this,
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+        mainViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        deviceViewModel = new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
+        addressViewModel = new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(AddressViewModel.class);
+        musicViewModel = new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
+        phoneViewModel = new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
         bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), deviceViewModel, addressViewModel
+                , musicViewModel, phoneViewModel));
         // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -103,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                viewModel.setSelectedPage(position);
+                mainViewModel.setSelectedPage(position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
             }
 
@@ -127,9 +165,26 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-        viewModel.getSelectedPage().observe(this, position -> {
+        mainViewModel.getSelectedPage().observe(this, position -> {
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
         });
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                BluetoothService.LocalBinder binder = (BluetoothService.LocalBinder) iBinder;
+                bluetoothService = binder.getService();
+                bluetoothService.setDeviceViewModel(deviceViewModel);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                bluetoothService = null;
+            }
+        };
+        Intent serviceIntent = new Intent(MainActivity.this, BluetoothService.class);
+        // 启动服务
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override

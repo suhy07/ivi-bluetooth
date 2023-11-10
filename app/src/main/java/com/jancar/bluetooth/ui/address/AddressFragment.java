@@ -53,8 +53,6 @@ public class AddressFragment extends Fragment {
     }
 
     private void init() {
-        addressViewModel = new ViewModelProvider(this,
-                new ViewModelProvider.NewInstanceFactory()).get(AddressViewModel.class);
         tabAdapter = new AddressTabPagerAdapter(getChildFragmentManager(), addressViewModel);
         viewPager.setAdapter(tabAdapter);
         // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager 关联
@@ -64,5 +62,9 @@ public class AddressFragment extends Fragment {
         for (int i = 0; i < tabTitles.length; i++) {
             tabLayout.getTabAt(i).setText(tabTitles[i]);
         }
+    }
+
+    public void setAddressViewModel(AddressViewModel addressViewModel) {
+        this.addressViewModel = addressViewModel;
     }
 }
