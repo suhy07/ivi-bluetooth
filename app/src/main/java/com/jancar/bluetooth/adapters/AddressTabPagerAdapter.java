@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.ui.address.AddressFragment;
 import com.jancar.bluetooth.ui.address.CallLogFragment;
 import com.jancar.bluetooth.ui.address.ContactListFragment;
@@ -50,4 +52,13 @@ public class AddressTabPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
+    String[] tabTitles = {MainApplication.getInstance().getString(R.string.title_contact),
+            MainApplication.getInstance().getString(R.string.title_call_log)};
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabTitles[position];
+    }
+
 }

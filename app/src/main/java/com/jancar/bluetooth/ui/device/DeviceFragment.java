@@ -16,11 +16,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -53,7 +56,7 @@ public class DeviceFragment extends Fragment {
     private Switch bluetoothSwitch;
     private Button renameBtn, scanBtn;
     private ProgressBar scanPb;
-    private TextView nameTv;
+    private EditText nameTv;
     private int timeout = 12000;
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
@@ -94,6 +97,13 @@ public class DeviceFragment extends Fragment {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //获取已配对的设备
         deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
+        deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {
+            if(!bluetoothName.equals("")) {
+                nameTv.setText(bluetoothName);
+                bluetoothAdapter.setName(bluetoothName);
+            }
+        });
+        deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
         deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
             bluetoothSwitch.setChecked(onOff);
             if (onOff) {
@@ -112,13 +122,9 @@ public class DeviceFragment extends Fragment {
                 bluetoothAdapter.disable();
                 jancarBluetoothManager.powerOff();
             }
-        });
-        deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {
-            nameTv.setText(bluetoothName);
-            bluetoothAdapter.setName(bluetoothName);
+            nameTv.setText(deviceViewModel.getBluetoothName().getValue());
         });
         deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
-        deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
         bluetoothSwitch.setOnCheckedChangeListener((v, b) -> deviceViewModel.setOnOff(b));
         renameBtn.setOnClickListener(v->{
             if (!bluetoothAdapter.isEnabled()) {
@@ -127,7 +133,11 @@ public class DeviceFragment extends Fragment {
             if (nameTv.isEnabled()){
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 nameTv.setEnabled(false);
-                deviceViewModel.setBluetoothName(nameTv.getText() + "");
+                if(nameTv.getText().toString().trim().equals("")) {
+                    nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+                } else {
+                    deviceViewModel.setBluetoothName(nameTv.getText() + "");
+                }
             } else {
                 renameBtn.setText(getText(R.string.str_finish));
                 nameTv.setEnabled(true);
@@ -149,6 +159,29 @@ public class DeviceFragment extends Fragment {
                     Log.i(TAG, e.getMessage());
                 }
             }).start();
+        });
+        nameTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // 文本变化前的回调
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // 文本变化中的回调
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // 文本变化后的回调
+                // 获取当前文本长度
+                int textLength = editable.length();
+                int maxLength = 15;
+                if (textLength > maxLength) {
+                    // 如果超过限制，截取前面的限制字符
+                    editable.delete(maxLength, textLength);
+                }
+            }
         });
         return view;
     }

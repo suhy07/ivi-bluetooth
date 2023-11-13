@@ -24,7 +24,7 @@
                 android:id="@+id/tv_device_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Device Name"
+                android:text="@string/str_unknown_device"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="26dp"
                 tools:layout_editor_absoluteY="19dp" />
@@ -42,7 +42,7 @@
                 android:id="@+id/tv_device_pairing_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unpair"
+                android:text="@string/unpair"
                 android:textSize="14sp"
                 tools:layout_editor_absoluteX="598dp"
                 tools:layout_editor_absoluteY="44dp" />
