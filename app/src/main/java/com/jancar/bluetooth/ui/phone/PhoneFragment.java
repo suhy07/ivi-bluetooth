@@ -85,7 +85,9 @@ public class PhoneFragment extends Fragment {
         cancelBtn.setOnClickListener(v -> {
             String s = phoneViewModel.getCallNumber().getValue();
             int len = s.length();
-            phoneViewModel.setCallNumber(s.substring(0, len - 1));
+            if(len > 0) {
+                phoneViewModel.setCallNumber(s.substring(0, len - 1));
+            }
         });
         callBtn.setOnClickListener(v -> {
             String number = phoneViewModel.getCallNumber().getValue();
