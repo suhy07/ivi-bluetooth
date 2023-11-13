@@ -9,6 +9,9 @@ import android.util.Log;
 
 
 import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.ui.address.AddressFragment;
+import com.jancar.bluetooth.ui.address.CallLogFragment;
+import com.jancar.bluetooth.ui.address.ContactListFragment;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
@@ -40,6 +43,23 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceViewModel.setDeviceSet(deviceSet);
             Log.d(TAG, "连接成功");
             // 处理已连接的设备
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Log.i(TAG, e.getMessage());
+                }
+                bluetoothManager.getPhoneContacts(ContactListFragment.stub);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Log.i(TAG, e.getMessage());
+                }
+                Log.i(TAG, "获取通话记录");
+                bluetoothManager.stopContactOrHistoryLoad(null);
+                bluetoothManager.getAllCallRecord(CallLogFragment.stub);
+            }).start();
         } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
             // 蓝牙设备已断开连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);

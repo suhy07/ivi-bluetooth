@@ -35,7 +35,8 @@ public class MainApplication extends Application {
     private BaseManager.ConnectListener connectListener = new BaseManager.ConnectListener() {
         @Override
         public void onServiceConnected() {
-
+            bluetoothManager.openBluetoothModule(null);
+            bluetoothManager.setAutoLink(true, null);
         }
 
         @Override
@@ -50,8 +51,7 @@ public class MainApplication extends Application {
         mInstance = this;
         BluetoothUtil.setContext(this);
         getBluetoothManager();
-        bluetoothManager.setAutoLink(true, null);
-        bluetoothManager.openBluetoothModule(null);
+        bluetoothManager.connect();
     }
 
     public static void showToast(String val) {

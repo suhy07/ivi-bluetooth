@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Bluetooth</string>
-    <string name="title_device">Device Manager</string>
+    <string name="str_title_device">Device Manager</string>
     <string name="title_phone">Bluetooth Phone</string>
     <string name="title_music">Bluetooth Music</string>
     <string name="title_address">Address Book</string>
@@ -23,6 +23,7 @@
     <string name="pair_status_failed">Pair failed</string>
     <string name="pair_status_unknown">Unknown</string>
     <string name="conn_status_connected">Connected</string>
+    <string name="conn_status_connecting">Connecting</string>
     <string name="conn_status_not">Not Connected</string>
     <string name="str_refresh">Refresh</string>
     <string name="str_hang_up">Hang up</string>
@@ -31,4 +32,6 @@
     <string name="str_unknown_call">Unknown call</string>
     <string name="str_dialing">Dialing</string>
     <string name="str_incoming">Incoming call</string>
+    <string name="str_not_connect_warn">Bluetooth device not connected</string>
+    <string name="str_unknown_device">Unknown device</string>
 </resources>

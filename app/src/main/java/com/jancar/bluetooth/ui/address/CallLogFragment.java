@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.CallLogAdapter;
+import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.TimeUtil;
@@ -41,7 +42,7 @@ public class CallLogFragment extends Fragment {
     private Button refreshBtn;
     private ProgressBar callLogPb;
     private List<CallLog> logList = new ArrayList<>();
-    private AddressViewModel addressViewModel;
+    private static AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
     @Override
@@ -56,10 +57,7 @@ public class CallLogFragment extends Fragment {
             callLogAdapter.notifyDataSetChanged();
         });
         refreshBtn.setOnClickListener(v -> {
-            bluetoothManager.openBluetoothModule(stub1);
-            bluetoothManager.stopContactOrHistoryLoad(stub1);
-            bluetoothManager.getAllCallRecord(stub);
-            callLogPb.setVisibility(View.VISIBLE);
+            searchCallLog();
         });
         return rootView;
     }
@@ -76,12 +74,12 @@ public class CallLogFragment extends Fragment {
         recyclerView.setAdapter(callLogAdapter);
     }
 
-    IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+    public static IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
             List<CallLog> callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
-                callLogs.add(new CallLog( book.name, TimeUtil.formatTime(book.callTime), book.phoneNumber));
+                callLogs.add(new CallLog(book.name, TimeUtil.formatTime(book.callTime), book.phoneNumber));
             }
             addressViewModel.setCallLogList(callLogs);
         }
@@ -111,5 +109,38 @@ public class CallLogFragment extends Fragment {
 
     public void setAddressViewModel(AddressViewModel addressViewModel) {
         this.addressViewModel = addressViewModel;
+    }
+
+    private void searchCallLog() {
+        if(Global.connStatus != Global.CONNECTED) {
+            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            return;
+        }
+        bluetoothManager.stopContactOrHistoryLoad(stub1);
+        bluetoothManager.getAllCallRecord(stub);
+        callLogPb.setVisibility(View.VISIBLE);
+    }
+
+    private static boolean isFirst = true;
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isFirst) {
+            isFirst = false;
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    Log.i(TAG, e.getMessage());
+                }
+                getActivity().runOnUiThread(()-> {
+                    searchCallLog();
+                    callLogPb.setVisibility(View.INVISIBLE);
+                });
+            }).start();
+        } else {
+            searchCallLog();
+        }
+
     }
 }

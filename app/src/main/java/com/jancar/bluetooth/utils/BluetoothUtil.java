@@ -77,10 +77,6 @@ public class BluetoothUtil {
         }
     }
 
-    public static void getIsConnect() {
-
-    }
-
     public static Set<BluetoothDevice> getBondedDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         return pairedDevices;
@@ -108,12 +104,18 @@ public class BluetoothUtil {
         return pairingStatus;
     }
 
-    public static String getConnectStatus(boolean status) {
-        String connectStatus;
-        if (status) {
-            connectStatus = context.getString(R.string.conn_status_connected);
-        } else {
-            connectStatus = context.getString(R.string.conn_status_not);
+    public static String getConnectStatus(int status) {
+        String connectStatus = context.getString(R.string.conn_status_not);
+        switch (status) {
+            case Global.NOT_CONNECTED:
+                connectStatus = context.getString(R.string.conn_status_not);
+                break;
+            case Global.CONNECTING:
+                connectStatus = context.getString(R.string.conn_status_connecting);
+                break;
+            case Global.CONNECTED:
+                connectStatus = context.getString(R.string.conn_status_connected);
+                break;
         }
         return connectStatus;
     }

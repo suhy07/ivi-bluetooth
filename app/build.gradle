@@ -47,6 +47,19 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def createTime = new Date().format("YYYYMMdd-HHmmss", TimeZone.getTimeZone("GMT+08:00"))
+            def name = output.outputFile.name, ext = ""
+            def dotIndex = name.indexOf(".")
+            if (dotIndex != -1)
+                ext = name.substring(dotIndex)
+
+            versionNameOverride = "1.6.8." + createTime
+            outputFileName = "ivi-bt" + ext
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

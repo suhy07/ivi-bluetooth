@@ -31,6 +31,7 @@ import com.jancar.bluetooth.adapters.DeviceAdapter;
 import android.bluetooth.BluetoothDevice;
 
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
+import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
@@ -57,6 +58,7 @@ public class DeviceFragment extends Fragment {
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
     private Set<BluetoothDevice> deviceSet = new HashSet<>();
+    private Map<BluetoothDevice, Integer> connMap = new HashMap<>();
     private BluetoothManager bluetoothManager;
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
@@ -74,13 +76,19 @@ public class DeviceFragment extends Fragment {
         deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
             Log.d(TAG,"观察到devices列表变化");
             deviceAdapter.setDeviceSet(devices);
-            Map<String, Boolean> conn = new HashMap<>();
-            for(BluetoothDevice device : devices) {
-                String address = device.getAddress();
-                if (conn.get(address) != null) {
-                    conn.put(address, false);
-                }
+            connMap.clear();
+            for (BluetoothDevice device : devices) {
+                if(device.isConnected())
+                    Global.connStatus = Global.CONNECTED;
+                connMap.put(device, device.isConnected() ?
+                        Global.CONNECTED : Global.NOT_CONNECTED);
             }
+            deviceViewModel.setConnMap(connMap);
+            deviceAdapter.notifyDataSetChanged();
+        });
+        deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
+            Log.d(TAG,"观察到connMap变化");
+            deviceAdapter.setConnMap(connMap);
             deviceAdapter.notifyDataSetChanged();
         });
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -155,10 +163,8 @@ public class DeviceFragment extends Fragment {
 
     private void init(){
         // 初始化 ViewModel
-        deviceViewModel = new ViewModelProvider(this,
-                new ViewModelProvider.NewInstanceFactory()).get(DeviceViewModel.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
+        deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
     }
 

@@ -7,6 +7,7 @@ import android.annotation.NonNull;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.os.RemoteException;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
@@ -24,6 +26,7 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothDevice;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,21 +34,28 @@ import java.util.Set;
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
-    private final static String TAG = DeviceAdapter.class.getName();
+    private final static String TAG = "DeviceAdapter";
     private Set<BluetoothDevice> deviceSet;
+    private Map<BluetoothDevice, Integer> connMap;
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
 
-    public DeviceAdapter(Set<BluetoothDevice> deviceSet,DeviceViewModel deviceViewModel) {
+    public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
+            ,DeviceViewModel deviceViewModel) {
         this.deviceSet = deviceSet;
         this.deviceViewModel = deviceViewModel;
+        this.connMap = connMap;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
     }
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
         this.deviceSet = devices;
+    }
+
+    public void setConnMap(Map<BluetoothDevice, Integer> connMap) {
+        this.connMap = connMap;
     }
 
     @NonNull
@@ -61,23 +71,38 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         String deviceName = device.getName();
         String deviceAddress = device.getAddress();
         int devicePairStatus = device.getBondState();
+        if(deviceName == null || deviceName.equals("")) {
+            deviceName = MainApplication.getInstance().getString(R.string.str_unknown_device);
+        }
         holder.deviceName.setText(deviceName);
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
-        holder.connectStatus.setText(getConnectStatus(device.isConnected()));
-
+        holder.connectStatus.setText(getConnectStatus(connMap.get(device)));
+        if(device.isConnected()) {
+            Global.connStatus = Global.CONNECTED;
+        }
         holder.itemView.setOnClickListener( v -> {
-            if (device.getBondState() == BluetoothDevice.BOND_BONDED){
-                jancarBluetoothManager.openBluetoothModule(stub);
-                jancarBluetoothManager.unlinkDevice(stub);
-                jancarBluetoothManager.linkDevice(deviceAddress,stub);
-            } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
-                jancarBluetoothManager.stopContactOrHistoryLoad(stub);
-                holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
-                device.createBond();
-            } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
-                holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
+            if (device.isConnected()) {
+                //已连接，只断开
+                jancarBluetoothManager.unlinkDevice(unlinkStub);
+//                reFreshDeviceSet(device);
+            } else {
+                //未连接
+                //已配对
+                if (device.getBondState() == BluetoothDevice.BOND_BONDED){
+                    jancarBluetoothManager.unlinkDevice(unlinkStub);
+                    startConnect(device);
+                //未配对
+                } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+                    resumeBluetooth();
+                    holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
+                    device.createBond();
+                } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                    holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
+                }
+//                reFreshDeviceSet(device);
             }
+
         });
         holder.itemView.setOnLongClickListener((view) -> {
             showOptionsDialog(position, view.getContext());
@@ -128,41 +153,32 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         } else {
             pairButton.setText(context.getString(R.string.pair_status_pair));
         }
-                // 处理关闭按钮点击事件
+        //处理关闭
         closeButton.setOnClickListener(v -> dialog.dismiss());
-
+        //处理配对
         pairButton.setOnClickListener(v -> {
             if (device.getBondState() == BluetoothDevice.BOND_BONDED){
                 device.removeBond();
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 device.createBond();
             }
-            Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-            devices.remove(device);
-            devices.add(device);
-            deviceViewModel.setDeviceSet(devices);
+//            reFreshDeviceSet(device);
             dialog.dismiss();
         });
-
+        //处理连接
         connectButton.setOnClickListener(v -> {
             if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+                resumeBluetooth();
                 device.createBond();
             } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                jancarBluetoothManager.disconnect();
-                if (!device.isConnected()) {
-//                    new AcceptThread().start();
-//                    new ConnectThread(device).start();
-//                    jancarBluetoothManager.connect();
+                jancarBluetoothManager.unlinkDevice(unlinkStub);
+                if(!device.isConnected()) {
+                    startConnect(device);
                 }
             }
-            Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-            devices.remove(device);
-            devices.add(device);
-            deviceViewModel.setDeviceSet(devices);
+//            reFreshDeviceSet(device);
             dialog.dismiss();
         });
-        // 处理取消配对按钮点击事件
-
         dialog.show();
     }
 
@@ -171,15 +187,58 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         return position;
     }
 
-    IBluetoothExecCallback.Stub stub =  new IBluetoothExecCallback.Stub() {
+    IBluetoothExecCallback.Stub unlinkStub = new IBluetoothExecCallback.Stub() {
         @Override
         public void onSuccess(String s) {
-            Log.i(TAG, s);
+
         }
 
         @Override
         public void onFailure(int i) {
-            Log.i(TAG, "onFailure" + i);
+
         }
     };
+
+    private void reFreshDeviceSet(BluetoothDevice device) {
+        Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+        devices.remove(device);
+        devices.add(device);
+        deviceViewModel.setDeviceSet(devices);
+    }
+
+    private void startConnect(BluetoothDevice device) {
+        if(Global.connStatus != Global.CONNECTING) {
+            Global.connStatus = Global.CONNECTING;
+            connMap.remove(device);
+            connMap.put(device, Global.CONNECTING);
+            deviceViewModel.setConnMap(connMap);
+            new Thread(() -> {
+                synchronized (this) {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        Log.i(TAG, e.getMessage());
+                    }
+                    jancarBluetoothManager.linkDevice(device.getAddress(), new IBluetoothExecCallback.Stub() {
+                        @Override
+                        public void onSuccess(String s) {
+                            Global.connStatus = Global.CONNECTED;
+                            reFreshDeviceSet(device);
+                        }
+
+                        @Override
+                        public void onFailure(int i) {
+                            Global.connStatus = Global.NOT_CONNECTED;
+                            reFreshDeviceSet(device);
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
+
+    private void resumeBluetooth(){
+        bluetoothAdapter.cancelDiscovery();
+        jancarBluetoothManager.stopContactOrHistoryLoad(null);
+    }
 }

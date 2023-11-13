@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_device">设备管理</string>
+    <string name="str_title_device">设备管理</string>
     <string name="title_phone">蓝牙电话</string>
     <string name="title_music">蓝牙音乐</string>
     <string name="title_address">电话簿</string>
@@ -22,6 +22,7 @@
     <string name="pair_status_unknown">未知状态</string>
     <string name="pair_status_failed">配对失败</string>
     <string name="conn_status_connected">已连接</string>
+    <string name="conn_status_connecting">连接中</string>
     <string name="conn_status_not">未连接</string>
     <string name="str_refresh">刷新</string>
     <string name="str_hang_up">挂断</string>
@@ -30,4 +31,6 @@
     <string name="str_unknown_call">未知来电</string>
     <string name="str_dialing">正在拨号中</string>
     <string name="str_incoming">来电</string>
+    <string name="str_not_connect_warn">未连接蓝牙设备</string>
+    <string name="str_unknown_device">未知设备</string>
 </resources>

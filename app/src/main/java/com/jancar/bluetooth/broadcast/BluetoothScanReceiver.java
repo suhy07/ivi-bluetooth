@@ -15,18 +15,21 @@ import java.util.Set;
  * @author suhy
  */
 public class BluetoothScanReceiver extends BroadcastReceiver {
-    DeviceViewModel deviceViewModel;
-    Set<BluetoothDevice> bluetoothDevices;
+    private final static String TAG = "BluetoothScanReceiver";
+    private DeviceViewModel deviceViewModel;
+    private Set<BluetoothDevice> bluetoothDevices;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("onReceive", "onReceive");
+        Log.d(TAG, "onReceive");
         String action = intent.getAction();
         if (BluetoothDevice.ACTION_FOUND.equals(action)) {
             // 从 intent 中获取发现的设备
+            Log.i(TAG, "Found");
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // 处理发现的设备，例如打印名称和地址
             if (deviceViewModel != null) {
+                Log.i(TAG, device.toString());
                 bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 bluetoothDevices.add(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);

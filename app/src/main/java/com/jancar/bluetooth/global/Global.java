@@ -13,6 +13,19 @@ import java.util.UUID;
 public class Global {
     private static Global mInstance = null;
     private static List<Contact> contactList;
+    public final static int REQUEST_ENABLE_BT = 1;
+    public final static String EXTRA_IS_COMING = "IS_COMING";
+    public final static String EXTRA_NUMBER = "NUMBER";
+    public final static String EXTRA_NAME = "NAME";
+    public static int connStatus = 0;
+    public final static int NOT_CONNECTED = 0;
+    public final static int CONNECTING = 1;
+    public final static int CONNECTED = 2;
+    public static int scanStatus = 0;
+    public final static int NOT_SCAN = 0;
+    public final static int SCANNING = 1;
+
+    private static UUID MY_UUID = UUID.fromString("00001105-0000-1000-8000-00805f9B34FB");
     private Global() {
 
     }
@@ -51,11 +64,5 @@ public class Global {
     public static void setContactList(List<Contact> contactList) {
         Global.contactList = contactList;
     }
-
-    public final static int REQUEST_ENABLE_BT = 1;
-    public final static String EXTRA_IS_COMING = "IS_COMING";
-    public final static String EXTRA_NUMBER = "NUMBER";
-    public final static String EXTRA_NAME = "NAME";
-    private static UUID MY_UUID = UUID.fromString("00001105-0000-1000-8000-00805f9B34FB");
 
 }

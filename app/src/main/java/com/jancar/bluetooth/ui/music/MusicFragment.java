@@ -40,11 +40,10 @@ public class MusicFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_music, container, false);
-        Log.i(TAG, "onCreateView");
         initView(rootView);
         init();
-        bluetoothManager.connect();
-        bluetoothManager.openBluetoothModule(stub);
+//        bluetoothManager.connect();
+//        bluetoothManager.openBluetoothModule(stub);
         musicViewModel.getMusicName().observe(this, s -> {
             musicNameTv.setText(s);
         });

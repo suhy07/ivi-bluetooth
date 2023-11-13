@@ -35,13 +35,13 @@ import java.util.List;
  */
 public class ContactListFragment extends Fragment {
 
-    private final String TAG = "ContactListFragment";
+    private final static String TAG = "ContactListFragment";
     private ContactAdapter contactListAdapter;
     private Button refreshBtn;
     private RecyclerView recyclerView;
     private ProgressBar contactPb;
     private List<Contact> contactList = new ArrayList<>();
-    private AddressViewModel addressViewModel;
+    private static AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
     @Override
@@ -57,10 +57,7 @@ public class ContactListFragment extends Fragment {
             contactListAdapter.notifyDataSetChanged();
         });
         refreshBtn.setOnClickListener(v -> {
-            bluetoothManager.openBluetoothModule(stub1);
-            bluetoothManager.stopContactOrHistoryLoad(stub1);
-            bluetoothManager.getPhoneContacts(stub);
-            contactPb.setVisibility(View.VISIBLE);
+           searchContact();
         });
         return rootView;
     }
@@ -83,7 +80,7 @@ public class ContactListFragment extends Fragment {
         contactPb = rootView.findViewById(R.id.pb_contact);
     }
 
-    private IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+    public static IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
             List<Contact> contacts = new ArrayList<>();
@@ -122,4 +119,20 @@ public class ContactListFragment extends Fragment {
         this.addressViewModel = addressViewModel;
     }
 
+    private void searchContact() {
+        if(Global.connStatus != Global.CONNECTED) {
+            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            return;
+        }
+        bluetoothManager.stopContactOrHistoryLoad(stub1);
+        bluetoothManager.getPhoneContacts(stub);
+        contactPb.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchContact();
+        contactPb.setVisibility(View.INVISIBLE);
+    }
 }
