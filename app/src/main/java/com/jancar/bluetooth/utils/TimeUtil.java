@@ -82,6 +82,20 @@ public class TimeUtil {
         }
     }
 
+    public static String formatAccurateTime(String inputTime) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+            Date date = inputFormat.parse(inputTime);
+
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.getDefault());
+            return outputFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return inputTime; // 解析失败时返回原始字符串
+        }
+    }
+
     private static boolean isSameDay(Calendar cal, long timeMillis) {
         cal.setTimeInMillis(timeMillis);
         int year = cal.get(Calendar.YEAR);

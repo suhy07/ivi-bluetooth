@@ -50,6 +50,16 @@
             android:theme="@style/Theme.Bluetooth.NoActionBar"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
         <service android:name=".service.BluetoothService" />
+
+        <receiver
+            android:name=".broadcast.BtBroadcastReceiver"
+            android:permission="com.jancar.btservice.permission">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.jancar.services.ready" />
+            </intent-filter>
+        </receiver>
+<!--        <service android:name="com.jancar.bluetooth.services.A2DPService"/>-->
     </application>
 
 </manifest>

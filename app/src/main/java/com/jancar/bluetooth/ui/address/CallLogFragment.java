@@ -79,7 +79,7 @@ public class CallLogFragment extends Fragment {
         public void onProgress(List<BluetoothVCardBook> list) {
             List<CallLog> callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
-                callLogs.add(new CallLog(book.name, TimeUtil.formatTime(book.callTime), book.phoneNumber));
+                callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber));
             }
             addressViewModel.setCallLogList(callLogs);
         }
