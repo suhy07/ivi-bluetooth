@@ -33,4 +33,5 @@
     <string name="str_incoming">來電</string>
     <string name="str_not_connect_warn">未連接藍牙設備</string>
     <string name="str_unknown_device">未知設備</string>
+    <string name="str_no_number">請輸入號碼</string>
 </resources>

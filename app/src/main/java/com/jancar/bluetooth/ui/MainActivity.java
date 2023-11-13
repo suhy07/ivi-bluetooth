@@ -2,6 +2,7 @@ package com.jancar.bluetooth.ui;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
+import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,20 +18,26 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
+import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author suhy
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private BottomNavigationView bottomNavigationView;
+    private BluetoothManager bluetoothManager;
     private final String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android. Manifest.permission.BLUETOOTH_ADMIN,
@@ -67,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("permission", permission);
                 ActivityCompat.requestPermissions(this, new String[] { permission }, Global.REQUEST_ENABLE_BT);
 
+            }
+        }
+        // 检查是否有已连接的蓝牙
+        Set<BluetoothDevice> deviceSet = new HashSet<>(BluetoothUtil.getBondedDevices());
+        for (BluetoothDevice bluetoothDevice : deviceSet) {
+            if(bluetoothDevice.isConnected()) {
+                Global.connStatus = Global.CONNECTED;
+                break;
             }
         }
     }
@@ -94,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
         Log.i(TAG, event.toString());
         if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||

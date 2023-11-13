@@ -22,7 +22,15 @@ import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothPairReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
+import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.ui.CallActivity;
+import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author suhy
@@ -34,6 +42,7 @@ public class BluetoothService extends Service {
     private final BluetoothPairReceiver bluetoothPairReceiver = new BluetoothPairReceiver();
     private final BluetoothStateReceiver bluetoothStateReceiver = new BluetoothStateReceiver();
     private final BluetoothConnectionReceiver bluetoothConnectionReceiver = new BluetoothConnectionReceiver();
+    private final static String TAG = "BluetoothService";
     public DeviceViewModel deviceViewModel;
 
     public class LocalBinder extends Binder {
@@ -47,6 +56,9 @@ public class BluetoothService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         // 注册广播接收器来处理设备发现
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(bluetoothScanReceiver, filter);
@@ -77,10 +89,29 @@ public class BluetoothService extends Service {
         bluetoothConnectionReceiver.setDeviceViewModel(deviceViewModel);
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
+        Log.i(TAG, event.toString());
+        if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
+                event.mStatus == IVIBluetooth.CallStatus.OUTGOING) {
+            boolean isComing = (event.mStatus == IVIBluetooth.CallStatus.INCOMING);
+            String number = event.mPhoneNumber;
+            String name = Global.findNameByNumber(number);
+            Intent intent = new Intent(BluetoothService.this, CallActivity.class);
+            intent.putExtra(Global.EXTRA_IS_COMING, isComing);
+            intent.putExtra(Intent.EXTRA_PHONE_NUMBER, number);
+            intent.putExtra(Global.EXTRA_NAME, name);
+            startActivity(intent);
+        }
+    }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         unregisterReceiver(bluetoothScanReceiver);
         unregisterReceiver(bluetoothPairReceiver);
         unregisterReceiver(bluetoothStateReceiver);

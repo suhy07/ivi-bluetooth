@@ -93,6 +93,14 @@ public class PhoneFragment extends Fragment {
             String number = phoneViewModel.getCallNumber().getValue();
             String name = Global.findNameByNumber(number);
             boolean isComing = false;
+            //号码为空或未连接蓝牙时，不能拨号
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                return;
+            } else if(number.equals("")) {
+                MainApplication.showToast(getString(R.string.str_no_number));
+                return;
+            }
             bluetoothManager.callPhone(number, stub);
             Intent intent = new Intent(getActivity(), CallActivity.class);
             intent.putExtra(Global.EXTRA_IS_COMING, isComing);
