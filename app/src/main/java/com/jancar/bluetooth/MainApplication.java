@@ -12,6 +12,7 @@ import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.ui.NewCallActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.bluetooth.utils.CallWindowUtil;
 import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
@@ -58,6 +59,8 @@ public class MainApplication extends Application {
         }
     };
 
+    private CallWindowUtil mCallWindowUtil = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,6 +72,7 @@ public class MainApplication extends Application {
 
         startService();
         CallUtil.getInstance();
+        mCallWindowUtil = new CallWindowUtil(mInstance);
     }
 
     private void startService(){
@@ -86,18 +90,22 @@ public class MainApplication extends Application {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
         Log.i("MainApplication", event.toString());
-        if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
+        if(event.mStatus == IVIBluetooth.CallStatus.INCOMING||
                 event.mStatus == IVIBluetooth.CallStatus.OUTGOING||event.mStatus == IVIBluetooth.CallStatus.TALKING) {
 
             CallUtil.getInstance().setCallNumber(event.mPhoneNumber);
             CallUtil.getInstance().setCallName(event.mContactName);
             CallUtil.getInstance().setCallStatus(event.mStatus);
 
-            if(!NewCallActivity.isShow){
-                Intent intent = new Intent(mInstance, NewCallActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+            if(!mCallWindowUtil.isShowCallWindow()){
+                mCallWindowUtil.showCallWindow();
+            }else{
+                mCallWindowUtil.changeViewByStatus(event.mStatus);
             }
+
+
+        }else if(event.mStatus == IVIBluetooth.CallStatus.HANGUP){
+            mCallWindowUtil.hideCallWindow();
         }
     }
 
@@ -105,6 +113,9 @@ public class MainApplication extends Application {
     public void onEventVoiceChange(IVIBluetooth.EventVoiceChange event) {
         if (event != null) {
             CallUtil.getInstance().setVoiceInCar(event.type == IVIBluetooth.BluetoothAudioTransferStatus.HF_STATUS);
+            if(mCallWindowUtil.isShowCallWindow()){
+                mCallWindowUtil.changeVoiceStatus();
+            }
         }
     }
 }
