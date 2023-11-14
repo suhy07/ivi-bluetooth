@@ -11,6 +11,10 @@ import android.widget.TextView;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.CallLog;
+import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -42,6 +46,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         holder.callName.setText(name);
         holder.callNum.setText(callLog.getCallNumber());
         holder.callTime.setText(callLog.getCallTime());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = callLog.getCallNumber();
+                CallUtil.getInstance().callPhone(number);
+                EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+            }
+        });
     }
 
     @Override

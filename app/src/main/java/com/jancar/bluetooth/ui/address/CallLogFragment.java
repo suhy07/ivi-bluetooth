@@ -1,5 +1,6 @@
 package com.jancar.bluetooth.ui.address;
 
+import android.app.Activity;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
@@ -32,8 +33,6 @@ import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +54,6 @@ public class CallLogFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
         initView(rootView);
         init();
@@ -71,18 +69,6 @@ public class CallLogFragment extends Fragment {
             searchCallLog();
         });
         return rootView;
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy");
-        super.onDestroy();
     }
 
     private void initView(View rootView) {
@@ -169,6 +155,13 @@ public class CallLogFragment extends Fragment {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     Log.i(TAG, e.getMessage());
+                }
+                Activity activity = getActivity();
+                if(activity!=null && !activity.isFinishing()){
+                    activity.runOnUiThread(()-> {
+                        searchCallLog();
+                        callLogPb.setVisibility(View.INVISIBLE);
+                    });
                 }
                 getActivity().runOnUiThread(this::searchCallLog);
             }).start();

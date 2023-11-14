@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.Contact;
+import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,6 +40,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Contact contact = contactList.get(position);
         holder.contactName.setText(contact.getName());
         holder.contactNumber.setText(contact.getNumber());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String number = contact.getNumber();
+                CallUtil.getInstance().callPhone(number);
+                EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+            }
+        });
     }
 
     @Override
