@@ -91,7 +91,7 @@ public class BluetoothService extends Service {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
-        Log.i(TAG, event.toString());
+        /*Log.i(TAG, event.toString());
         if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
                 event.mStatus == IVIBluetooth.CallStatus.OUTGOING) {
             boolean isComing = (event.mStatus == IVIBluetooth.CallStatus.INCOMING);
@@ -102,7 +102,7 @@ public class BluetoothService extends Service {
             intent.putExtra(Intent.EXTRA_PHONE_NUMBER, number);
             intent.putExtra(Global.EXTRA_NAME, name);
             startActivity(intent);
-        }
+        }*/
     }
 
 

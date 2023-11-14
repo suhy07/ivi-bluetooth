@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.ui.CallActivity;
 import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
@@ -63,6 +64,16 @@ public class MainApplication extends Application {
         getBluetoothManager();
         bluetoothManager.connect();
         EventBus.getDefault().register(this);
+
+        startService();
+    }
+
+    private void startService(){
+
+        Intent intent = new Intent();
+        intent.setClass(mInstance, BluetoothService.class);
+        startService(intent);
+
     }
 
     public static void showToast(String val) {
@@ -82,6 +93,8 @@ public class MainApplication extends Application {
             intent.putExtra(Intent.EXTRA_PHONE_NUMBER, number);
             intent.putExtra(Global.EXTRA_NAME, name);
             startActivity(intent);
+
+
         }
     }
 }
