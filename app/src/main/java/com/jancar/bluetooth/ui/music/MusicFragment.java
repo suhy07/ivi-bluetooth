@@ -19,6 +19,7 @@ import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.car.IVICar;
+import com.jancar.sdk.media.MediaManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,7 +71,6 @@ public class MusicFragment extends Fragment {
             bluetoothManager.nextBtMusic(stub);
             updateMusicName();
         });
-
         return rootView;
     }
 
