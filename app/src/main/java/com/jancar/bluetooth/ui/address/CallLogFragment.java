@@ -1,5 +1,6 @@
 package com.jancar.bluetooth.ui.address;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -133,10 +134,13 @@ public class CallLogFragment extends Fragment {
                 } catch (InterruptedException e) {
                     Log.i(TAG, e.getMessage());
                 }
-                getActivity().runOnUiThread(()-> {
-                    searchCallLog();
-                    callLogPb.setVisibility(View.INVISIBLE);
-                });
+                Activity activity = getActivity();
+                if(activity!=null && !activity.isFinishing()){
+                    activity.runOnUiThread(()-> {
+                        searchCallLog();
+                        callLogPb.setVisibility(View.INVISIBLE);
+                    });
+                }
             }).start();
         } else {
             searchCallLog();
