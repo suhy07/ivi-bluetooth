@@ -26,6 +26,9 @@ import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -102,11 +105,12 @@ public class PhoneFragment extends Fragment {
                 return;
             }
             bluetoothManager.callPhone(number, stub);
-            Intent intent = new Intent(getActivity(), CallActivity.class);
+            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+            /*Intent intent = new Intent(getActivity(), CallActivity.class);
             intent.putExtra(Global.EXTRA_IS_COMING, isComing);
             intent.putExtra(Global.EXTRA_NUMBER, number);
             intent.putExtra(Global.EXTRA_NAME, name);
-            startActivity(intent);
+            startActivity(intent);*/
         });
     }
 
