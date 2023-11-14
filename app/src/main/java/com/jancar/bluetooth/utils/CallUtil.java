@@ -96,6 +96,13 @@ public class CallUtil {
         }
     }
 
+    public void callPhone(String number){
+        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        if(bluetoothManager!=null){
+            bluetoothManager.callPhone(number,bluetoothExecCallback);
+        }
+    }
+
     public void switchVoice() {
         BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
