@@ -4,6 +4,7 @@ package com.jancar.bluetooth.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.jancar.bluetooth.ui.address.AddressFragment;
 import com.jancar.bluetooth.ui.device.DeviceFragment;
@@ -13,6 +14,7 @@ import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
+import com.jancar.utils.Logcat;
 
 /**
  * @author suhy
@@ -35,6 +37,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Log.i("TAG",  "position:" + position);
         switch (position) {
             case 0:
                 DeviceFragment deviceFragment = new DeviceFragment();

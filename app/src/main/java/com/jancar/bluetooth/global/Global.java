@@ -11,6 +11,7 @@ import java.util.UUID;
  * @author suhy
  */
 public class Global {
+    public final static int TIMEOUT = 20000;
     private static Global mInstance = null;
     private static List<Contact> contactList;
     public final static int REQUEST_ENABLE_BT = 1;
@@ -24,6 +25,13 @@ public class Global {
     public static int scanStatus = 0;
     public final static int NOT_SCAN = 0;
     public final static int SCANNING = 1;
+    public static int contactOrHistoryLoadStatus = 0;
+    public final static int NOT_SCAN_COL = 0;
+    public final static int SCAN_CONTACT = 1;
+    public final static int SCAN_CALL_LOG = 2;
+    public final static int REMOVE_CODE = 0;
+    public final static int REFRESH_CODE = 1;
+
 
     private static UUID MY_UUID = UUID.fromString("00001105-0000-1000-8000-00805f9B34FB");
     private Global() {

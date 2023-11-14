@@ -45,7 +45,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
-    private ViewPager viewPager;
+    private NoPreloadViewPager viewPager;
     private MainViewModel mainViewModel;
     private DeviceViewModel deviceViewModel;
     private AddressViewModel addressViewModel;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
         Log.i(TAG, event.toString());
         if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
@@ -148,10 +148,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
         viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), deviceViewModel, addressViewModel
                 , musicViewModel, phoneViewModel));
+        // 设置 OffscreenPageLimit 为 1，禁用预加载
+        viewPager.setOffscreenPageLimit(0);
         // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOnPageChangeListener(new NoPreloadViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
@@ -162,8 +165,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
+//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                mainViewModel.setSelectedPage(position);
+//                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//            }
+//        });
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_device) {
                 viewPager.setCurrentItem(0, false);
@@ -180,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
         mainViewModel.getSelectedPage().observe(this, position -> {
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
         });
@@ -189,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
                 BluetoothService.LocalBinder binder = (BluetoothService.LocalBinder) iBinder;
                 bluetoothService = binder.getService();
                 bluetoothService.setDeviceViewModel(deviceViewModel);
+                bluetoothService.setAddressViewModel(addressViewModel);
+                bluetoothService.setMusicViewModel(musicViewModel);
             }
 
             @Override

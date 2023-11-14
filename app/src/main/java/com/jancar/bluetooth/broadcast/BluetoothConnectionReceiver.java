@@ -4,21 +4,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.bluetooth.BluetoothDevice;
-import android.os.RemoteException;
 import android.util.Log;
 
 
 import com.jancar.bluetooth.MainApplication;
-import com.jancar.bluetooth.ui.address.AddressFragment;
-import com.jancar.bluetooth.ui.address.CallLogFragment;
-import com.jancar.bluetooth.ui.address.ContactListFragment;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -29,6 +27,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothConnectionReceiver";
     private BluetoothManager bluetoothManager;
     private DeviceViewModel deviceViewModel;
+    private AddressViewModel addressViewModel;
+    private MusicViewModel musicViewModel;
     private Set<BluetoothDevice> deviceSet;
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -42,24 +42,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceSet.add(device);
             deviceViewModel.setDeviceSet(deviceSet);
             Log.d(TAG, "连接成功");
+            bluetoothManager.connect();
+            bluetoothManager.openBluetoothModule(null);
             // 处理已连接的设备
-
-            new Thread(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    Log.i(TAG, e.getMessage());
-                }
-                bluetoothManager.getPhoneContacts(ContactListFragment.stub);
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    Log.i(TAG, e.getMessage());
-                }
-                Log.i(TAG, "获取通话记录");
-                bluetoothManager.stopContactOrHistoryLoad(null);
-                bluetoothManager.getAllCallRecord(CallLogFragment.stub);
-            }).start();
+//
         } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
             // 蓝牙设备已断开连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -68,12 +54,26 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceViewModel.setDeviceSet(deviceSet);
             Log.d(TAG, "断开连接");
             // 处理已断开连接的设备
+            addressViewModel.setCallLogList(new ArrayList<>());
+            addressViewModel.setContactList(new ArrayList<>());
+            musicViewModel.setMusicName("");
+            musicViewModel.setArtist("");
+            musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
         }
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
     }
+
+    public void setAddressViewModel(AddressViewModel addressViewModel) {
+        this.addressViewModel = addressViewModel;
+    }
+
+    public void setMusicViewModel(MusicViewModel musicViewModel) {
+        this.musicViewModel = musicViewModel;
+    }
+
     private IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
         @Override
         public void onSuccess(String s) {

@@ -1,7 +1,11 @@
 package com.jancar.bluetooth.ui.address;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
@@ -27,6 +32,8 @@ import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +47,15 @@ public class CallLogFragment extends Fragment {
     private CallLogAdapter callLogAdapter;
     private RecyclerView recyclerView;
     private Button refreshBtn;
+    private static TextView totalTv;
     private ProgressBar callLogPb;
     private List<CallLog> logList = new ArrayList<>();
-    private static AddressViewModel addressViewModel;
+    private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
         initView(rootView);
         init();
@@ -54,6 +63,8 @@ public class CallLogFragment extends Fragment {
             Log.d(TAG, "观察到calllog变化");
             callLogAdapter.setCallLogs(callLogs);
             callLogPb.setVisibility(View.GONE);
+            totalTv.setText(MainApplication.getInstance().getString(R.string.str_contact_total1) + " " +
+                    callLogs.size() + " " + MainApplication.getInstance().getString(R.string.str_contact_total2));
             callLogAdapter.notifyDataSetChanged();
         });
         refreshBtn.setOnClickListener(v -> {
@@ -62,10 +73,23 @@ public class CallLogFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
     private void initView(View rootView) {
         recyclerView = rootView.findViewById(R.id.rv_call_log);
         refreshBtn = rootView.findViewById(R.id.btn_refresh_call_log);
         callLogPb = rootView.findViewById(R.id.pb_call_log);
+        totalTv = rootView.findViewById(R.id.tv_call_total);
     }
     private void init(){
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
@@ -74,12 +98,13 @@ public class CallLogFragment extends Fragment {
         recyclerView.setAdapter(callLogAdapter);
     }
 
-    public static IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+    public IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
             List<CallLog> callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
                 callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber));
+//                Log.i(TAG, "Type:" + book.type + " " + book.phoneNumber );
             }
             addressViewModel.setCallLogList(callLogs);
         }
@@ -119,28 +144,34 @@ public class CallLogFragment extends Fragment {
         bluetoothManager.stopContactOrHistoryLoad(stub1);
         bluetoothManager.getAllCallRecord(stub);
         callLogPb.setVisibility(View.VISIBLE);
+        //超时
+        new Thread(()-> {
+            try {
+                Thread.sleep(Global.TIMEOUT);
+            } catch (InterruptedException e) {
+                Log.i(TAG, e.getMessage());
+            }
+            getActivity().runOnUiThread(()->{
+                callLogPb.setVisibility(View.GONE);
+            });
+        }).start();
     }
 
     private static boolean isFirst = true;
     @Override
     public void onResume() {
+        Log.i(TAG, "onResume");
         super.onResume();
-        if (isFirst) {
-            isFirst = false;
+        if(addressViewModel.getCallLogList().getValue().isEmpty()){
+            callLogPb.setVisibility(View.VISIBLE);
             new Thread(() -> {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     Log.i(TAG, e.getMessage());
                 }
-                getActivity().runOnUiThread(()-> {
-                    searchCallLog();
-                    callLogPb.setVisibility(View.INVISIBLE);
-                });
+                getActivity().runOnUiThread(this::searchCallLog);
             }).start();
-        } else {
-            searchCallLog();
         }
-
     }
 }

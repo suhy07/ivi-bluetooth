@@ -35,4 +35,6 @@
     <string name="str_not_connect_warn">Bluetooth device not connected</string>
     <string name="str_unknown_device">Unknown device</string>
     <string name="str_no_number">Please enter the number</string>
+    <string name="str_contact_total1">There are a total of </string>
+    <string name="str_contact_total2"> call records</string>
 </resources>

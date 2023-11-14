@@ -34,4 +34,6 @@
     <string name="str_not_connect_warn">未连接蓝牙设备</string>
     <string name="str_unknown_device">未知设备</string>
     <string name="str_no_number">请输入号码</string>
+    <string name="str_contact_total1">共有 </string>
+    <string name="str_contact_total2"> 条通话记录</string>
 </resources>

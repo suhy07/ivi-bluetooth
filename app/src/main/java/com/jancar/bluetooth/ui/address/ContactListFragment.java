@@ -1,6 +1,9 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +44,7 @@ public class ContactListFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar contactPb;
     private List<Contact> contactList = new ArrayList<>();
-    private static AddressViewModel addressViewModel;
+    private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
     @Override
@@ -80,7 +83,7 @@ public class ContactListFragment extends Fragment {
         contactPb = rootView.findViewById(R.id.pb_contact);
     }
 
-    public static IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+    public IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
             List<Contact> contacts = new ArrayList<>();
@@ -127,12 +130,28 @@ public class ContactListFragment extends Fragment {
         bluetoothManager.stopContactOrHistoryLoad(stub1);
         bluetoothManager.getPhoneContacts(stub);
         contactPb.setVisibility(View.VISIBLE);
+        //超时
+        new Thread(()-> {
+            try {
+                Thread.sleep(Global.TIMEOUT);
+            } catch (InterruptedException e) {
+                Log.i(TAG, e.getMessage());
+            }
+            getActivity().runOnUiThread(()->{
+                contactPb.setVisibility(View.GONE);
+            });
+        }).start();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume");
         searchContact();
         contactPb.setVisibility(View.INVISIBLE);
+        if (addressViewModel.getContactList().getValue().isEmpty()) {
+            searchContact();
+        }
     }
+
 }

@@ -55,31 +55,11 @@ public class AddressFragment extends Fragment {
     private void init() {
         tabAdapter = new AddressTabPagerAdapter(getChildFragmentManager(), addressViewModel);
         viewPager.setAdapter(tabAdapter);
+        // 设置 OffscreenPageLimit 为 1，禁用预加载
+        viewPager.setOffscreenPageLimit(0);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager 关联
-
         tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.setOnClickListener(v -> {
-            MainApplication.showToast(tabLayout.getTabCount() + "");
-        });
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // 当标签被选中时，切换到相应的页面
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // 标签失去焦点时的处理
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // 标签被再次选中时的处理
-            }
-        });
         String[] tabTitles = {getString(R.string.title_contact), getString(R.string.title_call_log)};
         for (int i = 0; i < tabTitles.length; i++) {
             tabLayout.getTabAt(i).setText(tabTitles[i]);
