@@ -163,7 +163,7 @@ public class CallLogFragment extends Fragment {
                         callLogPb.setVisibility(View.INVISIBLE);
                     });
                 }
-                getActivity().runOnUiThread(this::searchCallLog);
+                //getActivity().runOnUiThread(this::searchCallLog);
             }).start();
         }
     }

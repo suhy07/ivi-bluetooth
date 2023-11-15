@@ -147,7 +147,7 @@ public class ContactListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-        searchContact();
+        //searchContact();
         contactPb.setVisibility(View.INVISIBLE);
         if (addressViewModel.getContactList().getValue().isEmpty()) {
             searchContact();
