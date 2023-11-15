@@ -40,21 +40,22 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
         Log.i("TAG",  "position:" + position);
         switch (position) {
             case 0:
-                DeviceFragment deviceFragment = new DeviceFragment();
-                deviceFragment.setDeviceViewModel(deviceViewModel);
-                return deviceFragment;
+                MusicFragment musicFragment = new MusicFragment();
+                musicFragment.setMusicViewModel(musicViewModel);
+                return musicFragment;
             case 1:
                 AddressFragment addressFragment = new AddressFragment();
                 addressFragment.setAddressViewModel(addressViewModel);
                 return addressFragment;
             case 2:
-                MusicFragment musicFragment = new MusicFragment();
-                musicFragment.setMusicViewModel(musicViewModel);
-                return musicFragment;
-            case 3:
                 PhoneFragment phoneFragment = new PhoneFragment();
                 phoneFragment.setPhoneViewModel(phoneViewModel);
                 return phoneFragment;
+            case 3:
+                DeviceFragment deviceFragment = new DeviceFragment();
+                deviceFragment.setDeviceViewModel(deviceViewModel);
+                return deviceFragment;
+
             default:
                 return null;
         }
