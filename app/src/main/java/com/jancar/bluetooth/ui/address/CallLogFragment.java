@@ -1,13 +1,8 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.app.Activity;
-import android.annotation.SuppressLint;
-import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,27 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.CallLogAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
-import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -86,8 +76,8 @@ public class CallLogFragment extends Fragment {
         public void onProgress(List<BluetoothVCardBook> list) {
             List<CallLog> callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
-                callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber));
-//                Log.i(TAG, "Type:" + book.type + " " + book.phoneNumber );
+                callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber, book.type));
+                Log.i(TAG, "Type:" + book.type + " " + book.phoneNumber );
             }
             addressViewModel.setCallLogList(callLogs);
         }
@@ -124,23 +114,12 @@ public class CallLogFragment extends Fragment {
             MainApplication.showToast(getString(R.string.str_not_connect_warn));
             return;
         }
-        bluetoothManager.stopContactOrHistoryLoad(stub1);
+//        bluetoothManager.stopContactOrHistoryLoad(stub1);
         bluetoothManager.getAllCallRecord(stub);
         callLogPb.setVisibility(View.VISIBLE);
         //超时
-        new Thread(()-> {
-            try {
-                Thread.sleep(Global.TIMEOUT);
-            } catch (InterruptedException e) {
-                Log.i(TAG, e.getMessage());
-            }
-            getActivity().runOnUiThread(()->{
-                callLogPb.setVisibility(View.GONE);
-            });
-        }).start();
     }
 
-    private static boolean isFirst = true;
     @Override
     public void onResume() {
         Log.i(TAG, "onResume");

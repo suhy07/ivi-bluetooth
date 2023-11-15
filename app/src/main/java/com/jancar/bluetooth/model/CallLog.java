@@ -7,11 +7,13 @@ public class CallLog {
     private String callName;
     private String callTime;
     private String callNumber;
+    private String callType;
 
-    public CallLog (String callName, String callTime, String callNumber) {
+    public CallLog (String callName, String callTime, String callNumber, String callType) {
         this.callName = callName;
         this.callTime = callTime;
         this.callNumber = callNumber;
+        this.callType = callType;
     }
 
     public String getCallName() {
@@ -37,5 +39,15 @@ public class CallLog {
     public void setCallNumber(String callNumber) {
         this.callNumber = callNumber;
     }
+
+
+    public String getCallType() {
+        return callType;
+    }
+
+    public void setCallType(String callType) {
+        this.callType = callType;
+    }
+
 
 }

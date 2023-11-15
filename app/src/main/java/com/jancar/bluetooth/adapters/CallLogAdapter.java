@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -40,8 +41,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
     public void onBindViewHolder(@NonNull CallLogViewHolder holder, int position) {
         CallLog callLog = callLogs.get(position);
         String name = callLog.getCallName();
+        String type = callLog.getCallType();
         if(name.equals("")) {
             name = MainApplication.getInstance().getString(R.string.str_unknown_call);
+        }
+        if(type.equals("DIAL")){
+            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_out));
+        } else {
+            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_in));
         }
         holder.callName.setText(name);
         holder.callNum.setText(callLog.getCallNumber());
@@ -65,12 +72,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         TextView callName;
         TextView callNum;
         TextView callTime;
+        ImageView callTypeIv;
 
         CallLogViewHolder(@NonNull View itemView) {
             super(itemView);
             callName = itemView.findViewById(R.id.tv_call_log_name);
             callNum = itemView.findViewById(R.id.tv_call_log_number);
             callTime = itemView.findViewById(R.id.tv_call_log_time);
+            callTypeIv = itemView.findViewById(R.id.iv_call_log);
         }
     }
 

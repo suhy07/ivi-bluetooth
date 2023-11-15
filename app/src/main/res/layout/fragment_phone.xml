@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/tv_phone_number"
-        android:layout_width="502dp"
+        android:layout_width="750dp"
         android:layout_height="85dp"
         android:background="#00000000"
         android:enabled="false"
