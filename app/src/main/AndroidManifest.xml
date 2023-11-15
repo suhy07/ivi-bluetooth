@@ -48,21 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.CallActivity"
-            android:exported="false"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".ui.DialActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
 
         <service android:name=".service.BluetoothService" />
 
-        <activity
-            android:name=".ui.NewCallActivity"
-            android:exported="false"
-            android:launchMode="singleTop" />
     </application>
 
 </manifest>

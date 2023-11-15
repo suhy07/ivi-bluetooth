@@ -1,12 +1,7 @@
 package com.jancar.bluetooth.ui.phone;
 
 import android.annotation.NonNull;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,17 +15,12 @@ import android.widget.ImageButton;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.ui.CallActivity;
-import com.jancar.bluetooth.ui.MainActivity;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 /**
  * @author suhy

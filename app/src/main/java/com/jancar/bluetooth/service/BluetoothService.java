@@ -15,16 +15,11 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.le.ScanSettings;
-import android.util.Log;
 
 import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothPairReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
-import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.ui.CallActivity;
-import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;

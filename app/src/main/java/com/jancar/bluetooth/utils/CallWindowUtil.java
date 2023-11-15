@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,26 +28,29 @@ public class CallWindowUtil {
     private boolean isShowCallWindow = false;
     private View callWindowView = null;
     private LinearLayout keyboardLayout;
-    private TextView keyboardText;
-    private Button number1Btn;
-    private Button number2Btn;
-    private Button number3Btn;
-    private Button number4Btn;
-    private Button number5Btn;
-    private Button number6Btn;
-    private Button number7Btn;
-    private Button number8Btn;
-    private Button number9Btn;
-    private Button numberXinBtn;
-    private Button number0Btn;
-    private Button numberJinBtn;
+    private LinearLayout incomingLayout;
+    private TextView number1Text;
+    private TextView number2Text;
+    private TextView number3Text;
+    private TextView number4Text;
+    private TextView number5Text;
+    private TextView number6Text;
+    private TextView number7Text;
+    private TextView number8Text;
+    private TextView number9Text;
+    private TextView numberXinText;
+    private TextView number0Text;
+    private TextView numberJinText;
 
     private TextView callNameText;
     private TextView statusText;
     private TextView timeText;
-    private Button acceptBtn;
-    private Button hangupBtn;
-    private Button switchBtn;
+    private TextView keyboardText;
+
+    private TextView acceptText;
+    private TextView smallHangupText;
+    private TextView switchVoiceText;
+    private TextView bigHangupText;
 
     public void showCallWindow(){
 
@@ -57,44 +59,48 @@ public class CallWindowUtil {
         }
         isShowCallWindow = true;
         LayoutInflater  layoutInflater = LayoutInflater.from(mContext);
-        callWindowView = layoutInflater.inflate(R.layout.activity_new_call_acitivity,null);
+        callWindowView = layoutInflater.inflate(R.layout.big_window_call,null);
         keyboardLayout = callWindowView.findViewById(R.id.keyboardLayout);
         keyboardText = callWindowView.findViewById(R.id.keyboardText);
-        number1Btn = callWindowView.findViewById(R.id.number1Btn);
-        number2Btn = callWindowView.findViewById(R.id.number2Btn);
-        number3Btn = callWindowView.findViewById(R.id.number3Btn);
-        number4Btn = callWindowView.findViewById(R.id.number4Btn);
-        number5Btn = callWindowView.findViewById(R.id.number5Btn);
-        number6Btn = callWindowView.findViewById(R.id.number6Btn);
-        number7Btn = callWindowView.findViewById(R.id.number7Btn);
-        number8Btn = callWindowView.findViewById(R.id.number8Btn);
-        number9Btn = callWindowView.findViewById(R.id.number9Btn);
-        numberXinBtn = callWindowView.findViewById(R.id.numberXinBtn);
-        number0Btn = callWindowView.findViewById(R.id.number0Btn);
-        numberJinBtn = callWindowView.findViewById(R.id.numberJinBtn);
+        incomingLayout = callWindowView.findViewById(R.id.incomingLayout);
+
+        number1Text = callWindowView.findViewById(R.id.number1Text);
+        number2Text = callWindowView.findViewById(R.id.number2Text);
+        number3Text = callWindowView.findViewById(R.id.number3Text);
+        number4Text = callWindowView.findViewById(R.id.number4Text);
+        number5Text = callWindowView.findViewById(R.id.number5Text);
+        number6Text = callWindowView.findViewById(R.id.number6Text);
+        number7Text = callWindowView.findViewById(R.id.number7Text);
+        number8Text = callWindowView.findViewById(R.id.number8Text);
+        number9Text = callWindowView.findViewById(R.id.number9Text);
+        numberXinText = callWindowView.findViewById(R.id.numberXinText);
+        number0Text = callWindowView.findViewById(R.id.number0Text);
+        numberJinText = callWindowView.findViewById(R.id.numberJinText);
 
         callNameText = callWindowView.findViewById(R.id.callNameText);
         statusText = callWindowView.findViewById(R.id.statusText);
         timeText = callWindowView.findViewById(R.id.timeText);
-        acceptBtn = callWindowView.findViewById(R.id.acceptBtn);
-        hangupBtn = callWindowView.findViewById(R.id.hangupBtn);
-        switchBtn = callWindowView.findViewById(R.id.switchBtn);
+        acceptText = callWindowView.findViewById(R.id.acceptText);
+        smallHangupText = callWindowView.findViewById(R.id.smallHangupText);
+        switchVoiceText = callWindowView.findViewById(R.id.switchVoiceText);
+        bigHangupText = callWindowView.findViewById(R.id.bigHangupText);
 
-        number1Btn.setOnClickListener(mOnClickListener);
-        number2Btn.setOnClickListener(mOnClickListener);
-        number3Btn.setOnClickListener(mOnClickListener);
-        number4Btn.setOnClickListener(mOnClickListener);
-        number5Btn.setOnClickListener(mOnClickListener);
-        number6Btn.setOnClickListener(mOnClickListener);
-        number7Btn.setOnClickListener(mOnClickListener);
-        number8Btn.setOnClickListener(mOnClickListener);
-        number9Btn.setOnClickListener(mOnClickListener);
-        numberXinBtn.setOnClickListener(mOnClickListener);
-        number0Btn.setOnClickListener(mOnClickListener);
-        numberJinBtn.setOnClickListener(mOnClickListener);
-        acceptBtn.setOnClickListener(mOnClickListener);
-        hangupBtn.setOnClickListener(mOnClickListener);
-        switchBtn.setOnClickListener(mOnClickListener);
+        number1Text.setOnClickListener(mOnClickListener);
+        number2Text.setOnClickListener(mOnClickListener);
+        number3Text.setOnClickListener(mOnClickListener);
+        number4Text.setOnClickListener(mOnClickListener);
+        number5Text.setOnClickListener(mOnClickListener);
+        number6Text.setOnClickListener(mOnClickListener);
+        number7Text.setOnClickListener(mOnClickListener);
+        number8Text.setOnClickListener(mOnClickListener);
+        number9Text.setOnClickListener(mOnClickListener);
+        numberXinText.setOnClickListener(mOnClickListener);
+        number0Text.setOnClickListener(mOnClickListener);
+        numberJinText.setOnClickListener(mOnClickListener);
+        acceptText.setOnClickListener(mOnClickListener);
+        smallHangupText.setOnClickListener(mOnClickListener);
+        switchVoiceText.setOnClickListener(mOnClickListener);
+        bigHangupText.setOnClickListener(mOnClickListener);
 
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
@@ -115,49 +121,50 @@ public class CallWindowUtil {
         @Override
         public void onClick(View view) {
             switch(view.getId()){
-                case R.id.switchBtn:
+                case R.id.switchVoiceText:
                     CallUtil.getInstance().switchVoice();
                     break;
-                case R.id.acceptBtn:
+                case R.id.acceptText:
                     CallUtil.getInstance().listenPhone();
                     break;
-                case R.id.hangupBtn:
+                case R.id.smallHangupText:
+                case R.id.bigHangupText:
                     CallUtil.getInstance().hangupPhone();
                     break;
-                case R.id.number1Btn:
+                case R.id.number1Text:
                     click('1');
                     break;
-                case R.id.number2Btn:
+                case R.id.number2Text:
                     click('2');
                     break;
-                case R.id.number3Btn:
+                case R.id.number3Text:
                     click('3');
                     break;
-                case R.id.number4Btn:
+                case R.id.number4Text:
                     click('4');
                     break;
-                case R.id.number5Btn:
+                case R.id.number5Text:
                     click('5');
                     break;
-                case R.id.number6Btn:
+                case R.id.number6Text:
                     click('6');
                     break;
-                case R.id.number7Btn:
+                case R.id.number7Text:
                     click('7');
                     break;
-                case R.id.number8Btn:
+                case R.id.number8Text:
                     click('8');
                     break;
-                case R.id.number9Btn:
+                case R.id.number9Text:
                     click('9');
                     break;
-                case R.id.numberXinBtn:
+                case R.id.numberXinText:
                     click('*');
                     break;
-                case R.id.number0Btn:
+                case R.id.number0Text:
                     click('0');
                     break;
-                case R.id.numberJinBtn:
+                case R.id.numberJinText:
                     click('#');
                     break;
             }
@@ -169,16 +176,18 @@ public class CallWindowUtil {
         if (keyboardText != null) {
             String str = (String) keyboardText.getText();
             str += param;
+            setViewVisible(keyboardText,true);
             keyboardText.setText(str);
+            setViewVisible(timeText,false);
             CallUtil.getInstance().requestDTMF(param);
         }
     }
 
     public void changeVoiceStatus(){
         if(CallUtil.getInstance().isVoiceInCar()){
-            switchBtn.setText("切到手机");
+            switchVoiceText.setText("车机接听");
         }else{
-            switchBtn.setText("切到车机");
+            switchVoiceText.setText("手机接听");
         }
     }
 
@@ -189,27 +198,36 @@ public class CallWindowUtil {
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
                 statusText.setText("来电中");
-                timeText.setVisibility(View.GONE);
-                switchBtn.setVisibility(View.GONE);
-                acceptBtn.setVisibility(View.VISIBLE);
-                hangupBtn.setVisibility(View.VISIBLE);
-                keyboardLayout.setVisibility(View.GONE);
+                setViewVisible(statusText,true);
+                setViewVisible(timeText,false);
+                setViewVisible(keyboardText,false);
+                setViewVisible(incomingLayout,true);
+                setViewVisible(acceptText,true);
+                setViewVisible(smallHangupText,true);
+                setViewVisible(keyboardLayout,false);
                 break;
             case IVIBluetooth.CallStatus.OUTGOING:
                 statusText.setText("拨号中");
-                timeText.setVisibility(View.GONE);
-                switchBtn.setVisibility(View.GONE);
-                acceptBtn.setVisibility(View.GONE);
-                hangupBtn.setVisibility(View.VISIBLE);
-                keyboardLayout.setVisibility(View.GONE);
+                setViewVisible(statusText,true);
+                setViewVisible(timeText,false);
+                setViewVisible(keyboardText,false);
+                setViewVisible(incomingLayout,true);
+                setViewVisible(acceptText,false);
+                setViewVisible(smallHangupText,true);
+                setViewVisible(keyboardLayout,false);
                 break;
             case IVIBluetooth.CallStatus.TALKING:
-                statusText.setText("通话中");
-                timeText.setVisibility(View.VISIBLE);
-                switchBtn.setVisibility(View.VISIBLE);
-                acceptBtn.setVisibility(View.GONE);
-                hangupBtn.setVisibility(View.VISIBLE);
-                keyboardLayout.setVisibility(View.VISIBLE);
+                setViewVisible(statusText,false);
+                String text = keyboardText.getText().toString();
+                if(text.equals("")){
+                    setViewVisible(timeText,true);
+                    setViewVisible(keyboardText,false);
+                }else{
+                    setViewVisible(timeText,false);
+                    setViewVisible(keyboardText,true);
+                }
+                setViewVisible(incomingLayout,false);
+                setViewVisible(keyboardLayout,true);
                 mHandler.postDelayed(updateTimeRunnable,10);
                 break;
             case IVIBluetooth.CallStatus.HANGUP:
@@ -219,13 +237,28 @@ public class CallWindowUtil {
 
     }
 
+    private void setViewVisible(View view,boolean isVisible){
+        if(isVisible){
+            if(view.getVisibility() != View.VISIBLE){
+                view.setVisibility(View.VISIBLE);
+            }
+        }else{
+            if(view.getVisibility() != View.GONE){
+                view.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private Runnable updateTimeRunnable = new Runnable() {
         @Override
         public void run() {
             if(isShowCallWindow && callWindowView!=null){
-                int time = CallUtil.getInstance().getCallTime();
-                timeText.setText(CallUtil.getInstance().getCallingTime(time));
-                mHandler.postDelayed(updateTimeRunnable,1000);
+                String text = keyboardText.getText().toString();
+                if(text.equals("")){
+                    int time = CallUtil.getInstance().getCallTime();
+                    timeText.setText(CallUtil.getInstance().getCallingTime(time));
+                    mHandler.postDelayed(updateTimeRunnable,1000);
+                }
 
             }
         }
