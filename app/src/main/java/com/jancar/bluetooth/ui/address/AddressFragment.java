@@ -55,8 +55,6 @@ public class AddressFragment extends Fragment {
     private void init() {
         tabAdapter = new AddressTabPagerAdapter(getChildFragmentManager(), addressViewModel);
         viewPager.setAdapter(tabAdapter);
-        // 设置 OffscreenPageLimit 为 1，禁用预加载
-        viewPager.setOffscreenPageLimit(0);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         // 使用 TabLayoutMediator 将 TabLayout 与 ViewPager 关联
         tabLayout.setupWithViewPager(viewPager);

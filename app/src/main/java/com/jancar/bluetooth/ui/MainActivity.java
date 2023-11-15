@@ -6,19 +6,18 @@ import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
@@ -29,12 +28,7 @@ import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
-import com.jancar.sdk.bluetooth.BluetoothManager;
-import com.jancar.sdk.bluetooth.IVIBluetooth;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -53,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private PhoneViewModel phoneViewModel;
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
-    private BottomNavigationView bottomNavigationView;
-    private BluetoothManager bluetoothManager;
+    private TabLayout tabLayout;
     private final String[] permissions = {
             android.Manifest.permission.BLUETOOTH,
             android. Manifest.permission.BLUETOOTH_ADMIN,
@@ -88,18 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume");
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Global.REQUEST_ENABLE_BT) {
@@ -110,30 +91,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
-        /*Log.i(TAG, event.toString());
-        if(event.mStatus == IVIBluetooth.CallStatus.INCOMING ||
-                event.mStatus == IVIBluetooth.CallStatus.OUTGOING) {
-            boolean isComing = (event.mStatus == IVIBluetooth.CallStatus.INCOMING);
-            String number = event.mPhoneNumber;
-            String name = Global.findNameByNumber(number);
-            Intent intent = new Intent(MainActivity.this, CallActivity.class);
-            intent.putExtra(Global.EXTRA_IS_COMING, isComing);
-            intent.putExtra(Intent.EXTRA_PHONE_NUMBER, number);
-            intent.putExtra(Global.EXTRA_NAME, name);
-            startActivity(intent);
-        }*/
-    }
 
     private void initView(){
         viewPager = findViewById(R.id.viewPager);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        tabLayout = findViewById(R.id.tabLayout_main);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setColors(new int[]{0xFF302642, 0xFF1b213d});
+        gradientDrawable.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+        gradientDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        viewPager.setBackground(gradientDrawable);
+
     }
 
     private void init(){
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+        String[] tabTitles = {getString(R.string.title_music), getString(R.string.title_address),
+                getString(R.string.title_phone), getString(R.string.str_title_device)};
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        for (int i = 0; i < tabTitles.length; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(tabTitles[i]), (i == 0));
         }
         mainViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
@@ -145,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
                 new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
         phoneViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
-        bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
+
         viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), deviceViewModel, addressViewModel
                 , musicViewModel, phoneViewModel));
-        // 设置 OffscreenPageLimit 为 1，禁用预加载
+        // 设置 OffscreenPageLimit 为 0，禁用预加载
         viewPager.setOffscreenPageLimit(0);
         // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
         viewPager.setOnPageChangeListener(new NoPreloadViewPager.OnPageChangeListener() {
@@ -156,11 +131,9 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
                 mainViewModel.setSelectedPage(position);
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
             }
 
             @Override
@@ -168,40 +141,28 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                mainViewModel.setSelectedPage(position);
-//                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//            }
-//        });
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_device) {
-                viewPager.setCurrentItem(0, false);
-                return true;
-            } else if (item.getItemId() == R.id.nav_address) {
-                viewPager.setCurrentItem(1, false);
-                return true;
-            } else if (item.getItemId() == R.id.nav_music) {
-                viewPager.setCurrentItem(2, false);
-                return true;
-            } else if (item.getItemId() == R.id.nav_phone) {
-                viewPager.setCurrentItem(3, false);
-                return true;
-            }
-            return false;
-        });
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.i(TAG, "position:" + tab.getPosition());
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         mainViewModel.getSelectedPage().observe(this, position -> {
-            bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            if(tabLayout.getTabAt(position) != null) {
+                tabLayout.getTabAt(position).select();
+            }
         });
         serviceConnection = new ServiceConnection() {
             @Override
@@ -227,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         unbindService(serviceConnection);
     }
 }
