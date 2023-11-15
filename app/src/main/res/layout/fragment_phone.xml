@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/tv_phone_number"
-        android:layout_width="500dp"
+        android:layout_width="502dp"
         android:layout_height="85dp"
         android:background="#00000000"
         android:enabled="false"
@@ -210,42 +210,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="120dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="30dp" />
+        app:layout_constraintGuide_begin="110dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="210dp" />
+        app:layout_constraintGuide_begin="200dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="300dp" />
+        app:layout_constraintGuide_begin="290dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="390dp" />
+        app:layout_constraintGuide_begin="380dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="480dp" />
+        app:layout_constraintGuide_begin="470dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline29"
