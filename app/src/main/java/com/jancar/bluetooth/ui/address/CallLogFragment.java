@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -45,8 +46,7 @@ public class CallLogFragment extends Fragment {
     private final static String TAG = "CallLogFragment";
     private CallLogAdapter callLogAdapter;
     private RecyclerView recyclerView;
-    private Button refreshBtn;
-    private static TextView totalTv;
+    private ImageButton refreshBtn;
     private ProgressBar callLogPb;
     private List<CallLog> logList = new ArrayList<>();
     private AddressViewModel addressViewModel;
@@ -61,8 +61,6 @@ public class CallLogFragment extends Fragment {
             Log.d(TAG, "观察到calllog变化");
             callLogAdapter.setCallLogs(callLogs);
             callLogPb.setVisibility(View.GONE);
-            totalTv.setText(MainApplication.getInstance().getString(R.string.str_contact_total1) + " " +
-                    callLogs.size() + " " + MainApplication.getInstance().getString(R.string.str_contact_total2));
             callLogAdapter.notifyDataSetChanged();
         });
         refreshBtn.setOnClickListener(v -> {
@@ -75,7 +73,6 @@ public class CallLogFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.rv_call_log);
         refreshBtn = rootView.findViewById(R.id.btn_refresh_call_log);
         callLogPb = rootView.findViewById(R.id.pb_call_log);
-        totalTv = rootView.findViewById(R.id.tv_call_total);
     }
     private void init(){
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();

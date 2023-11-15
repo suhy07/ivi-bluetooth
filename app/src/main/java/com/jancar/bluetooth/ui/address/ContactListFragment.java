@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 
@@ -40,7 +42,7 @@ public class ContactListFragment extends Fragment {
 
     private final static String TAG = "ContactListFragment";
     private ContactAdapter contactListAdapter;
-    private Button refreshBtn;
+    private ImageButton refreshBtn;
     private RecyclerView recyclerView;
     private ProgressBar contactPb;
     private List<Contact> contactList = new ArrayList<>();

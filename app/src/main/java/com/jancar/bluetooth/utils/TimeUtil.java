@@ -87,7 +87,7 @@ public class TimeUtil {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
             Date date = inputFormat.parse(inputTime);
 
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
             return outputFormat.format(date);
 
         } catch (ParseException e) {
