@@ -83,6 +83,10 @@ public class PhoneFragment extends Fragment {
                 setCallNum(finalI + "");
             });
         }
+        num[0].setOnLongClickListener(v -> {
+            setCallNum("+");
+            return true;
+        });
         numaBtn.setOnClickListener(v -> setCallNum("*"));
         numbBtn.setOnClickListener(v -> setCallNum("#"));
         cancelBtn.setOnClickListener(v -> {
