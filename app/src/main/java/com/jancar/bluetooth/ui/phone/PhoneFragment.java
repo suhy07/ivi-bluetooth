@@ -92,6 +92,13 @@ public class PhoneFragment extends Fragment {
                 phoneViewModel.setCallNumber(s.substring(0, len - 1));
             }
         });
+        cancelBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                phoneViewModel.setCallNumber("");
+                return false;
+            }
+        });
         callBtn.setOnClickListener(v -> {
             String number = phoneViewModel.getCallNumber().getValue();
             String name = Global.findNameByNumber(number);
