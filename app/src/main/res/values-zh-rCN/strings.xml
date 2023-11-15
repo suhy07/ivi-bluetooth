@@ -9,7 +9,7 @@
     <string name="bluetooth_switch">蓝牙开关</string>
     <string name="bluetooth_name">设备名称</string>
     <string name="bluetooth_rename">重命名</string>
-    <string name="bluetooth_scan">扫描设备</string>
+    <string name="bluetooth_scan">扫描</string>
     <string name="str_finish">完成</string>
     <string name="choose_options">请选择操作:</string>
     <string name="connect">连接</string>

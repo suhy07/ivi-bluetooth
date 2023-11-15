@@ -73,6 +73,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
         String deviceName = device.getName();
         String deviceAddress = device.getAddress();
+        int status = connMap.get(device);
         int devicePairStatus = device.getBondState();
         if(deviceName == null || deviceName.equals("")) {
             deviceName = MainApplication.getInstance().getString(R.string.str_unknown_device);
@@ -80,7 +81,18 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceName.setText(deviceName);
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
-        holder.connectStatus.setText(getConnectStatus(connMap.get(device)));
+        holder.connectStatus.setText(getConnectStatus(status));
+        if(status == Global.CONNECTING || status == Global.CONNECTED ) {
+            holder.deviceName.setTextColor(0xFF00C2C2);
+            holder.deviceAddress.setTextColor(0xFF00C2C2);
+            holder.pairingStatus.setTextColor(0xFF00C2C2);
+            holder.connectStatus.setTextColor(0xFF00C2C2);
+        } else {
+            holder.deviceName.setTextColor(0xFFFFFFFF);
+            holder.deviceAddress.setTextColor(0xFFFFFFFF);
+            holder.pairingStatus.setTextColor(0xFFFFFFFF);
+            holder.connectStatus.setTextColor(0xFFFFFFFF);
+        }
         if(device.isConnected()) {
             Global.connStatus = Global.CONNECTED;
         }
