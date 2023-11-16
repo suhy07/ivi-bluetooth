@@ -216,10 +216,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     };
 
     private void reFreshDeviceSet(BluetoothDevice device) {
-        Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-        devices.remove(device);
-        devices.add(device);
-        deviceViewModel.setDeviceSet(devices);
+        if (deviceViewModel != null) {
+            Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            devices.remove(device);
+            devices.add(device);
+            deviceViewModel.setDeviceSet(devices);
+        }
     }
 
     private void startConnect(BluetoothDevice device) {
@@ -227,7 +229,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTING;
             connMap.remove(device);
             connMap.put(device, Global.CONNECTING);
-            deviceViewModel.setConnMap(connMap);
+            if (deviceViewModel != null) {
+                deviceViewModel.setConnMap(connMap);
+            }
             new Thread(() -> {
                 synchronized (this) {
                     try {

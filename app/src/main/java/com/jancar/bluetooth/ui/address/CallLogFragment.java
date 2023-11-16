@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -47,12 +48,14 @@ public class CallLogFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
         initView(rootView);
         init();
-        addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
-            Log.d(TAG, "观察到calllog变化");
-            callLogAdapter.setCallLogs(callLogs);
-            callLogPb.setVisibility(View.GONE);
-            callLogAdapter.notifyDataSetChanged();
-        });
+        if (addressViewModel != null) {
+            addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
+                Log.d(TAG, "观察到calllog变化");
+                callLogAdapter.setCallLogs(callLogs);
+                callLogPb.setVisibility(View.GONE);
+                callLogAdapter.notifyDataSetChanged();
+            });
+        }
         refreshBtn.setOnClickListener(v -> {
             searchCallLog();
         });
@@ -79,7 +82,9 @@ public class CallLogFragment extends Fragment {
                 callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber, book.type));
                 Log.i(TAG, "Type:" + book.type + " " + book.phoneNumber );
             }
-            addressViewModel.setCallLogList(callLogs);
+            if (addressViewModel != null) {
+                addressViewModel.setCallLogList(callLogs);
+            }
         }
 
         @Override
@@ -124,23 +129,31 @@ public class CallLogFragment extends Fragment {
     public void onResume() {
         Log.i(TAG, "onResume");
         super.onResume();
-        if(addressViewModel.getCallLogList().getValue().isEmpty()){
-            callLogPb.setVisibility(View.VISIBLE);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    Log.i(TAG, e.getMessage());
-                }
-                Activity activity = getActivity();
-                if(activity!=null && !activity.isFinishing()){
-                    activity.runOnUiThread(()-> {
-                        searchCallLog();
-                        callLogPb.setVisibility(View.INVISIBLE);
-                    });
-                }
-                //getActivity().runOnUiThread(this::searchCallLog);
-            }).start();
+        if (addressViewModel != null) {
+            if(addressViewModel.getCallLogList().getValue().isEmpty()){
+                callLogPb.setVisibility(View.VISIBLE);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        Log.i(TAG, e.getMessage());
+                    }
+                    Activity activity = getActivity();
+                    if(activity!=null && !activity.isFinishing()){
+                        activity.runOnUiThread(()-> {
+                            searchCallLog();
+                            callLogPb.setVisibility(View.INVISIBLE);
+                        });
+                    }
+                    //getActivity().runOnUiThread(this::searchCallLog);
+                }).start();
+            }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 }

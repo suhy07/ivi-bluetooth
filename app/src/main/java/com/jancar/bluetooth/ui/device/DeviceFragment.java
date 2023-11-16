@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
@@ -76,56 +77,62 @@ public class DeviceFragment extends Fragment {
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
-        deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
-            Log.d(TAG,"观察到devices列表变化");
-            deviceAdapter.setDeviceSet(devices);
-            connMap.clear();
-            for (BluetoothDevice device : devices) {
-                if(device.isConnected())
-                    Global.connStatus = Global.CONNECTED;
-                connMap.put(device, device.isConnected() ?
-                        Global.CONNECTED : Global.NOT_CONNECTED);
+        if (deviceViewModel != null) {
+            deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
+                Log.d(TAG,"观察到devices列表变化");
+                deviceAdapter.setDeviceSet(devices);
+                connMap.clear();
+                for (BluetoothDevice device : devices) {
+                    if(device.isConnected())
+                        Global.connStatus = Global.CONNECTED;
+                    connMap.put(device, device.isConnected() ?
+                            Global.CONNECTED : Global.NOT_CONNECTED);
+                }
+                deviceViewModel.setConnMap(connMap);
+                deviceAdapter.notifyDataSetChanged();
+            });
+            deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
+                Log.d(TAG,"观察到connMap变化");
+                deviceAdapter.setConnMap(connMap);
+                deviceAdapter.notifyDataSetChanged();
+            });
+//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            //获取已配对的设备
+            deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
+            deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {
+                if(!bluetoothName.equals("")) {
+                    nameTv.setText(bluetoothName);
+                    bluetoothAdapter.setName(bluetoothName);
+                }
+            });
+            deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
+            deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
+                bluetoothSwitch.setChecked(onOff);
+                if (onOff) {
+                    bluetoothAdapter.enable();
+                    jancarBluetoothManager.powerOn();
+                    renameBtn.setEnabled(true);
+                    renameBtn.setText(getText(R.string.bluetooth_rename));
+                    scanBtn.setEnabled(true);
+                } else {
+                    deviceViewModel.setDeviceSet(new HashSet<>());
+                    renameBtn.setEnabled(false);
+                    renameBtn.setText(getText(R.string.bluetooth_rename));
+                    scanBtn.setEnabled(false);
+                    nameTv.setEnabled(false);
+                    scanPb.setVisibility(View.INVISIBLE);
+                    bluetoothAdapter.disable();
+                    jancarBluetoothManager.powerOff();
+                }
+                nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+            });
+            deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
+        }
+        bluetoothSwitch.setOnCheckedChangeListener((v, b) -> {
+            if (deviceViewModel != null) {
+                deviceViewModel.setOnOff(b);
             }
-            deviceViewModel.setConnMap(connMap);
-            deviceAdapter.notifyDataSetChanged();
         });
-        deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
-            Log.d(TAG,"观察到connMap变化");
-            deviceAdapter.setConnMap(connMap);
-            deviceAdapter.notifyDataSetChanged();
-        });
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //获取已配对的设备
-        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
-        deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {
-            if(!bluetoothName.equals("")) {
-                nameTv.setText(bluetoothName);
-                bluetoothAdapter.setName(bluetoothName);
-            }
-        });
-        deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
-        deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
-            bluetoothSwitch.setChecked(onOff);
-            if (onOff) {
-                bluetoothAdapter.enable();
-                jancarBluetoothManager.powerOn();
-                renameBtn.setEnabled(true);
-                renameBtn.setText(getText(R.string.bluetooth_rename));
-                scanBtn.setEnabled(true);
-            } else {
-                deviceViewModel.setDeviceSet(new HashSet<>());
-                renameBtn.setEnabled(false);
-                renameBtn.setText(getText(R.string.bluetooth_rename));
-                scanBtn.setEnabled(false);
-                nameTv.setEnabled(false);
-                scanPb.setVisibility(View.INVISIBLE);
-                bluetoothAdapter.disable();
-                jancarBluetoothManager.powerOff();
-            }
-            nameTv.setText(deviceViewModel.getBluetoothName().getValue());
-        });
-        deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
-        bluetoothSwitch.setOnCheckedChangeListener((v, b) -> deviceViewModel.setOnOff(b));
         renameBtn.setOnClickListener(v->{
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
@@ -133,10 +140,12 @@ public class DeviceFragment extends Fragment {
             if (nameTv.isEnabled()){
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 nameTv.setEnabled(false);
-                if(nameTv.getText().toString().trim().equals("")) {
-                    nameTv.setText(deviceViewModel.getBluetoothName().getValue());
-                } else {
-                    deviceViewModel.setBluetoothName(nameTv.getText() + "");
+                if (deviceViewModel != null) {
+                    if(nameTv.getText().toString().trim().equals("")) {
+                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+                    } else {
+                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
+                    }
                 }
             } else {
                 renameBtn.setText(getText(R.string.str_finish));
@@ -195,7 +204,6 @@ public class DeviceFragment extends Fragment {
     }
 
     private void init(){
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel, getActivity());
         recyclerView.setAdapter(deviceAdapter);
@@ -213,5 +221,11 @@ public class DeviceFragment extends Fragment {
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 }

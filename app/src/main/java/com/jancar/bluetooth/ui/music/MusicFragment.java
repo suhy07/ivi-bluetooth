@@ -47,28 +47,35 @@ public class MusicFragment extends Fragment {
     private MusicViewModel musicViewModel;
     private BluetoothManager bluetoothManager;
     private MediaManagerUtil mediaManagerUtil;
-
+    private View rootView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_music, container, false);
+        Log.i(TAG, "onCreateView");
+        rootView = inflater.inflate(R.layout.fragment_music, container, false);
         initView(rootView);
         init();
-//        bluetoothManager.connect();
-//        bluetoothManager.openBluetoothModule(stub);
-        musicViewModel.getMusicName().observe(this, s -> {
-            musicNameTv.setText(s);
-        });
-        musicViewModel.getArtist().observe(this, s -> {
-            artistTv.setText(s);
-        });
-        musicViewModel.getA2dpStatus().observe(this, integer -> {
-            if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
-                playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
-            } else {
-                playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
-            }
-        });
+        initCreate();
+
+        return rootView;
+    }
+
+    private void initCreate() {
+        if (musicViewModel != null) {
+            musicViewModel.getMusicName().observe(this, s -> {
+                musicNameTv.setText(s);
+            });
+            musicViewModel.getArtist().observe(this, s -> {
+                artistTv.setText(s);
+            });
+            musicViewModel.getA2dpStatus().observe(this, integer -> {
+                if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
+                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
+                } else {
+                    playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
+                }
+            });
+        }
         playBtn.setOnClickListener(v -> {
             Log.i(TAG,"click Play");
             bluetoothManager.playAndPause(iBluetoothExecCallback);
@@ -83,12 +90,6 @@ public class MusicFragment extends Fragment {
             bluetoothManager.nextBtMusic(stub);
             updateMusicName();
         });
-        return rootView;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     private void updateMusicName() {
@@ -97,15 +98,19 @@ public class MusicFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventA2DPId3Info(IVIBluetooth.EventMp3Id3Info event) {
-        musicViewModel.setMusicName(event.name);
-        musicViewModel.setArtist(event.artist);
+        if (musicViewModel != null) {
+            musicViewModel.setMusicName(event.name);
+            musicViewModel.setArtist(event.artist);
+        }
         Log.i(TAG, event.toString());
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventModuleConnectStatus(IVIBluetooth.EventModuleConnectStatus event) {
-        musicViewModel.setA2dpStatus(event.a2dpStatus);
+        if (musicViewModel != null) {
+            musicViewModel.setA2dpStatus(event.a2dpStatus);
+        }
         Log.i(TAG, event.toString());
         Log.i(TAG, event.isStopped + "");
     }
@@ -133,86 +138,55 @@ public class MusicFragment extends Fragment {
     public void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        mediaManagerUtil.close(mediaManagerUtil.mMediaType);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (mediaManagerUtil != null) {
+            mediaManagerUtil.close(mediaManagerUtil.mMediaType);
+        }
     }
 
     IVIMedia.MediaControlListener mMediaControlListener = new IVIMedia.MediaControlListener() {
         @Override
         public void suspend() {
-//            Logcat.d("isPlaying:" + isPlaying());
-//            if (isPlaying()) {
-//                if (isA2DPOpened()) {
-//                    mA2DPService.suspend();
-//                }
-//                mIsNeedResume = true;
-//            }
         }
 
         @Override
         public void stop() {
-//            A2dpPresenter.this.stop();
         }
 
         @Override
         public void resume() {
-//            Logcat.d("mIsResume:" + mIsNeedResume + ", " + mMediaManagerUtil.isActiveMedia(mMediaManagerUtil.getMediaType()));
-//            Logcat.d("canPlayMedia:" + mMediaManagerUtil.canPlayMedia());
-//            if (mMediaManagerUtil.canPlayMedia() && mMediaManagerUtil.isActiveMedia(mMediaManagerUtil.getMediaType())) {
-//                if (isA2DPOpened()) { // 修改蓝牙音乐状态语音唤醒蓝牙电话，挂断电话之后 蓝牙音乐不恢复播放问题
-//                    if (mIsNeedResume) {
-//                        mIsNeedResume = false;
-//                        mA2DPService.resume();
-//                    }
-//                } else if (mIsNeedResume) {
-//                    mIsNeedResume = false;
-//                }
-//            } else {
-//                Logcat.d("connot resume, return!!!");
-//            }
-        }
 
+        }
         @Override
         public void pause() {
-//            A2dpPresenter.this.pause();
-//            mIsNeedResume = false;
+
         }
 
         @Override
         public void play() {
-//            start();
+
         }
 
         @Override
         public void playPause() {
-//            if (mMediaManagerUtil.canPlayMedia() && isA2DPOpened()) {
-//                playAndPause();
-//            }
+
         }
 
         @Override
         public void setVolume(float volume) {
-//            if (isA2DPOpened() && null != mA2DPService) {
-//                mA2DPService.setVolume(volume);
-//            }
+
         }
 
         @Override
         public void next() {
-//            if (mMediaManagerUtil.canPlayMedia()) {
-//                if (isA2DPOpened() && null != mA2DPService) {
-//                    mA2DPService.next();
-//                }
-//            }
+
         }
 
         @Override
         public void prev() {
-//            if (mMediaManagerUtil.canPlayMedia()) {
-//                if (isA2DPOpened() && null != mA2DPService) {
-//                    mA2DPService.prev();
-//                }
-//            }
+
         }
 
         @Override
@@ -241,14 +215,8 @@ public class MusicFragment extends Fragment {
         }
 
         @Override
-        public void quitApp(int source) { // 是否应该交由UI去处理 (音乐和蓝牙音乐，划掉的可能是非正在播放的type)
-//            Logcat.d("source:" + source /*+ ", mediaType:" + mediaType*/);
-//            if (source == IVIMedia.QuitMediaSource.VOICE) {
-//                AppManager.getAppManager().finishAllActivity();
-//            }
-//
-//            stop();
-//            A2dpPresenter.this.pause();
+        public void quitApp(int source) {
+
         }
 
         @Override
@@ -269,6 +237,11 @@ public class MusicFragment extends Fragment {
 
     public void setMusicViewModel(MusicViewModel musicViewModel) {
         this.musicViewModel = musicViewModel;
+        if (rootView != null) {
+            initView(rootView);
+            init();
+            initCreate();
+        }
     }
 
     private IBluetoothExecCallback iBluetoothExecCallback = new IBluetoothExecCallback() {
@@ -300,5 +273,9 @@ public class MusicFragment extends Fragment {
         }
     };
 
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
+    }
 }

@@ -2,6 +2,7 @@ package com.jancar.bluetooth.ui.address;
 
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.os.RemoteException;
@@ -66,5 +67,11 @@ public class AddressFragment extends Fragment {
 
     public void setAddressViewModel(AddressViewModel addressViewModel) {
         this.addressViewModel = addressViewModel;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 }

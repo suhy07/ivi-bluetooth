@@ -1,14 +1,9 @@
 package com.jancar.bluetooth.ui.address;
 
-import static android.support.v4.content.ContextCompat.getSystemService;
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.RemoteException;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
@@ -29,13 +22,10 @@ import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
-import com.jancar.btservice.bluetooth.BluetoothDevice;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
-import com.jancar.btservice.bluetooth.IBluetoothStatusCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
-import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +50,15 @@ public class ContactListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
         initView(rootView);
         init();
-        addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
-            Log.d(TAG, "观察到contact变化");
-            Global.setContactList(contacts);
-            contactListAdapter.setContactList(contacts);
-            contactPb.setVisibility(View.GONE);
-            contactListAdapter.notifyDataSetChanged();
-        });
+        if (addressViewModel != null) {
+            addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
+                Log.d(TAG, "观察到contact变化");
+                Global.setContactList(contacts);
+                contactListAdapter.setContactList(contacts);
+                contactPb.setVisibility(View.GONE);
+                contactListAdapter.notifyDataSetChanged();
+            });
+        }
         refreshBtn.setOnClickListener(v -> {
            searchContact();
         });
@@ -108,7 +100,9 @@ public class ContactListFragment extends Fragment {
                 Contact contact = new Contact(vCardBook.name, vCardBook.phoneNumber);
                 contacts.add(contact);
             }
-            addressViewModel.setContactList(contacts);
+            if (addressViewModel != null) {
+                addressViewModel.setContactList(contacts);
+            }
         }
 
         @Override
@@ -154,9 +148,12 @@ public class ContactListFragment extends Fragment {
             } catch (InterruptedException e) {
                 Log.i(TAG, e.getMessage());
             }
-            getActivity().runOnUiThread(()->{
-                contactPb.setVisibility(View.GONE);
-            });
+            Activity activity = getActivity();
+            if (activity != null && activity.isFinishing()) {
+                getActivity().runOnUiThread(()->{
+                    contactPb.setVisibility(View.GONE);
+                });
+            }
         }).start();
     }
 
@@ -165,9 +162,17 @@ public class ContactListFragment extends Fragment {
         super.onResume();
         Log.i(TAG, "onResume");
         contactPb.setVisibility(View.INVISIBLE);
-        if (addressViewModel.getContactList().getValue().isEmpty()) {
-            searchContact();
+        if (addressViewModel != null) {
+            if (addressViewModel.getContactList().getValue().isEmpty()) {
+                searchContact();
+            }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 
 }

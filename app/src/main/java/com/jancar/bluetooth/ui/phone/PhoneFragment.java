@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.phone;
 
 import android.annotation.NonNull;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,7 +41,9 @@ public class PhoneFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_phone, container, false);
         initView(rootView);
         init();
-        phoneViewModel.getCallNumber().observe(this, s -> callNum.setText(s));
+        if (phoneViewModel != null) {
+            phoneViewModel.getCallNumber().observe(this, s -> callNum.setText(s));
+        }
         return rootView;
     }
 
@@ -80,21 +83,28 @@ public class PhoneFragment extends Fragment {
         numaBtn.setOnClickListener(v -> setCallNum("*"));
         numbBtn.setOnClickListener(v -> setCallNum("#"));
         cancelBtn.setOnClickListener(v -> {
-            String s = phoneViewModel.getCallNumber().getValue();
-            int len = s.length();
-            if(len > 0) {
-                phoneViewModel.setCallNumber(s.substring(0, len - 1));
+            if (phoneViewModel != null) {
+                String s = phoneViewModel.getCallNumber().getValue();
+                int len = s.length();
+                if(len > 0) {
+                    phoneViewModel.setCallNumber(s.substring(0, len - 1));
+                }
             }
         });
         cancelBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                phoneViewModel.setCallNumber("");
+                if (phoneViewModel != null) {
+                    phoneViewModel.setCallNumber("");
+                }
                 return false;
             }
         });
         callBtn.setOnClickListener(v -> {
-            String number = phoneViewModel.getCallNumber().getValue();
+            String number = "";
+            if (phoneViewModel != null) {
+                number = phoneViewModel.getCallNumber().getValue();
+            }
             String name = Global.findNameByNumber(number);
             boolean isComing = false;
             //号码为空或未连接蓝牙时，不能拨号
@@ -116,14 +126,16 @@ public class PhoneFragment extends Fragment {
     }
 
     private void setCallNum(String s) {
-        String callNum = phoneViewModel.getCallNumber().getValue();
-        int len = callNum.length();
-        int maxLen = 25;
-        if (len >= maxLen) {
-            return;
+        if (phoneViewModel != null) {
+            String callNum = phoneViewModel.getCallNumber().getValue();
+            int len = callNum.length();
+            int maxLen = 25;
+            if (len >= maxLen) {
+                return;
+            }
+            callNum += s;
+            phoneViewModel.setCallNumber(callNum);
         }
-        callNum += s;
-        phoneViewModel.setCallNumber(callNum);
     }
 
     private final IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
@@ -145,5 +157,11 @@ public class PhoneFragment extends Fragment {
 
     public void setPhoneViewModel(PhoneViewModel phoneViewModel) {
         this.phoneViewModel = phoneViewModel;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 }
