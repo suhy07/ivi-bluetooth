@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui;
 
 import android.annotation.NonNull;
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
@@ -74,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //   super.onSaveInstanceState(outState);
     }
 
     private void initView(){

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Bluetooth</string>
+    <string name="app_name">Bluetooth</string>
     <string name="str_title_device">Device Manager</string>
     <string name="title_phone">Bluetooth Phone</string>
     <string name="title_music">Bluetooth Music</string>
@@ -28,10 +28,7 @@
     <string name="str_refresh">Refresh</string>
     <string name="str_hang_up">Hang up</string>
     <string name="str_answer">Answer</string>
-    <string name="str_swtich">Switch audio source</string>
     <string name="str_unknown_call">Unknown call</string>
-    <string name="str_dialing">Dialing</string>
-    <string name="str_incoming">Incoming call</string>
     <string name="str_not_connect_warn">Bluetooth device not connected</string>
     <string name="str_unknown_device">Unknown device</string>
     <string name="str_no_number">Please enter the number</string>
