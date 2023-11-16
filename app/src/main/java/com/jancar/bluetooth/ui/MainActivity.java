@@ -56,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private TabLayout tabLayout;
-    private final String[] permissions = {
-            android.Manifest.permission.BLUETOOTH,
-            android. Manifest.permission.BLUETOOTH_ADMIN,
-            android.Manifest.permission.BLUETOOTH_PRIVILEGED
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         init();
-        // 检查是否已获得蓝牙权限
-        for (String permission: permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                // 如果没有蓝牙权限，请求蓝牙权限
-                Log.d("permission", permission);
-                ActivityCompat.requestPermissions(this, new String[] { permission }, Global.REQUEST_ENABLE_BT);
-
-            }
-        }
         // 检查是否有已连接的蓝牙
         Set<BluetoothDevice> deviceSet = new HashSet<>(BluetoothUtil.getBondedDevices());
         Global.connStatus = Global.NOT_CONNECTED;
@@ -85,18 +71,6 @@ public class MainActivity extends AppCompatActivity {
             if(bluetoothDevice.isConnected()) {
                 Global.connStatus = Global.CONNECTED;
                 break;
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == Global.REQUEST_ENABLE_BT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 权限已被授予，可以执行需要权限的操作
-            } else {
-                // 权限被拒绝，可能需要向用户解释为什么需要这些权限
             }
         }
     }
