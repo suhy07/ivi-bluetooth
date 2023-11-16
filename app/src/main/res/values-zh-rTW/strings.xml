@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">藍牙</string>
     <string name="str_title_device">設備管理</string>
     <string name="title_phone">藍牙電話</string>
     <string name="title_music">藍牙音樂</string>
@@ -27,13 +28,14 @@
     <string name="str_refresh">刷新</string>
     <string name="str_hang_up">掛斷</string>
     <string name="str_answer">接聽</string>
-    <string name="str_swtich">切換音源</string>
     <string name="str_unknown_call">未知來電</string>
-    <string name="str_dialing">正在撥號中</string>
-    <string name="str_incoming">來電</string>
     <string name="str_not_connect_warn">未連接藍牙設備</string>
     <string name="str_unknown_device">未知設備</string>
     <string name="str_no_number">請輸入號碼</string>
     <string name="str_contact_total1">共有 </string>
     <string name="str_contact_total2"> 條通話記錄</string>
+    <string name="audio_in_car">車機接聽</string>
+    <string name="audio_in_phone">手機接聽</string>
+    <string name="status_incoming">來電中</string>
+    <string name="status_outgoing">撥號中</string>
 </resources>
