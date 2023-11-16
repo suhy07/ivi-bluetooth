@@ -15,7 +15,7 @@
         android:paddingStart="25dp"
         android:background="@drawable/shape_full_tab_indicator_gray"
         android:singleLine="true"
-        android:textAppearance="@style/MyTabLayoutText"
+        android:textAppearance="@style/CallLogText"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

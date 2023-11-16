@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         gradientDrawable.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
         gradientDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
         viewPager.setBackground(gradientDrawable);
-
     }
 
     private void init(){

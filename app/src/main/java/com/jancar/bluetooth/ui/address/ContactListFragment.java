@@ -1,5 +1,8 @@
 package com.jancar.bluetooth.ui.address;
 
+import static android.support.v4.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,7 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
@@ -43,6 +48,7 @@ public class ContactListFragment extends Fragment {
     private final static String TAG = "ContactListFragment";
     private ContactAdapter contactListAdapter;
     private ImageButton refreshBtn;
+    private EditText searchEt;
     private RecyclerView recyclerView;
     private ProgressBar contactPb;
     private List<Contact> contactList = new ArrayList<>();
@@ -64,12 +70,20 @@ public class ContactListFragment extends Fragment {
         refreshBtn.setOnClickListener(v -> {
            searchContact();
         });
+        searchEt.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus) {
+                hideKeyboard(v);
+            }
+        });
+        rootView.setOnClickListener(v -> {
+            hideKeyboard(v);
+        });
         return rootView;
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     private void init() {
@@ -83,6 +97,7 @@ public class ContactListFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.rv_contact);
         refreshBtn = rootView.findViewById(R.id.btn_refresh_contact);
         contactPb = rootView.findViewById(R.id.pb_contact);
+        searchEt = rootView.findViewById(R.id.et_search);
     }
 
     public IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
@@ -149,7 +164,6 @@ public class ContactListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-        //searchContact();
         contactPb.setVisibility(View.INVISIBLE);
         if (addressViewModel.getContactList().getValue().isEmpty()) {
             searchContact();
