@@ -13,6 +13,7 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,21 +46,29 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         if(name.equals("")) {
             name = MainApplication.getInstance().getString(R.string.str_unknown_call);
         }
-        if(type.equals("DIAL")){
+        if(type.equals(BluetoothVCardBook.DIAL_TYPE)){
             holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_out));
+        } else if (type.equals(BluetoothVCardBook.MISS_TYPE)){
+            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_miss));
         } else {
             holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_in));
+        }
+        if (type.equals(BluetoothVCardBook.MISS_TYPE)) {
+            holder.callName.setTextColor(0xFFEB5546);
+            holder.callNum.setTextColor(0xFFEB5546);
+            holder.callTime.setTextColor(0xFFEB5546);
+        } else {
+            holder.callName.setTextColor(0xFFFFFFFF);
+            holder.callNum.setTextColor(0xFFFFFFFF);
+            holder.callTime.setTextColor(0xFFFFFFFF);
         }
         holder.callName.setText(name);
         holder.callNum.setText(callLog.getCallNumber());
         holder.callTime.setText(callLog.getCallTime());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String number = callLog.getCallNumber();
-                CallUtil.getInstance().callPhone(number);
-                EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
-            }
+        holder.itemView.setOnClickListener(v -> {
+            String number = callLog.getCallNumber();
+            CallUtil.getInstance().callPhone(number);
+            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
         });
     }
 
