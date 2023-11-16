@@ -2,6 +2,7 @@ package com.jancar.bluetooth.ui.music;
 
 import android.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -83,6 +84,11 @@ public class MusicFragment extends Fragment {
             updateMusicName();
         });
         return rootView;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void updateMusicName() {

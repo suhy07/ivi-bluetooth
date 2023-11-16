@@ -1,21 +1,14 @@
 package com.jancar.bluetooth.adapters;
 
 
-
-
-import android.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.ui.address.AddressFragment;
 import com.jancar.bluetooth.ui.address.CallLogFragment;
 import com.jancar.bluetooth.ui.address.ContactListFragment;
-import com.jancar.bluetooth.ui.device.DeviceFragment;
-import com.jancar.bluetooth.ui.music.MusicFragment;
-import com.jancar.bluetooth.ui.phone.PhoneFragment;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 

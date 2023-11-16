@@ -195,7 +195,7 @@ public class DeviceFragment extends Fragment {
     }
 
     private void init(){
-        // 初始化 ViewModel
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel, getActivity());
         recyclerView.setAdapter(deviceAdapter);

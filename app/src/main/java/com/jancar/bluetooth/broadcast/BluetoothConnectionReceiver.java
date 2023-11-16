@@ -8,6 +8,7 @@ import android.util.Log;
 
 
 import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
@@ -45,7 +46,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             bluetoothManager.connect();
             bluetoothManager.openBluetoothModule(null);
             // 处理已连接的设备
-//
+            Global.connStatus = Global.CONNECTED;
         } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
             // 蓝牙设备已断开连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -59,6 +60,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             musicViewModel.setMusicName("");
             musicViewModel.setArtist("");
             musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+            Global.connStatus = Global.NOT_CONNECTED;
         }
     }
 

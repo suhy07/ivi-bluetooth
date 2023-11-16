@@ -15,7 +15,7 @@
     <string name="connect">连接</string>
     <string name="disconnect">断开连接</string>
     <string name="unpair">取消配对</string>
-    <string name="pair_status_pair">配对</string>
+    <string name="pair_status_pair">开始配对</string>
     <string name="pair_status_paired">已配对</string>
     <string name="pair_status_pairing">正在配对</string>
     <string name="pair_status_unpaired">未配对</string>

@@ -24,6 +24,10 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
+    private DeviceFragment deviceFragment;
+    private AddressFragment addressFragment;
+    private MusicFragment musicFragment;
+    private PhoneFragment phoneFragment;
 
     public MainFragmentPagerAdapter(FragmentManager fm, DeviceViewModel deviceViewModel,
                                     AddressViewModel addressViewModel, MusicViewModel musicViewModel,

@@ -22,6 +22,10 @@ import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.ui.address.AddressFragment;
+import com.jancar.bluetooth.ui.device.DeviceFragment;
+import com.jancar.bluetooth.ui.music.MusicFragment;
+import com.jancar.bluetooth.ui.phone.PhoneFragment;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
@@ -45,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
+    private DeviceFragment deviceFragment;
+    private AddressFragment addressFragment;
+    private MusicFragment musicFragment;
+    private PhoneFragment phoneFragment;
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private TabLayout tabLayout;
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // 检查是否有已连接的蓝牙
         Set<BluetoothDevice> deviceSet = new HashSet<>(BluetoothUtil.getBondedDevices());
+        Global.connStatus = Global.NOT_CONNECTED;
         for (BluetoothDevice bluetoothDevice : deviceSet) {
             if(bluetoothDevice.isConnected()) {
                 Global.connStatus = Global.CONNECTED;
@@ -183,6 +192,12 @@ public class MainActivity extends AppCompatActivity {
         // 启动服务
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
     }
 
     @Override

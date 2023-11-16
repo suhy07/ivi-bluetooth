@@ -8,12 +8,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.RemoteException;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -148,51 +151,51 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_options, null);
+        dialogView.setMinimumWidth(300);
         builder.setView(dialogView);
-
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        ImageView closeButton = dialogView.findViewById(R.id.btn_close);
-        TextView connectButton = dialogView.findViewById(R.id.tv_connect);
-        TextView pairButton = dialogView.findViewById(R.id.tv_pair);
+        Button connectButton = dialogView.findViewById(R.id.btn_connect);
+        Button pairButton = dialogView.findViewById(R.id.btn_pair);
         BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
-        if (device.isConnected()) {
+        int bondState = device.getBondState();
+        boolean isConnected = device.isConnected();
+        if (isConnected) {
             connectButton.setText(context.getString(R.string.disconnect));
         } else {
             connectButton.setText(context.getString(R.string.connect));
         }
-        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+        if (bondState == BluetoothDevice.BOND_BONDED) {
             pairButton.setText(context.getString(R.string.unpair));
         } else {
             pairButton.setText(context.getString(R.string.pair_status_pair));
         }
-        //处理关闭
-        closeButton.setOnClickListener(v -> dialog.dismiss());
+
         //处理配对
         pairButton.setOnClickListener(v -> {
-            if (device.getBondState() == BluetoothDevice.BOND_BONDED){
+            if (bondState == BluetoothDevice.BOND_BONDED){
                 device.removeBond();
-            } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+            } else if (bondState == BluetoothDevice.BOND_NONE) {
                 device.createBond();
             }
-//            reFreshDeviceSet(device);
             dialog.dismiss();
         });
         //处理连接
         connectButton.setOnClickListener(v -> {
-            if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+            if (bondState == BluetoothDevice.BOND_NONE) {
                 resumeBluetooth();
                 device.createBond();
-            } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+            } else if (bondState == BluetoothDevice.BOND_BONDED) {
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
                 if(!device.isConnected()) {
                     startConnect(device);
                 }
             }
-//            reFreshDeviceSet(device);
             dialog.dismiss();
         });
         dialog.show();
+        dialog.getWindow().setLayout(300, 200);
     }
 
     @Override
