@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +55,6 @@ public class ContactListFragment extends Fragment {
         if (addressViewModel != null) {
             addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
                 Log.d(TAG, "观察到contact变化");
-                Global.setContactList(contacts);
                 contactListAdapter.setContactList(contacts);
                 contactPb.setVisibility(View.GONE);
                 contactListAdapter.notifyDataSetChanged();
@@ -69,6 +70,39 @@ public class ContactListFragment extends Fragment {
         });
         rootView.setOnClickListener(v -> {
             hideKeyboard(v);
+        });
+        searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String filter = s.toString();
+                List<Contact> contacts = new ArrayList<>();
+                List<Contact> beforeFilter = addressViewModel.getContactList().getValue();
+                if(filter.equals("")) {
+                    contacts = Global.getContactList();
+                } else {
+                    for (Contact contact: beforeFilter) {
+                        if(contact.getName().contains(s)) {
+                            contacts.add(contact);
+                        }
+                    }
+                }
+                addressViewModel.setContactList(contacts);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int textLength = s.length();
+                int maxLength = 25;
+                if (textLength > maxLength) {
+                    // 如果超过限制，截取前面的限制字符
+                    s.delete(maxLength, textLength);
+                }
+            }
         });
         return rootView;
     }
@@ -103,6 +137,7 @@ public class ContactListFragment extends Fragment {
             if (addressViewModel != null) {
                 addressViewModel.setContactList(contacts);
             }
+            Global.setContactList(contacts);
         }
 
         @Override

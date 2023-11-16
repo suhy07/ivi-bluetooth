@@ -73,4 +73,8 @@ public class Global {
         Global.contactList = contactList;
     }
 
+    public static List<Contact> getContactList() {
+        return contactList;
+    }
+
 }
