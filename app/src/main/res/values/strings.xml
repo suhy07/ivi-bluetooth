@@ -37,4 +37,8 @@
     <string name="str_no_number">Please enter the number</string>
     <string name="str_contact_total1">There are a total of </string>
     <string name="str_contact_total2"> call records</string>
+    <string name="audio_in_car">Audio in car</string>
+    <string name="audio_in_phone">Audio in phone</string>
+    <string name="status_incoming">Incoming</string>
+    <string name="status_outgoing">OutGoing</string>
 </resources>
