@@ -85,7 +85,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bluetooth_devices"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="245dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline16" />
@@ -96,14 +96,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="40dp" />
+        app:layout_constraintGuide_begin="30dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="115dp" />
+        app:layout_constraintGuide_begin="95dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="160dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="235dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline5"
@@ -111,13 +125,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="40dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="190dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
@@ -140,10 +147,5 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="220dp" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="280dp" />
+
 </android.support.constraint.ConstraintLayout>
