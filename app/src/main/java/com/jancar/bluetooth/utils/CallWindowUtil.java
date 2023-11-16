@@ -185,9 +185,9 @@ public class CallWindowUtil {
 
     public void changeVoiceStatus(){
         if(CallUtil.getInstance().isVoiceInCar()){
-            switchVoiceText.setText("车机接听");
+            switchVoiceText.setText(R.string.audio_in_car);
         }else{
-            switchVoiceText.setText("手机接听");
+            switchVoiceText.setText(R.string.audio_in_phone);
         }
     }
 
@@ -197,7 +197,7 @@ public class CallWindowUtil {
 
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
-                statusText.setText("来电中");
+                statusText.setText(R.string.status_incoming);
                 setViewVisible(statusText,true);
                 setViewVisible(timeText,false);
                 setViewVisible(keyboardText,false);
@@ -207,7 +207,7 @@ public class CallWindowUtil {
                 setViewVisible(keyboardLayout,false);
                 break;
             case IVIBluetooth.CallStatus.OUTGOING:
-                statusText.setText("拨号中");
+                statusText.setText(R.string.status_outgoing);
                 setViewVisible(statusText,true);
                 setViewVisible(timeText,false);
                 setViewVisible(keyboardText,false);
