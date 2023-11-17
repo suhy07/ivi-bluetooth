@@ -34,7 +34,7 @@
     <string name="str_no_number">请输入号码</string>
     <string name="str_contact_total1">共有 </string>
     <string name="str_contact_total2"> 条通话记录</string>
-    <string name="audio_in_car">车机接听</string>
+    <string name="audio_in_car">本机接听</string>
     <string name="audio_in_phone">手机接听</string>
     <string name="status_incoming">来电中</string>
     <string name="status_outgoing">拨号中</string>
