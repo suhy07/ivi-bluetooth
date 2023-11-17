@@ -55,6 +55,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceViewModel.setDeviceSet(deviceSet);
             Log.d(TAG, "断开连接");
             // 处理已断开连接的设备
+            bluetoothManager.stopContactOrHistoryLoad(null);
+            Global.setContactList(new ArrayList<>());
             addressViewModel.setCallLogList(new ArrayList<>());
             addressViewModel.setContactList(new ArrayList<>());
             musicViewModel.setMusicName("");
@@ -76,15 +78,4 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         this.musicViewModel = musicViewModel;
     }
 
-    private IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
-        @Override
-        public void onSuccess(String s) {
-
-        }
-
-        @Override
-        public void onFailure(int i) {
-
-        }
-    };
 }

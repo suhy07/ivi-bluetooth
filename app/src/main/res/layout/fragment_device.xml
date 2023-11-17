@@ -72,7 +72,7 @@
     <Button
         android:id="@+id/btn_bluetooth_scan"
         android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/shape_rounded_button_blue"
         android:text="@string/bluetooth_scan"
         android:textAppearance="@style/MyTabLayoutText"

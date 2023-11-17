@@ -1,9 +1,6 @@
 package com.jancar.bluetooth.ui.address;
 
-import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +36,6 @@ public class CallLogFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageButton refreshBtn;
     private ProgressBar callLogPb;
-    private List<CallLog> logList = new ArrayList<>();
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
@@ -57,7 +53,11 @@ public class CallLogFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            searchCallLog();
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            } else {
+                searchCallLog();
+            }
         });
         return rootView;
     }
@@ -69,7 +69,7 @@ public class CallLogFragment extends Fragment {
     }
     private void init(){
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
-        callLogAdapter = new CallLogAdapter(logList);
+        callLogAdapter = new CallLogAdapter(addressViewModel.getCallLogList().getValue());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(callLogAdapter);
     }
@@ -80,34 +80,22 @@ public class CallLogFragment extends Fragment {
             List<CallLog> callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
                 callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber, book.type));
-                Log.i(TAG, "Type:" + book.type + " " + book.phoneNumber );
             }
             if (addressViewModel != null) {
                 addressViewModel.setCallLogList(callLogs);
             }
+            callLogPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onFailure(int i) {
-
+            callLogPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onSuccess(String s) {
-
+            callLogPb.setVisibility(View.GONE);
         }
-    };
-    private IBluetoothExecCallback.Stub stub1 = new IBluetoothExecCallback.Stub() {
-        @Override
-        public void onFailure(int i) {
-            Log.d(TAG, i + "");
-        }
-
-        @Override
-        public void onSuccess(String s) {
-            Log.d(TAG, s + "");
-        }
-
     };
 
     public void setAddressViewModel(AddressViewModel addressViewModel) {
@@ -116,7 +104,6 @@ public class CallLogFragment extends Fragment {
 
     private void searchCallLog() {
         if(Global.connStatus != Global.CONNECTED) {
-            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_not_connect_warn));
             return;
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
@@ -128,11 +115,25 @@ public class CallLogFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Global.connStatus == Global.NOT_CONNECTED) {
+            addressViewModel.setCallLogList(new ArrayList<>());
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (logList.isEmpty()) {
-                searchCallLog();
+            if (addressViewModel != null) {
+                List<CallLog> callLogs = addressViewModel.getCallLogList().getValue();
+                if (callLogs != null && callLogs.isEmpty()) {
+                    searchCallLog();
+                }
+                if (Global.connStatus == Global.NOT_CONNECTED) {
+                    addressViewModel.setCallLogList(new ArrayList<>());
+                }
             }
         }
     }

@@ -22,6 +22,7 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
@@ -43,7 +44,6 @@ public class ContactListFragment extends Fragment {
     private EditText searchEt;
     private RecyclerView recyclerView;
     private ProgressBar contactPb;
-    private List<Contact> contactList = new ArrayList<>();
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
 
@@ -61,7 +61,12 @@ public class ContactListFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-           searchContact();
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            } else {
+                searchContact();
+            }
+
         });
         searchEt.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus) {
@@ -113,7 +118,7 @@ public class ContactListFragment extends Fragment {
     }
 
     private void init() {
-        contactListAdapter = new ContactAdapter(contactList);
+        contactListAdapter = new ContactAdapter(addressViewModel.getContactList().getValue());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(contactListAdapter);
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
@@ -138,30 +143,18 @@ public class ContactListFragment extends Fragment {
                 addressViewModel.setContactList(contacts);
             }
             Global.setContactList(contacts);
+            contactPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onFailure(int i) {
-            Log.d(TAG, i + "");
+            contactPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onSuccess(String s) {
-            Log.d(TAG, s + "");
+            contactPb.setVisibility(View.GONE);
         }
-    };
-
-    private IBluetoothExecCallback.Stub stub1 = new IBluetoothExecCallback.Stub() {
-        @Override
-        public void onFailure(int i) {
-            Log.d(TAG, i + "");
-        }
-
-        @Override
-        public void onSuccess(String s) {
-            Log.d(TAG, s + "");
-        }
-
     };
 
     public void setAddressViewModel(AddressViewModel addressViewModel) {
@@ -170,7 +163,6 @@ public class ContactListFragment extends Fragment {
 
     private void searchContact() {
         if(Global.connStatus != Global.CONNECTED) {
-            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_not_connect_warn));
             return;
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
@@ -181,12 +173,27 @@ public class ContactListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Global.connStatus == Global.NOT_CONNECTED) {
+            addressViewModel.setCallLogList(new ArrayList<>());
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-           if(contactList.isEmpty()) {
-               searchContact();
-           }
+            if (addressViewModel != null) {
+                List<Contact> contacts = addressViewModel.getContactList().getValue();
+                if (contacts != null && contacts.isEmpty()) {
+                   searchContact();
+                }
+                if (Global.connStatus == Global.NOT_CONNECTED) {
+                    addressViewModel.setContactList(new ArrayList<>());
+                    Global.setContactList(new ArrayList<>());
+                }
+            }
         }
     }
 }
