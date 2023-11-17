@@ -264,6 +264,19 @@ public class CallWindowUtil {
         }
     };
 
+    private Runnable updateSmallTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if(isShowSmallCallWindow && smallCallWindowView!=null){
+
+                    int time = CallUtil.getInstance().getCallTime();
+                    timeText.setText(CallUtil.getInstance().getCallingTime(time));
+                    mHandler.postDelayed(updateSmallTimeRunnable,1000);
+
+            }
+        }
+    };
+
     public boolean isShowCallWindow(){
         return isShowCallWindow;
     }
@@ -275,6 +288,105 @@ public class CallWindowUtil {
             callWindowView = null;
         }
         isShowCallWindow = false;
+
+    }
+
+    public boolean isShowSmallCallWindow(){
+        return isShowSmallCallWindow;
+    }
+
+    public void hideSmallCallWindow(){
+
+        if(smallCallWindowView!=null){
+            mWindowManager.removeViewImmediate(smallCallWindowView);
+            smallCallWindowView = null;
+        }
+        isShowSmallCallWindow = false;
+    }
+
+    private boolean isShowSmallCallWindow = false;
+    private View smallCallWindowView = null;
+
+    public void showSmallCallWindow(){
+
+        if(isShowSmallCallWindow){
+            return;
+        }
+        isShowSmallCallWindow = true;
+
+        LayoutInflater  layoutInflater = LayoutInflater.from(mContext);
+        smallCallWindowView = layoutInflater.inflate(R.layout.small_window_call,null);
+
+
+        callNameText = smallCallWindowView.findViewById(R.id.callNameText);
+        statusText = smallCallWindowView.findViewById(R.id.statusText);
+        timeText = smallCallWindowView.findViewById(R.id.timeText);
+
+        acceptText = smallCallWindowView.findViewById(R.id.acceptText);
+        smallHangupText = smallCallWindowView.findViewById(R.id.smallHangupText);
+        switchVoiceText = smallCallWindowView.findViewById(R.id.switchVoiceText);
+
+        smallCallWindowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSmallCallWindow();
+                showCallWindow();
+            }
+        });
+
+
+        acceptText.setOnClickListener(mOnClickListener);
+        smallHangupText.setOnClickListener(mOnClickListener);
+        switchVoiceText.setOnClickListener(mOnClickListener);
+
+        WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
+        mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        mLayoutParams.format = PixelFormat.RGBA_8888;
+        mLayoutParams.flags = WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
+        mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        mLayoutParams.height = 85;
+
+        mWindowManager.addView(smallCallWindowView, mLayoutParams);
+
+        changeSmallViewByStatus(CallUtil.getInstance().getCallStatus());
+        changeVoiceStatus();
+
+    }
+
+    public void changeSmallViewByStatus(int status){
+
+        callNameText.setText(CallUtil.getInstance().getCallNumber());
+
+        switch(status){
+            case IVIBluetooth.CallStatus.INCOMING:
+                statusText.setText(R.string.status_incoming);
+                setViewVisible(statusText,true);
+                setViewVisible(timeText,false);
+                setViewVisible(acceptText,true);
+                setViewVisible(switchVoiceText,false);
+                setViewVisible(smallHangupText,true);
+                break;
+            case IVIBluetooth.CallStatus.OUTGOING:
+                statusText.setText(R.string.status_outgoing);
+                setViewVisible(statusText,true);
+                setViewVisible(timeText,false);
+                setViewVisible(acceptText,false);
+                setViewVisible(switchVoiceText,false);
+                setViewVisible(smallHangupText,true);
+                break;
+            case IVIBluetooth.CallStatus.TALKING:
+                setViewVisible(statusText,false);
+                setViewVisible(timeText,true);
+                setViewVisible(acceptText,false);
+                setViewVisible(switchVoiceText,true);
+                setViewVisible(smallHangupText,true);
+                mHandler.postDelayed(updateSmallTimeRunnable,10);
+                break;
+            case IVIBluetooth.CallStatus.HANGUP:
+                hideCallWindow();
+                break;
+        }
 
     }
 
