@@ -15,6 +15,7 @@ import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
-    private List<Contact> contactList;
+    private List<Contact> contactList = new ArrayList<>();
 
     public ContactAdapter(List<Contact> contacts) {
         this.contactList = contacts;
@@ -52,7 +53,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public int getItemCount() {
-        return contactList.size();
+        if (contactList != null) {
+            return contactList.size();
+        }
+        return 0;
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {

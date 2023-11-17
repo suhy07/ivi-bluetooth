@@ -41,7 +41,6 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.i("TAG",  "position:" + position);
         switch (position) {
             case 0:
                 MusicFragment musicFragment = new MusicFragment();

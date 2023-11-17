@@ -34,7 +34,7 @@
     <string name="str_no_number">請輸入號碼</string>
     <string name="str_contact_total1">共有 </string>
     <string name="str_contact_total2"> 條通話記錄</string>
-    <string name="audio_in_car">車機接聽</string>
+    <string name="audio_in_car">本機接聽</string>
     <string name="audio_in_phone">手機接聽</string>
     <string name="status_incoming">來電中</string>
     <string name="status_outgoing">撥號中</string>

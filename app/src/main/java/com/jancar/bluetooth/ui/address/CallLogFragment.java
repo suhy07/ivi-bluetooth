@@ -116,45 +116,25 @@ public class CallLogFragment extends Fragment {
 
     private void searchCallLog() {
         if(Global.connStatus != Global.CONNECTED) {
-            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_not_connect_warn));
             return;
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
-        bluetoothManager.getAllCallRecord(stub);
-        callLogPb.setVisibility(View.VISIBLE);
+        if(bluetoothManager != null) {
+            bluetoothManager.getAllCallRecord(stub);
+            callLogPb.setVisibility(View.VISIBLE);
+        }
         //超时
     }
 
     @Override
-    public void onResume() {
-        Log.i(TAG, "onResume");
-        super.onResume();
-        if (addressViewModel != null) {
-            List<CallLog> callLogs = addressViewModel.getCallLogList().getValue();
-            if(callLogs != null && callLogs.isEmpty()){
-                callLogPb.setVisibility(View.VISIBLE);
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        Log.i(TAG, e.getMessage());
-                    }
-                    Activity activity = getActivity();
-                    if(activity!=null && !activity.isFinishing()){
-                        activity.runOnUiThread(()-> {
-                            searchCallLog();
-                            callLogPb.setVisibility(View.INVISIBLE);
-                        });
-                    }
-                    //getActivity().runOnUiThread(this::searchCallLog);
-                }).start();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (logList.isEmpty()) {
+                searchCallLog();
             }
         }
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Log.i(TAG, "onConfigurationChanged");
-        super.onConfigurationChanged(newConfig);
-    }
 }

@@ -18,12 +18,15 @@ import java.util.List;
 public class AddressViewModel extends ViewModel {
     private MutableLiveData<List<Contact>> contactList;
     private MutableLiveData<List<CallLog>> callLogList;
+    private MutableLiveData<Integer> selectedPage;
 
     public AddressViewModel() {
         this.contactList = new MutableLiveData<>();
         this.callLogList = new MutableLiveData<>();
+        this.selectedPage = new MutableLiveData<>();
         contactList.setValue(new ArrayList<>());
         callLogList.setValue(new ArrayList<>());
+
     }
 
     public LiveData<List<Contact>> getContactList() {
@@ -41,4 +44,13 @@ public class AddressViewModel extends ViewModel {
     public void setCallLogList(List<CallLog> callLogList) {
         this.callLogList.setValue(callLogList);
     }
+
+    public MutableLiveData<Integer> getSelectedPage() {
+        return selectedPage;
+    }
+
+    public void setSelectedPage(int selectedPage) {
+        this.selectedPage.setValue(selectedPage);
+    }
+
 }

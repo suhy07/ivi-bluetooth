@@ -170,45 +170,23 @@ public class ContactListFragment extends Fragment {
 
     private void searchContact() {
         if(Global.connStatus != Global.CONNECTED) {
-            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_not_connect_warn));
             return;
         }
-        bluetoothManager.stopContactOrHistoryLoad(stub1);
-        bluetoothManager.getPhoneContacts(stub);
-        contactPb.setVisibility(View.VISIBLE);
-        //超时
-        new Thread(()-> {
-            try {
-                Thread.sleep(Global.TIMEOUT);
-            } catch (InterruptedException e) {
-                Log.i(TAG, e.getMessage());
-            }
-            Activity activity = getActivity();
-            if (activity != null && activity.isFinishing()) {
-                getActivity().runOnUiThread(()->{
-                    contactPb.setVisibility(View.GONE);
-                });
-            }
-        }).start();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume");
-        contactPb.setVisibility(View.INVISIBLE);
-        if (addressViewModel != null) {
-            List<Contact> contacts = addressViewModel.getContactList().getValue();
-            if (contacts != null && contacts.isEmpty()) {
-                searchContact();
-            }
+//        bluetoothManager.stopContactOrHistoryLoad(stub1);
+        if (bluetoothManager != null) {
+            bluetoothManager.getPhoneContacts(stub);
+            contactPb.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Log.i(TAG, "onConfigurationChanged");
-        super.onConfigurationChanged(newConfig);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+           if(contactList.isEmpty()) {
+               searchContact();
+           }
+        }
     }
-
 }

@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
@@ -51,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
-    private DeviceFragment deviceFragment;
-    private AddressFragment addressFragment;
-    private MusicFragment musicFragment;
-    private PhoneFragment phoneFragment;
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private TabLayout tabLayout;
@@ -75,16 +72,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        Intent intent = getIntent();
-        int pageNum = intent.getIntExtra("page_num", 0);
-        viewPager.setCurrentItem(pageNum);
-        Log.i(TAG, "onCreate: PageNum:" + pageNum);
+        onNewIntent(getIntent());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int pageNum = intent.getIntExtra("page_num", 0);
+        int nowPage = 0;
+        if (mainViewModel != null && mainViewModel.getSelectedPage().getValue() != null) {
+            nowPage = mainViewModel.getSelectedPage().getValue();
+        }
+        int pageNum = intent.getIntExtra("page_num", nowPage);
         Log.i(TAG, "onNewIntent： PageNum:" + pageNum);
         viewPager.setCurrentItem(pageNum);
     }
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 , musicViewModel, phoneViewModel));
         // 设置 OffscreenPageLimit 为 0，禁用预加载
         viewPager.setOffscreenPageLimit(0);
-        // 设置ViewPager的页面切换监听，以便更新BottomNavigationView的选中项
+        // 设置ViewPager的页面切换监听
         viewPager.setOnPageChangeListener(new NoPreloadViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

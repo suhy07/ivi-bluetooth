@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.device;
 
 import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -161,9 +162,12 @@ public class DeviceFragment extends Fragment {
             new Thread(()->{
                 try {
                     Thread.sleep(timeout);
-                    getActivity().runOnUiThread(()->{
-                        scanPb.setVisibility(View.INVISIBLE);
-                    });
+                    Activity activity = getActivity();
+                    if (activity != null && !activity.isFinishing()) {
+                        getActivity().runOnUiThread(()->{
+                            scanPb.setVisibility(View.INVISIBLE);
+                        });
+                    }
                 } catch (InterruptedException e) {
                     Log.i(TAG, e.getMessage());
                 }
