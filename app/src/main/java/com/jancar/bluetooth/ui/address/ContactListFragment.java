@@ -91,7 +91,7 @@ public class ContactListFragment extends Fragment {
                     contacts = Global.getContactList();
                 } else {
                     for (Contact contact: beforeFilter) {
-                        if(contact.getName().contains(s)) {
+                        if(contact.getName().contains(s) || contact.getNumber().contains(s)) {
                             contacts.add(contact);
                         }
                     }
