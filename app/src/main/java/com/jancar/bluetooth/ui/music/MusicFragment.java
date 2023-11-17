@@ -77,16 +77,28 @@ public class MusicFragment extends Fragment {
             });
         }
         playBtn.setOnClickListener(v -> {
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                return;
+            }
             Log.i(TAG,"click Play");
             bluetoothManager.playAndPause(iBluetoothExecCallback);
             mediaManagerUtil.open(mediaManagerUtil.mMediaType);
             updateMusicName();
         });
         prevBtn.setOnClickListener(v -> {
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                return;
+            }
             bluetoothManager.prevBtMusic(iBluetoothExecCallback);
             updateMusicName();
         });
         nextBtn.setOnClickListener(v -> {
+            if (Global.connStatus == Global.NOT_CONNECTED) {
+                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                return;
+            }
             bluetoothManager.nextBtMusic(stub);
             updateMusicName();
         });

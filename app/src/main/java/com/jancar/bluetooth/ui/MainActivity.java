@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
@@ -46,6 +47,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
+    private static boolean isFirst = true;
     private NoPreloadViewPager viewPager;
     private MainViewModel mainViewModel;
     private DeviceViewModel deviceViewModel;
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         onNewIntent(getIntent());
+
+        if(isFirst) {
+            viewPager.setCurrentItem(3);
+        }
     }
 
     @Override
