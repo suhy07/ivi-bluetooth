@@ -74,7 +74,11 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
 
     @Override
     public int getItemCount() {
-        return callLogs.size();
+        if(callLogs == null){
+            return 0;
+        }else{
+            return callLogs.size();
+        }
     }
 
     public static class CallLogViewHolder extends RecyclerView.ViewHolder {
