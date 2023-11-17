@@ -75,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+        Intent intent = getIntent();
+        int pageNum = intent.getIntExtra("page_num", 0);
+        viewPager.setCurrentItem(pageNum);
+        Log.i(TAG, "onCreate: PageNum:" + pageNum);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int pageNum = intent.getIntExtra("page_num", 0);
+        Log.i(TAG, "onNewIntent： PageNum:" + pageNum);
+        viewPager.setCurrentItem(pageNum);
     }
 
     @SuppressLint("MissingSuperCall")

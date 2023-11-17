@@ -198,7 +198,8 @@ public class ContactListFragment extends Fragment {
         Log.i(TAG, "onResume");
         contactPb.setVisibility(View.INVISIBLE);
         if (addressViewModel != null) {
-            if (addressViewModel.getContactList().getValue().isEmpty()) {
+            List<Contact> contacts = addressViewModel.getContactList().getValue();
+            if (contacts != null && contacts.isEmpty()) {
                 searchContact();
             }
         }

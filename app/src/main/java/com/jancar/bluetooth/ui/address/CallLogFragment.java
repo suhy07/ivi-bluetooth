@@ -130,7 +130,8 @@ public class CallLogFragment extends Fragment {
         Log.i(TAG, "onResume");
         super.onResume();
         if (addressViewModel != null) {
-            if(addressViewModel.getCallLogList().getValue().isEmpty()){
+            List<CallLog> callLogs = addressViewModel.getCallLogList().getValue();
+            if(callLogs != null && callLogs.isEmpty()){
                 callLogPb.setVisibility(View.VISIBLE);
                 new Thread(() -> {
                     try {

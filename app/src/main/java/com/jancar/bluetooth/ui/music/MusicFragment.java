@@ -237,11 +237,6 @@ public class MusicFragment extends Fragment {
 
     public void setMusicViewModel(MusicViewModel musicViewModel) {
         this.musicViewModel = musicViewModel;
-        if (rootView != null) {
-            initView(rootView);
-            init();
-            initCreate();
-        }
     }
 
     private IBluetoothExecCallback iBluetoothExecCallback = new IBluetoothExecCallback() {
