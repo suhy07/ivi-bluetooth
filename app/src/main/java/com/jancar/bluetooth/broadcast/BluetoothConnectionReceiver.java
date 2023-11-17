@@ -55,7 +55,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceViewModel.setDeviceSet(deviceSet);
             Log.d(TAG, "断开连接");
             // 处理已断开连接的设备
-            bluetoothManager.stopContactOrHistoryLoad(null);
+//            bluetoothManager.stopContactOrHistoryLoad(null);
             Global.setContactList(new ArrayList<>());
             addressViewModel.setCallLogList(new ArrayList<>());
             addressViewModel.setContactList(new ArrayList<>());
