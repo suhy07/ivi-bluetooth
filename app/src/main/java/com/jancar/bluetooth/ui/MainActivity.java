@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         onNewIntent(getIntent());
-
         if(isFirst) {
+            isFirst = false;
             viewPager.setCurrentItem(3);
         }
     }
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int nowPage = 0;
+        int nowPage = 3;
         if (mainViewModel != null && mainViewModel.getSelectedPage().getValue() != null) {
             nowPage = mainViewModel.getSelectedPage().getValue();
         }
