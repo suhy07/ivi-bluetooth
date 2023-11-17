@@ -20,7 +20,7 @@
     <string name="pair_status_paired">已配对</string>
     <string name="pair_status_pairing">正在配对</string>
     <string name="pair_status_unpaired">未配对</string>
-    <string name="pair_status_unknown">未知号码</string>
+    <string name="pair_status_unknown">未知状态</string>
     <string name="pair_status_failed">配对失败</string>
     <string name="conn_status_connected">已连接</string>
     <string name="conn_status_connecting">连接中</string>
@@ -28,7 +28,7 @@
     <string name="str_refresh">刷新</string>
     <string name="str_hang_up">挂断</string>
     <string name="str_answer">接听</string>
-    <string name="str_unknown_call">未知来电</string>
+    <string name="str_unknown_call">未知号码</string>
     <string name="str_not_connect_warn">未连接蓝牙设备</string>
     <string name="str_unknown_device">未知设备</string>
     <string name="str_no_number">请输入号码</string>
