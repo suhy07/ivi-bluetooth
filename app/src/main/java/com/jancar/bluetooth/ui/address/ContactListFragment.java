@@ -86,7 +86,7 @@ public class ContactListFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String filter = s.toString();
                 List<Contact> contacts = new ArrayList<>();
-                List<Contact> beforeFilter = addressViewModel.getContactList().getValue();
+                List<Contact> beforeFilter = Global.getContactList();
                 if(filter.equals("")) {
                     contacts = Global.getContactList();
                 } else {
