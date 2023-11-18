@@ -1,8 +1,10 @@
 package com.jancar.bluetooth.utils;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.util.Log;
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.media.IVIMedia;
 import com.jancar.sdk.media.MediaManager;
@@ -60,14 +62,11 @@ public class MediaManagerUtil {
     }
 
     public void close(int type) {
-        if (mMediaType == type) {
+        if (mMediaType != type) {
             mMediaType = IVIMedia.Type.NONE;
         }
-
         mMediaManager.close(type);
         Log.d(TAG,"type:" + IVIMedia.Type.getName(type));
     }
-
-
 
 }

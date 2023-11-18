@@ -41,10 +41,16 @@ import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
 
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,6 +204,18 @@ public class DeviceFragment extends Fragment {
         });
         return view;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventPowerStatusChanged(IVIBluetooth.EventPowerState event) {
+        int state = bluetoothAdapter.getState();
+        Log.i(TAG, "state:" + state);
+//        if (state == BluetoothAdapter.STATE_ON || state == BluetoothAdapter.STATE_OFF) {
+//            bluetoothSwitch.setEnabled(true);
+//        } else {
+//            bluetoothSwitch.setEnabled(false);
+//        }
+    }
+
     private void initView(View view){
         recyclerView = view.findViewById(R.id.rv_bluetooth_devices);
         bluetoothSwitch = view.findViewById(R.id.switch_bluetooth);
@@ -208,6 +226,9 @@ public class DeviceFragment extends Fragment {
     }
 
     private void init(){
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel, getActivity());
         recyclerView.setAdapter(deviceAdapter);
@@ -221,6 +242,9 @@ public class DeviceFragment extends Fragment {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {

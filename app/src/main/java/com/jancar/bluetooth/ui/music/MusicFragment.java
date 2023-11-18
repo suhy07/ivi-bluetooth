@@ -1,13 +1,17 @@
 package com.jancar.bluetooth.ui.music;
 
 import android.annotation.NonNull;
-import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,30 +28,29 @@ import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
-import com.jancar.sdk.car.IVICar;
 import com.jancar.sdk.media.IVIMedia;
-import com.jancar.sdk.media.MediaManager;
-import com.jancar.sdk.utils.Logcat;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-
 /**
  * @author suhy
  */
-public class MusicFragment extends Fragment {
+public class MusicFragment extends Fragment implements AudioManager.OnAudioFocusChangeListener {
 
     private final static String TAG = "MusicFragment" ;
-    private static boolean isFirst = true;
     private TextView musicNameTv, artistTv;
     private ImageButton playBtn, prevBtn, nextBtn;
     private MusicViewModel musicViewModel;
     private BluetoothManager bluetoothManager;
     private MediaManagerUtil mediaManagerUtil;
+    private AudioManager audioManager;
+    private AudioFocusRequest focusRequest;
+    private AudioAttributes playbackAttributes;
+
     private View rootView;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,12 +58,7 @@ public class MusicFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_music, container, false);
         initView(rootView);
         init();
-        initCreate();
 
-        return rootView;
-    }
-
-    private void initCreate() {
         if (musicViewModel != null) {
             musicViewModel.getMusicName().observe(this, s -> {
                 musicNameTv.setText(s);
@@ -73,6 +71,7 @@ public class MusicFragment extends Fragment {
                     playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
                 } else {
                     playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
+//                    audioManager.abandonAudioFocus(audioFocusChangeListener);
                 }
             });
         }
@@ -81,9 +80,10 @@ public class MusicFragment extends Fragment {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
-            Log.i(TAG,"click Play");
-            bluetoothManager.playAndPause(iBluetoothExecCallback);
-            mediaManagerUtil.open(mediaManagerUtil.mMediaType);
+            int res = audioManager.requestAudioFocus(focusRequest);
+            if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                bluetoothManager.playAndPause(iBluetoothExecCallback);
+            }
             updateMusicName();
         });
         prevBtn.setOnClickListener(v -> {
@@ -102,6 +102,7 @@ public class MusicFragment extends Fragment {
             bluetoothManager.nextBtMusic(stub);
             updateMusicName();
         });
+        return rootView;
     }
 
     private void updateMusicName() {
@@ -114,7 +115,6 @@ public class MusicFragment extends Fragment {
             musicViewModel.setMusicName(event.name);
             musicViewModel.setArtist(event.artist);
         }
-        Log.i(TAG, event.toString());
     }
 
 
@@ -123,8 +123,6 @@ public class MusicFragment extends Fragment {
         if (musicViewModel != null) {
             musicViewModel.setA2dpStatus(event.a2dpStatus);
         }
-        Log.i(TAG, event.toString());
-        Log.i(TAG, event.isStopped + "");
     }
 
     private void initView(View rootView) {
@@ -135,6 +133,7 @@ public class MusicFragment extends Fragment {
         nextBtn = rootView.findViewById(R.id.btn_next);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void init() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -144,7 +143,44 @@ public class MusicFragment extends Fragment {
 //                new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
         mediaManagerUtil = new MediaManagerUtil(getContext(), mMediaControlListener);
+
+        audioManager = (AudioManager) requireContext().getSystemService(Context.AUDIO_SERVICE);
+
+        playbackAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+        focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                .setAudioAttributes(playbackAttributes)
+                .setAcceptsDelayedFocusGain(true)
+                .setOnAudioFocusChangeListener(this, new Handler(Looper.getMainLooper()))
+                .build();
     }
+
+
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        switch (focusChange) {
+            case AudioManager.AUDIOFOCUS_GAIN:
+//                  playbackNow();
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS:
+                Log.i(TAG, "AUDIOFOCUS_LOSS");
+                bluetoothManager.pauseBtMusic(stub);
+//                pausePlayback();
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                Log.i(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+//                pausePlayback();
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                Log.i(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+                // ... 根据应用程序的需要进行暂停或降低音量
+                break;
+        }
+    }
+
 
     @Override
     public void onDestroy() {
@@ -153,6 +189,17 @@ public class MusicFragment extends Fragment {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+//        if (mediaManagerUtil != null) {
+//            mediaManagerUtil.close(mediaManagerUtil.mMediaType);
+//        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop");
+        int result = audioManager.abandonAudioFocus(this);
+
         if (mediaManagerUtil != null) {
             mediaManagerUtil.close(mediaManagerUtil.mMediaType);
         }
@@ -161,29 +208,31 @@ public class MusicFragment extends Fragment {
     IVIMedia.MediaControlListener mMediaControlListener = new IVIMedia.MediaControlListener() {
         @Override
         public void suspend() {
+            Log.i(TAG, "suspend");
         }
 
         @Override
         public void stop() {
+            Log.i(TAG, "stop");
         }
 
         @Override
         public void resume() {
-
+            Log.i(TAG, "resume");
         }
         @Override
         public void pause() {
-
+            Log.i(TAG, "pause");
         }
 
         @Override
         public void play() {
-
+            Log.i(TAG, "play");
         }
 
         @Override
         public void playPause() {
-
+            Log.i(TAG, "playPause");
         }
 
         @Override
