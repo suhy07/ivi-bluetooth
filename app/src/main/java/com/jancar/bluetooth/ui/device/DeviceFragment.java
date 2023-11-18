@@ -13,7 +13,9 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,6 +40,7 @@ import android.bluetooth.BluetoothDevice;
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
@@ -73,24 +76,29 @@ public class DeviceFragment extends Fragment {
     private BluetoothManager bluetoothManager;
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
-
+    private final static int SWITCH_TIMEOUT = 2000;
+    private final static int SCAN_TIMEOUT = 12000;
+    private final static int SWITCH_WHAT = 0;
+    private final static int SCAN_WHAT = 1;
+    private final mHandler mHandler = new mHandler();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_device, container, false);
         initView(view);
         init();
+
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
         // 观察设备列表的变化
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
-                Log.d(TAG,"观察到devices列表变化");
+                Log.d(TAG, "观察到devices列表变化");
                 deviceAdapter.setDeviceSet(devices);
                 connMap.clear();
                 for (BluetoothDevice device : devices) {
-                    if(device.isConnected())
+                    if (device.isConnected())
                         Global.connStatus = Global.CONNECTED;
                     connMap.put(device, device.isConnected() ?
                             Global.CONNECTED : Global.NOT_CONNECTED);
@@ -99,15 +107,15 @@ public class DeviceFragment extends Fragment {
                 deviceAdapter.notifyDataSetChanged();
             });
             deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
-                Log.d(TAG,"观察到connMap变化");
+                Log.d(TAG, "观察到connMap变化");
                 deviceAdapter.setConnMap(connMap);
                 deviceAdapter.notifyDataSetChanged();
             });
 //        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             //获取已配对的设备
             deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
-            deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName-> {
-                if(!bluetoothName.equals("")) {
+            deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
+                if (!bluetoothName.equals("")) {
                     nameTv.setText(bluetoothName);
                     bluetoothAdapter.setName(bluetoothName);
                 }
@@ -138,17 +146,23 @@ public class DeviceFragment extends Fragment {
         bluetoothSwitch.setOnCheckedChangeListener((v, b) -> {
             if (deviceViewModel != null) {
                 deviceViewModel.setOnOff(b);
+                bluetoothSwitch.setEnabled(false);;
+                new Thread(()-> {
+                    Message msg = Message.obtain();
+                    msg.what = SWITCH_WHAT;
+                    mHandler.sendMessageDelayed(msg, SWITCH_TIMEOUT);
+                }).start();
             }
         });
-        renameBtn.setOnClickListener(v->{
+        renameBtn.setOnClickListener(v -> {
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
             }
-            if (nameTv.isEnabled()){
+            if (nameTv.isEnabled()) {
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 nameTv.setEnabled(false);
                 if (deviceViewModel != null) {
-                    if(nameTv.getText().toString().trim().equals("")) {
+                    if (nameTv.getText().toString().trim().equals("")) {
                         nameTv.setText(deviceViewModel.getBluetoothName().getValue());
                     } else {
                         deviceViewModel.setBluetoothName(nameTv.getText() + "");
@@ -160,23 +174,15 @@ public class DeviceFragment extends Fragment {
             }
         });
         scanBtn.setOnClickListener(v -> {
-            if (!bluetoothAdapter.isEnabled()){
+            if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
             }
             bluetoothAdapter.startDiscovery();
             scanPb.setVisibility(View.VISIBLE);
-            new Thread(()->{
-                try {
-                    Thread.sleep(timeout);
-                    Activity activity = getActivity();
-                    if (activity != null && !activity.isFinishing()) {
-                        getActivity().runOnUiThread(()->{
-                            scanPb.setVisibility(View.INVISIBLE);
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    Log.i(TAG, e.getMessage());
-                }
+            new Thread(() -> {
+                Message msg = Message.obtain();
+                msg.what = SCAN_WHAT;
+                mHandler.sendMessageDelayed(msg, SCAN_TIMEOUT);
             }).start();
         });
         nameTv.addTextChangedListener(new TextWatcher() {
@@ -216,7 +222,7 @@ public class DeviceFragment extends Fragment {
 //        }
     }
 
-    private void initView(View view){
+    private void initView(View view) {
         recyclerView = view.findViewById(R.id.rv_bluetooth_devices);
         bluetoothSwitch = view.findViewById(R.id.switch_bluetooth);
         renameBtn = view.findViewById(R.id.btn_bluetooth_name);
@@ -225,7 +231,7 @@ public class DeviceFragment extends Fragment {
         scanPb = view.findViewById(R.id.pb_scan);
     }
 
-    private void init(){
+    private void init() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -240,7 +246,7 @@ public class DeviceFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -255,5 +261,22 @@ public class DeviceFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         Log.i(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
+    }
+
+    class mHandler extends Handler {
+        //重写handleMessage（）方法
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //执行的UI操作
+            switch (msg.what) {
+                case SWITCH_WHAT:
+                    bluetoothSwitch.setEnabled(true);
+                    break;
+                case SCAN_WHAT:
+                    scanPb.setVisibility(View.GONE);
+                    break;
+            }
+        }
     }
 }
