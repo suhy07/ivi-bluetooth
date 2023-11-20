@@ -1,7 +1,11 @@
 package com.jancar.bluetooth;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +16,7 @@ import com.jancar.bluetooth.utils.CallWindowUtil;
 import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
+import com.jancar.sdk.system.IVISystem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,6 +74,7 @@ public class MainApplication extends Application {
         startService();
         CallUtil.getInstance();
         mCallWindowUtil = new CallWindowUtil(mInstance);
+        registerBroadcastReceiver();
     }
 
     private void startService(){
@@ -93,15 +99,29 @@ public class MainApplication extends Application {
             CallUtil.getInstance().setCallName(event.mContactName);
             CallUtil.getInstance().setCallStatus(event.mStatus);
 
-            if(!mCallWindowUtil.isShowCallWindow()){
-                mCallWindowUtil.showCallWindow();
+            if(mCallWindowUtil.isShowCallWindow()){
+                if(isBackCar){
+                    mCallWindowUtil.hideCallWindow();
+                    mCallWindowUtil.showSmallCallWindow();
+                }else{
+                    mCallWindowUtil.changeViewByStatus(event.mStatus);
+                }
+
+            }else if(mCallWindowUtil.isShowSmallCallWindow()){
+                mCallWindowUtil.changeSmallViewByStatus(event.mStatus);
             }else{
-                mCallWindowUtil.changeViewByStatus(event.mStatus);
+                if(isBackCar){
+                    mCallWindowUtil.showSmallCallWindow();
+                }else{
+                    mCallWindowUtil.showCallWindow();
+                }
             }
+
 
 
         }else if(event.mStatus == IVIBluetooth.CallStatus.HANGUP){
             mCallWindowUtil.hideCallWindow();
+            mCallWindowUtil.hideSmallCallWindow();
         }
     }
 
@@ -109,9 +129,41 @@ public class MainApplication extends Application {
     public void onEventVoiceChange(IVIBluetooth.EventVoiceChange event) {
         if (event != null) {
             CallUtil.getInstance().setVoiceInCar(event.type == IVIBluetooth.BluetoothAudioTransferStatus.HF_STATUS);
-            if(mCallWindowUtil.isShowCallWindow()){
+            if(mCallWindowUtil.isShowCallWindow()||mCallWindowUtil.isShowSmallCallWindow()){
                 mCallWindowUtil.changeVoiceStatus();
             }
         }
     }
+
+
+    private void registerBroadcastReceiver(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(IVISystem.ACTION_BACKCAR_FINISH);
+        filter.addAction(IVISystem.ACTION_BACKCAR_STARTED);
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private boolean isBackCar = false;
+
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(IVISystem.ACTION_BACKCAR_FINISH.equals(action)){
+                isBackCar = false;
+            }else if(IVISystem.ACTION_BACKCAR_STARTED.equals(action)){
+                isBackCar = true;
+                if(mCallWindowUtil.isShowCallWindow()){
+                    mCallWindowUtil.hideCallWindow();
+                    mCallWindowUtil.showSmallCallWindow();
+                }
+            }
+        }
+    };
+
+
+
+
+
 }
