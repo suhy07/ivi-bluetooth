@@ -16,12 +16,15 @@ import android.widget.ImageButton;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author suhy
@@ -67,6 +70,9 @@ public class PhoneFragment extends Fragment {
     }
 
     private void init() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
 //        phoneViewModel = new ViewModelProvider(this,
 //                new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
@@ -97,7 +103,7 @@ public class PhoneFragment extends Fragment {
                 if (phoneViewModel != null) {
                     phoneViewModel.setCallNumber("");
                 }
-                return false;
+                return true;
             }
         });
         callBtn.setOnClickListener(v -> {
@@ -124,6 +130,22 @@ public class PhoneFragment extends Fragment {
             startActivity(intent);*/
         });
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
+        if(event!=null && event.mStatus == IVIBluetooth.CallStatus.HANGUP){
+            String number = event.mPhoneNumber;
+            if (phoneViewModel != null) {
+                String tempValue = phoneViewModel.getCallNumber().getValue();
+                if(tempValue!=null && tempValue.equals(number)){
+                    phoneViewModel.setCallNumber("");
+                }
+
+            }
+        }
+    }
+
 
     private void setCallNum(String s) {
         if (phoneViewModel != null) {
@@ -153,6 +175,9 @@ public class PhoneFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     public void setPhoneViewModel(PhoneViewModel phoneViewModel) {
