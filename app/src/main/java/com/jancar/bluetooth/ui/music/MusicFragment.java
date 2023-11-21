@@ -172,15 +172,26 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 Log.i(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+                bluetoothManager.pauseBtMusic(stub);
 //                pausePlayback();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 Log.i(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+                bluetoothManager.pauseBtMusic(stub);
                 // ... 根据应用程序的需要进行暂停或降低音量
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onResume(){
+        super.onResume();
+        int result = audioManager.requestAudioFocus(focusRequest);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            bluetoothManager.playBtMusic(stub);
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -198,8 +209,10 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop");
-        int result = audioManager.abandonAudioFocus(this);
-
+//        int result = audioManager.abandonAudioFocus(this);
+//        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+//            Log.i(TAG, "abandon");
+//        }
         if (mediaManagerUtil != null) {
             mediaManagerUtil.close(mediaManagerUtil.mMediaType);
         }
