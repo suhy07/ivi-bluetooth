@@ -4,6 +4,7 @@ import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
 
 import android.annotation.NonNull;
+import android.annotation.PluralsRes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -29,7 +30,9 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import android.bluetooth.BluetoothDevice;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +42,7 @@ import java.util.Set;
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
     private final static String TAG = "DeviceAdapter";
-    private Set<BluetoothDevice> deviceSet;
+    private List<BluetoothDevice> deviceList;
     private Map<BluetoothDevice, Integer> connMap;
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
@@ -48,7 +51,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
             , DeviceViewModel deviceViewModel, Activity activity) {
-        this.deviceSet = deviceSet;
+        this.deviceList = sortDeviceList(deviceSet);
         this.deviceViewModel = deviceViewModel;
         this.connMap = connMap;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -57,7 +60,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     }
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
-        this.deviceSet = devices;
+        this.deviceList = sortDeviceList(devices);
     }
 
     public void setConnMap(Map<BluetoothDevice, Integer> connMap) {
@@ -73,7 +76,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
+        BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
         String deviceName = device.getName();
         String deviceAddress = device.getAddress();
         int status = connMap.get(device);
@@ -128,9 +131,29 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public int getItemCount() {
-        return deviceSet.size();
+        return deviceList.size();
     }
 
+    private List<BluetoothDevice> sortDeviceList(Set<BluetoothDevice> deviceSet) {
+        List<BluetoothDevice> sortDeviceList = new ArrayList<>();
+        List<BluetoothDevice> tempList = new ArrayList<>(deviceSet);
+        for (BluetoothDevice device : deviceSet) {
+            if (device.isConnected()) {
+                sortDeviceList.add(device);
+                tempList.remove(device);
+            }
+        }
+        deviceSet = new HashSet<>(tempList);
+        for (BluetoothDevice device : deviceSet) {
+            if (device.getBondState() == BluetoothDevice.BOND_BONDED
+            || device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                sortDeviceList.add(device);
+                tempList.remove(device);
+            }
+        }
+        sortDeviceList.addAll(tempList);
+        return sortDeviceList;
+    }
 
     class DeviceViewHolder extends RecyclerView.ViewHolder {
         TextView deviceName;
@@ -158,7 +181,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         Button connectButton = dialogView.findViewById(R.id.btn_connect);
         Button pairButton = dialogView.findViewById(R.id.btn_pair);
-        BluetoothDevice device = (BluetoothDevice) deviceSet.toArray()[position];
+        BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
         int bondState = device.getBondState();
         boolean isConnected = device.isConnected();
         if (isConnected) {
