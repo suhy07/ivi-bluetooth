@@ -34,21 +34,29 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
             switch (state) {
                 case BluetoothAdapter.STATE_OFF:
                     // 蓝牙已关闭
-                    deviceViewModel.setDeviceSet(new HashSet<>());
-                    deviceViewModel.setOnOff(false);
+                    if (deviceViewModel != null) {
+                        deviceViewModel.setDeviceSet(new HashSet<>());
+                        deviceViewModel.setOnOff(false);
+                    }
                     Log.i(TAG, "蓝牙已关闭");
                     Global.setContactList(new ArrayList<>());
-                    addressViewModel.setCallLogList(new ArrayList<>());
-                    addressViewModel.setContactList(new ArrayList<>());
-                    musicViewModel.setMusicName("");
-                    musicViewModel.setArtist("");
-                    musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+                    if (addressViewModel != null) {
+                        addressViewModel.setCallLogList(new ArrayList<>());
+                        addressViewModel.setContactList(new ArrayList<>());
+                    }
+                    if (musicViewModel != null) {
+                        musicViewModel.setMusicName("");
+                        musicViewModel.setArtist("");
+                        musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+                    }
                     Global.connStatus = Global.NOT_CONNECTED;
                     break;
 
                 case BluetoothAdapter.STATE_ON:
-                    deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
-                    deviceViewModel.setOnOff(true);
+                    if (deviceViewModel != null) {
+                        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
+                        deviceViewModel.setOnOff(true);
+                    }
                     Log.i(TAG, "蓝牙已打开");
                     break;
             }

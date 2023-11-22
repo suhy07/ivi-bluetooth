@@ -34,14 +34,20 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+        if (deviceViewModel != null) {
+            deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+        } else {
+            deviceSet = new HashSet<>();
+        }
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
         if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
             // 蓝牙设备已连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             deviceSet.remove(device);
             deviceSet.add(device);
-            deviceViewModel.setDeviceSet(deviceSet);
+            if (deviceViewModel != null) {
+                deviceViewModel.setDeviceSet(deviceSet);
+            }
             Log.d(TAG, "连接成功");
             bluetoothManager.connect();
             bluetoothManager.openBluetoothModule(null);
@@ -52,16 +58,22 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             deviceSet.remove(device);
             deviceSet.add(device);
-            deviceViewModel.setDeviceSet(deviceSet);
+            if (deviceViewModel != null) {
+                deviceViewModel.setDeviceSet(deviceSet);
+            }
             Log.d(TAG, "断开连接");
             // 处理已断开连接的设备
 //            bluetoothManager.stopContactOrHistoryLoad(null);
             Global.setContactList(new ArrayList<>());
-            addressViewModel.setCallLogList(new ArrayList<>());
-            addressViewModel.setContactList(new ArrayList<>());
-            musicViewModel.setMusicName("");
-            musicViewModel.setArtist("");
-            musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+            if (addressViewModel != null) {
+                addressViewModel.setCallLogList(new ArrayList<>());
+                addressViewModel.setContactList(new ArrayList<>());
+            }
+            if (musicViewModel != null) {
+                musicViewModel.setMusicName("");
+                musicViewModel.setArtist("");
+                musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+            }
             Global.connStatus = Global.NOT_CONNECTED;
         }
     }
