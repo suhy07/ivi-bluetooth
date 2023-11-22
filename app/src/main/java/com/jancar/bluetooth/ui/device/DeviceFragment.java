@@ -98,8 +98,9 @@ public class DeviceFragment extends Fragment {
                 deviceAdapter.setDeviceSet(devices);
                 connMap.clear();
                 for (BluetoothDevice device : devices) {
-                    if (device.isConnected())
+                    if (device.isConnected()) {
                         Global.connStatus = Global.CONNECTED;
+                    }
                     connMap.put(device, device.isConnected() ?
                             Global.CONNECTED : Global.NOT_CONNECTED);
                 }
@@ -132,6 +133,13 @@ public class DeviceFragment extends Fragment {
                 } else {
                     boolean res = bluetoothAdapter.disable();
                     if (res) {
+                        bluetoothSwitch.setChecked(false);
+                        deviceViewModel.setDeviceSet(new HashSet<>());
+                        renameBtn.setEnabled(false);
+                        renameBtn.setText(getText(R.string.bluetooth_rename));
+                        scanBtn.setEnabled(false);
+                        nameTv.setEnabled(false);
+                        scanPb.setVisibility(View.INVISIBLE);
                         bluetoothSwitch.setChecked(false);
                     }
                 }

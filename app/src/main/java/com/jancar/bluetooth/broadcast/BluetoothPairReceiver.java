@@ -34,7 +34,7 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
             } else if (deviceViewModel != null && bondState == BluetoothDevice.BOND_NONE) {
                 Log.d(TAG, "取消配对");
                 bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-                bluetoothDevices.add(device);
+                bluetoothDevices.remove(device);
                 deviceViewModel.setDeviceSet(bluetoothDevices);
             }
         }

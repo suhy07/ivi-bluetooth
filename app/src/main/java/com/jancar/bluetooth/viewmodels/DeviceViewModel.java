@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothDevice;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +44,10 @@ public class DeviceViewModel extends ViewModel {
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
         deviceSet.setValue(devices);
+    }
+
+    public void setDeviceSet(List<BluetoothDevice> devices) {
+        setDeviceSet(new HashSet<>(devices));
     }
 
     public LiveData<String> getBluetoothName() {
