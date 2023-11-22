@@ -90,9 +90,11 @@ public class ContactListFragment extends Fragment {
                 if(filter.equals("")) {
                     contacts = Global.getContactList();
                 } else {
-                    for (Contact contact: beforeFilter) {
-                        if(contact.getName().contains(s) || contact.getNumber().contains(s)) {
-                            contacts.add(contact);
+                    if(beforeFilter != null) {
+                        for (Contact contact: beforeFilter) {
+                            if(contact.getName().contains(s) || contact.getNumber().contains(s)) {
+                                contacts.add(contact);
+                            }
                         }
                     }
                 }

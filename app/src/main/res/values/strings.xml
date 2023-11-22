@@ -38,4 +38,5 @@
     <string name="audio_in_phone">Audio in phone</string>
     <string name="status_incoming">Incoming</string>
     <string name="status_outgoing">OutGoing</string>
+    <string name="str_contact_search">Contact Search</string>
 </resources>

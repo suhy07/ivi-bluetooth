@@ -18,6 +18,8 @@
         android:singleLine="true"
         android:textAppearance="@style/CallLogText"
         android:textColor="@color/white"
+        android:hint="@string/str_contact_search"
+        android:textColorHint="@color/gray_757785"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

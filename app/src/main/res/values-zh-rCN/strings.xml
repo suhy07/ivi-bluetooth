@@ -38,4 +38,5 @@
     <string name="audio_in_phone">手机接听</string>
     <string name="status_incoming">来电中</string>
     <string name="status_outgoing">拨号中</string>
+    <string name="str_contact_search">联系人搜索</string>
 </resources>
