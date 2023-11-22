@@ -134,14 +134,14 @@ public class DeviceFragment extends Fragment {
                     boolean res = bluetoothAdapter.disable();
                     if (res) {
                         bluetoothSwitch.setChecked(false);
-                        deviceViewModel.setDeviceSet(new HashSet<>());
-                        renameBtn.setEnabled(false);
-                        renameBtn.setText(getText(R.string.bluetooth_rename));
-                        scanBtn.setEnabled(false);
-                        nameTv.setEnabled(false);
-                        scanPb.setVisibility(View.INVISIBLE);
-                        bluetoothSwitch.setChecked(false);
                     }
+//                    deviceViewModel.setDeviceSet(new HashSet<>());
+                    renameBtn.setEnabled(false);
+                    renameBtn.setText(getText(R.string.bluetooth_rename));
+                    scanBtn.setEnabled(false);
+                    nameTv.setEnabled(false);
+                    scanPb.setVisibility(View.INVISIBLE);
+                    bluetoothSwitch.setChecked(false);
                 }
                 nameTv.setText(deviceViewModel.getBluetoothName().getValue());
             });
@@ -183,16 +183,7 @@ public class DeviceFragment extends Fragment {
             }
         });
         scanBtn.setOnClickListener(v -> {
-            if (!bluetoothAdapter.isEnabled()) {
-                bluetoothAdapter.enable();
-            }
-            bluetoothAdapter.startDiscovery();
-            scanPb.setVisibility(View.VISIBLE);
-            new Thread(() -> {
-                Message msg = Message.obtain();
-                msg.what = SCAN_WHAT;
-                mHandler.sendMessageDelayed(msg, SCAN_TIMEOUT);
-            }).start();
+            searchDevice();
         });
         nameTv.addTextChangedListener(new TextWatcher() {
             @Override
@@ -220,6 +211,19 @@ public class DeviceFragment extends Fragment {
         return view;
     }
 
+    private void searchDevice() {
+        if (!bluetoothAdapter.isEnabled()) {
+            bluetoothAdapter.enable();
+        }
+        bluetoothAdapter.startDiscovery();
+        scanPb.setVisibility(View.VISIBLE);
+        new Thread(() -> {
+            Message msg = Message.obtain();
+            msg.what = SCAN_WHAT;
+            mHandler.sendMessageDelayed(msg, SCAN_TIMEOUT);
+        }).start();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPowerStatusChanged(IVIBluetooth.EventPowerState event) {
         int state = bluetoothAdapter.getState();
@@ -229,6 +233,7 @@ public class DeviceFragment extends Fragment {
             renameBtn.setText(getText(R.string.bluetooth_rename));
             scanBtn.setEnabled(true);
             bluetoothSwitch.setChecked(true);
+            searchDevice();
         } else if (state == BluetoothAdapter.STATE_OFF){
             deviceViewModel.setDeviceSet(new HashSet<>());
             renameBtn.setEnabled(false);

@@ -136,7 +136,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private List<BluetoothDevice> sortDeviceList(Set<BluetoothDevice> deviceSet) {
         List<BluetoothDevice> sortDeviceList = new ArrayList<>();
-        List<BluetoothDevice> tempList = new ArrayList<>(deviceSet);
+        List<BluetoothDevice> tempList;
+        if (deviceSet != null) {
+            tempList = new ArrayList<>(deviceSet);
+        } else {
+            tempList = new ArrayList<>();
+        }
         for (BluetoothDevice device : deviceSet) {
             if (device.isConnected()) {
                 sortDeviceList.add(device);

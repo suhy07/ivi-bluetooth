@@ -26,11 +26,7 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG, action);
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        if (device != null) {
-            Log.d(TAG, device.getName() + " " + device.getAddress());
-        }
         switch (action) {
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                 if (deviceViewModel != null) {
