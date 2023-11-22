@@ -74,12 +74,10 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
                 artistTv.setText(s);
             });
             musicViewModel.getA2dpStatus().observe(this, integer -> {
-                status = integer;
                 if(integer == IVIBluetooth.BluetoothA2DPStatus.STREAMING) {
                     playBtn.setBackground(getResources().getDrawable(R.drawable.ic_pause));
                 } else {
                     playBtn.setBackground(getResources().getDrawable(R.drawable.ic_play));
-//                    audioManager.abandonAudioFocus(audioFocusChangeListener);
                 }
             });
         }
@@ -127,11 +125,20 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
         }
     }
 
+    private long lastChangeTime = 0;
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventModuleConnectStatus(IVIBluetooth.EventModuleConnectStatus event) {
+
+        if(status == IVIBluetooth.BluetoothA2DPStatus.STREAMING && event.a2dpStatus == IVIBluetooth.BluetoothA2DPStatus.CONNECTED){
+            lastChangeTime = System.currentTimeMillis();
+        }
+        status = event.a2dpStatus;
+
         if (musicViewModel != null) {
             musicViewModel.setA2dpStatus(event.a2dpStatus);
+            Log.i(TAG, "event.a2dpStatus:"+event.a2dpStatus);
         }
     }
 
@@ -225,10 +232,17 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
         }
     };
 
+    private boolean needResume = false;
+
     IVIMedia.MediaControlListener mediaControlListener = new IVIMedia.MediaControlListener() {
         @Override
         public void suspend() {
-            Log.i(TAG, "suspend");
+            long tempTime = System.currentTimeMillis();
+            long diffTime = tempTime - lastChangeTime;
+            Log.i(TAG, "suspend:"+status+" diffTime:"+diffTime);
+            if(status == IVIBluetooth.BluetoothA2DPStatus.STREAMING || diffTime<350) {
+                needResume = true;
+            }
             bluetoothManager.pauseBtMusic(stub);
         }
 
@@ -240,8 +254,12 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
 
         @Override
         public void resume() {
-            Log.i(TAG, "resume");
-            bluetoothManager.playBtMusic(stub);
+            Log.i(TAG, "resume:"+needResume);
+            if(needResume){
+                needResume = false;
+                bluetoothManager.playBtMusic(stub);
+            }
+
         }
         @Override
         public void pause() {
