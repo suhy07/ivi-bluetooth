@@ -91,11 +91,13 @@ public class BluetoothService extends Service {
     public void setAddressViewModel(AddressViewModel addressViewModel) {
         this.addressViewModel = addressViewModel;
         bluetoothConnectionReceiver.setAddressViewModel(addressViewModel);
+        bluetoothStateReceiver.setAddressViewModel(addressViewModel);
     }
 
     public void setMusicViewModel(MusicViewModel musicViewModel) {
         this.musicViewModel = musicViewModel;
         bluetoothConnectionReceiver.setMusicViewModel(musicViewModel);
+        bluetoothStateReceiver.setMusicViewModel(musicViewModel);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

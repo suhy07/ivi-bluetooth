@@ -113,7 +113,9 @@ public class DeviceFragment extends Fragment {
             });
 //        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             //获取已配对的设备
-            deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
+            deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            deviceSet.addAll(BluetoothUtil.getBondedDevices());
+            deviceViewModel.setDeviceSet(deviceSet);
             deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
                 if (!bluetoothName.equals("")) {
                     nameTv.setText(bluetoothName);
@@ -122,28 +124,27 @@ public class DeviceFragment extends Fragment {
             });
             deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
             deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
-                bluetoothSwitch.setChecked(onOff);
                 if (onOff) {
-                    bluetoothAdapter.enable();
-                    jancarBluetoothManager.powerOn();
-                    renameBtn.setEnabled(true);
-                    renameBtn.setText(getText(R.string.bluetooth_rename));
-                    scanBtn.setEnabled(true);
+                    boolean res = bluetoothAdapter.enable();
+                    if (res) {
+                        bluetoothSwitch.setChecked(true);
+                    }
                 } else {
-                    deviceViewModel.setDeviceSet(new HashSet<>());
-                    renameBtn.setEnabled(false);
-                    renameBtn.setText(getText(R.string.bluetooth_rename));
-                    scanBtn.setEnabled(false);
-                    nameTv.setEnabled(false);
-                    scanPb.setVisibility(View.INVISIBLE);
-                    bluetoothAdapter.disable();
-                    jancarBluetoothManager.powerOff();
+                    boolean res = bluetoothAdapter.disable();
+                    if (res) {
+                        bluetoothSwitch.setChecked(false);
+                    }
                 }
                 nameTv.setText(deviceViewModel.getBluetoothName().getValue());
             });
             deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
+            bluetoothSwitch.setChecked(bluetoothAdapter.isEnabled());
         }
-        bluetoothSwitch.setOnCheckedChangeListener((v, b) -> {
+        bluetoothSwitch.setOnClickListener( v -> {
+            // 判断是否开关，之后switch的开关跟EventBus走
+            boolean b = !bluetoothAdapter.isEnabled();
+            // 阻止开关
+            bluetoothSwitch.setChecked(!b);
             if (deviceViewModel != null) {
                 deviceViewModel.setOnOff(b);
                 bluetoothSwitch.setEnabled(false);;
@@ -215,11 +216,20 @@ public class DeviceFragment extends Fragment {
     public void onEventPowerStatusChanged(IVIBluetooth.EventPowerState event) {
         int state = bluetoothAdapter.getState();
         Log.i(TAG, "state:" + state);
-//        if (state == BluetoothAdapter.STATE_ON || state == BluetoothAdapter.STATE_OFF) {
-//            bluetoothSwitch.setEnabled(true);
-//        } else {
-//            bluetoothSwitch.setEnabled(false);
-//        }
+        if (state == BluetoothAdapter.STATE_ON) {
+            renameBtn.setEnabled(true);
+            renameBtn.setText(getText(R.string.bluetooth_rename));
+            scanBtn.setEnabled(true);
+            bluetoothSwitch.setChecked(true);
+        } else if (state == BluetoothAdapter.STATE_OFF){
+            deviceViewModel.setDeviceSet(new HashSet<>());
+            renameBtn.setEnabled(false);
+            renameBtn.setText(getText(R.string.bluetooth_rename));
+            scanBtn.setEnabled(false);
+            nameTv.setEnabled(false);
+            scanPb.setVisibility(View.INVISIBLE);
+            bluetoothSwitch.setChecked(false);
+        }
     }
 
     private void initView(View view) {

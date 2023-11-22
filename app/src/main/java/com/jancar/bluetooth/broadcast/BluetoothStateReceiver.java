@@ -7,9 +7,14 @@ import android.bluetooth.BluetoothAdapter;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.viewmodels.MusicViewModel;
+import com.jancar.sdk.bluetooth.IVIBluetooth;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -18,6 +23,8 @@ import java.util.HashSet;
 public class BluetoothStateReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothStateReceiver";
     private DeviceViewModel deviceViewModel;
+    private AddressViewModel addressViewModel;
+    private MusicViewModel musicViewModel;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,6 +37,13 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                     deviceViewModel.setDeviceSet(new HashSet<>());
                     deviceViewModel.setOnOff(false);
                     Log.i(TAG, "蓝牙已关闭");
+                    Global.setContactList(new ArrayList<>());
+                    addressViewModel.setCallLogList(new ArrayList<>());
+                    addressViewModel.setContactList(new ArrayList<>());
+                    musicViewModel.setMusicName("");
+                    musicViewModel.setArtist("");
+                    musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+                    Global.connStatus = Global.NOT_CONNECTED;
                     break;
 
                 case BluetoothAdapter.STATE_ON:
@@ -43,6 +57,14 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
+    }
+
+    public void setAddressViewModel(AddressViewModel addressViewModel) {
+        this.addressViewModel = addressViewModel;
+    }
+
+    public void setMusicViewModel(MusicViewModel musicViewModel) {
+        this.musicViewModel = musicViewModel;
     }
 
 }
