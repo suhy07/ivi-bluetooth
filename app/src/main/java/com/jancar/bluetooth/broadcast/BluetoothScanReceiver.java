@@ -1,5 +1,6 @@
 package com.jancar.bluetooth.broadcast;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,24 +17,41 @@ import java.util.Set;
  */
 public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothScanReceiver";
+    //每10条更新一次
+    private final static int REFRESH_COUNT = 10;
+    private static int count = 0;
     private DeviceViewModel deviceViewModel;
     private Set<BluetoothDevice> bluetoothDevices;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
         String action = intent.getAction();
-        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-            // 从 intent 中获取发现的设备
-            Log.i(TAG, "Found");
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            // 处理发现的设备，例如打印名称和地址
-            if (deviceViewModel != null) {
-                Log.i(TAG, device.toString());
-                bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-                bluetoothDevices.add(device);
+        Log.d(TAG, action);
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        if (device != null) {
+            Log.d(TAG, device.getName() + " " + device.getAddress());
+        }
+        switch (action) {
+            case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                if (deviceViewModel != null) {
+                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+                } else {
+                    bluetoothDevices = new HashSet<>();
+                }
+                break;
+            case BluetoothDevice.ACTION_FOUND:
+                if (deviceViewModel != null && device != null) {
+                    bluetoothDevices.add(device);
+                    count++;
+                    if (count == REFRESH_COUNT) {
+                        count = 0;
+                        deviceViewModel.setDeviceSet(bluetoothDevices);
+                    }
+                }
+                break;
+            case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                 deviceViewModel.setDeviceSet(bluetoothDevices);
-            }
+                break;
         }
     }
 

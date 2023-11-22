@@ -60,6 +60,8 @@ public class BluetoothService extends Service {
         }
         // 注册广播接收器来处理设备发现
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(bluetoothScanReceiver, filter);
         // 注册广播接收器来处理设备配对
         IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
