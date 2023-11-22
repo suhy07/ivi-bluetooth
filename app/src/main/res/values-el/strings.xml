@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Διαχείριση συσκευών</string>
+    <string name="title_phone">Τηλέφωνο Bluetooth</string>
+    <string name="title_music">Μουσική Bluetooth</string>
+    <string name="title_address">τηλεφωνικός κατάλογος</string>
+    <string name="title_contact">Επαφή</string>
+    <string name="title_call_log">Αρχεία καταγραφής κλήσεων</string>
+    <string name="title_dial">Σελίδα κλήσης</string>
+    <string name="bluetooth_switch">Διακόπτης Bluetooth</string>
+    <string name="bluetooth_name">Το όνομα της συσκευής</string>
+    <string name="bluetooth_rename">μετονομάζω</string>
+    <string name="bluetooth_scan">σάρωση</string>
+    <string name="str_finish">τελειώνω</string>
+    <string name="choose_options">Επιλέξτε μια ενέργεια</string>
+    <string name="connect">συνδέω</string>
+    <string name="disconnect">Αποσυνδέω</string>
+    <string name="unpair">Κατάργηση σύζευξης</string>
+    <string name="pair_status_pair">Έναρξη σύζευξης</string>
+    <string name="pair_status_paired">Συνδυασμό</string>
+    <string name="pair_status_pairing">Αντιστοίχιση</string>
+    <string name="pair_status_unpaired">Δεν έχει αντιστοιχιστεί</string>
+    <string name="pair_status_unknown">Άγνωστη κατάσταση</string>
+    <string name="pair_status_failed">Η σύζευξη απέτυχε</string>
+    <string name="conn_status_connected">Συνεχόμενος</string>
+    <string name="conn_status_connecting">Σύνδεση</string>
+    <string name="conn_status_not">Δεν είναι συνδεδεμένο</string>
+    <string name="str_refresh">Ξεπλυθεί</string>
+    <string name="str_hang_up">Κλείσε</string>
+    <string name="str_answer">Απάντηση</string>
+    <string name="str_unknown_call">Άγνωστες εισερχόμενες κλήσεις</string>
+    <string name="str_not_connect_warn">Η συσκευή Bluetooth δεν είναι συνδεδεμένη</string>
+    <string name="str_unknown_device">Άγνωστη συσκευή</string>
+    <string name="str_no_number">Παρακαλώ εισάγετε έναν αριθμό</string>
+    <string name="str_contact_total1">Από κοινού</string>
+    <string name="str_contact_total2">Αρχεία καταγραφής κλήσεων</string>
+    <string name="audio_in_car">Η μηχανή του αυτοκινήτου απαντά</string>
+    <string name="audio_in_phone">Τηλεφωνητής κινητού τηλεφώνου</string>
+    <string name="status_incoming">Στην κλήση</string>
+    <string name="status_outgoing">Κλήσης</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

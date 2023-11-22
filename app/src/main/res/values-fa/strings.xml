@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">بلوتوث</string>
+    <string name="str_title_device">مدیریت دستگاه</string>
+    <string name="title_phone">تلفن بلوتوث</string>
+    <string name="title_music">موسیقی بلوتوث</string>
+    <string name="title_address">راهنمای تلفن</string>
+    <string name="title_contact">تماس</string>
+    <string name="title_call_log">ثبت تماسها</string>
+    <string name="title_dial">صفحه تماس</string>
+    <string name="bluetooth_switch">سوئیچ بلوتوث</string>
+    <string name="bluetooth_name">نام دستگاه</string>
+    <string name="bluetooth_rename">نام</string>
+    <string name="bluetooth_scan">اسکن</string>
+    <string name="str_finish">پایان</string>
+    <string name="choose_options">لطفا یک عمل را انتخاب کنید</string>
+    <string name="connect">اتصال</string>
+    <string name="disconnect">قطع</string>
+    <string name="unpair">پرداخت نشده</string>
+    <string name="pair_status_pair">شروع جفت شدن</string>
+    <string name="pair_status_paired">زوج</string>
+    <string name="pair_status_pairing">جفت شدن</string>
+    <string name="pair_status_unpaired">جفت نشده</string>
+    <string name="pair_status_unknown">وضعیت ناشناخته</string>
+    <string name="pair_status_failed">خرابی در جفت شدن</string>
+    <string name="conn_status_connected">متصل</string>
+    <string name="conn_status_connecting">اتصال</string>
+    <string name="conn_status_not">متصل نیست</string>
+    <string name="str_refresh">سرخ شد</string>
+    <string name="str_hang_up">دار زدن</string>
+    <string name="str_answer">پاسخ</string>
+    <string name="str_unknown_call">تماسهای ورودی ناشناخته</string>
+    <string name="str_not_connect_warn">دستگاه Bluetooth متصل نیست</string>
+    <string name="str_unknown_device">دستگاه ناشناخته</string>
+    <string name="str_no_number">لطفا یک شماره وارد کنید</string>
+    <string name="str_contact_total1">مشترک</string>
+    <string name="str_contact_total2">سیاهههای تماس</string>
+    <string name="audio_in_car">ماشین پاسخ می دهد</string>
+    <string name="audio_in_phone">پاسخ تلفن همراه</string>
+    <string name="status_incoming">در تماس</string>
+    <string name="status_outgoing">شماره گیری</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

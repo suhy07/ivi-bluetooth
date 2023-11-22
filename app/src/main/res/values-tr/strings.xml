@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth Bağlantısı</string>
+    <string name="str_title_device">Cihaz yönetimi</string>
+    <string name="title_phone">Bluetooth telefon</string>
+    <string name="title_music">Bluetooth müzik</string>
+    <string name="title_address">Telefon rehberi</string>
+    <string name="title_contact">Temas</string>
+    <string name="title_call_log">Arama kayıtları</string>
+    <string name="title_dial">Çağrı sayfası</string>
+    <string name="bluetooth_switch">Bluetooth anahtarı</string>
+    <string name="bluetooth_name">Cihazın adı</string>
+    <string name="bluetooth_rename">Yeniden Adlandır</string>
+    <string name="bluetooth_scan">taramak</string>
+    <string name="str_finish">bitirmek</string>
+    <string name="choose_options">Lütfen bir eylem seçin</string>
+    <string name="connect">bağlamak</string>
+    <string name="disconnect">Ayırmak</string>
+    <string name="unpair">Eşleştirmeyi kaldırma</string>
+    <string name="pair_status_pair">Eşleştirmeye başla</string>
+    <string name="pair_status_paired">Eşleştirilmiş</string>
+    <string name="pair_status_pairing">Eşleştirme</string>
+    <string name="pair_status_unpaired">Eşleştirilmedi</string>
+    <string name="pair_status_unknown">Bilinmiyor durumu</string>
+    <string name="pair_status_failed">Eşleştirme başarısız oldu</string>
+    <string name="conn_status_connected">Bağlandı</string>
+    <string name="conn_status_connecting">Bağlanma</string>
+    <string name="conn_status_not">Bağlı değil</string>
+    <string name="str_refresh">Temiz -lendi</string>
+    <string name="str_hang_up">Bekle</string>
+    <string name="str_answer">Cevap</string>
+    <string name="str_unknown_call">Bilinmeyen gelen aramalar</string>
+    <string name="str_not_connect_warn">Bluetooth cihazı bağlı değil</string>
+    <string name="str_unknown_device">Bilinmeyen cihaz</string>
+    <string name="str_no_number">Lütfen bir numara giriniz</string>
+    <string name="str_contact_total1">ortak</string>
+    <string name="str_contact_total2">Arama Kayıtları</string>
+    <string name="audio_in_car">Araba makinesi cevaplar</string>
+    <string name="audio_in_phone">Cep telefonu yanıtlama</string>
+    <string name="status_incoming">Görüşmede</string>
+    <string name="status_outgoing">Arama</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

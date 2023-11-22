@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
     <string name="app_name">藍牙</string>
     <string name="str_title_device">設備管理</string>
     <string name="title_phone">藍牙電話</string>
@@ -21,8 +22,8 @@
     <string name="pair_status_paired">已配對</string>
     <string name="pair_status_pairing">正在配對</string>
     <string name="pair_status_unpaired">未配對</string>
-    <string name="pair_status_failed">配對失敗</string>
     <string name="pair_status_unknown">未知狀態</string>
+    <string name="pair_status_failed">配對失敗</string>
     <string name="conn_status_connected">已連接</string>
     <string name="conn_status_connecting">連接中</string>
     <string name="conn_status_not">未連接</string>
@@ -39,5 +40,5 @@
     <string name="audio_in_phone">手機接聽</string>
     <string name="status_incoming">來電中</string>
     <string name="status_outgoing">撥號中</string>
-    <string name="str_contact_search">聯繫人搜索</string>
+    <!--2023-11-22 16:45 >> end-->
 </resources>

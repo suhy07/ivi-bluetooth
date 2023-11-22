@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">บลูทูธ</string>
+    <string name="str_title_device">การจัดการอุปกรณ์</string>
+    <string name="title_phone">โทรศัพท์บลูทู ธ</string>
+    <string name="title_music">เพลงบลูทูธ</string>
+    <string name="title_address">สมุดโทรศัพท์</string>
+    <string name="title_contact">ติดต่อ</string>
+    <string name="title_call_log">โทร</string>
+    <string name="title_dial">หน้าโทร</string>
+    <string name="bluetooth_switch">สวิตช์ Bluetooth</string>
+    <string name="bluetooth_name">ชื่อของอุปกรณ์</string>
+    <string name="bluetooth_rename">ตั้งชื่อใหม่</string>
+    <string name="bluetooth_scan">สแกน</string>
+    <string name="str_finish">เสร็จ</string>
+    <string name="choose_options">โปรดเลือกการกระทํา</string>
+    <string name="connect">ติด</string>
+    <string name="disconnect">ยก เลิก</string>
+    <string name="unpair">การยกเลิกการจับคู่</string>
+    <string name="pair_status_pair">เริ่มจับคู่</string>
+    <string name="pair_status_paired">จับ คู่</string>
+    <string name="pair_status_pairing">จับ คู่</string>
+    <string name="pair_status_unpaired">ไม่ได้จับคู่</string>
+    <string name="pair_status_unknown">ไม่ทราบสถานะ</string>
+    <string name="pair_status_failed">การจับคู่ล้มเหลว</string>
+    <string name="conn_status_connected">เชื่อม ต่อ</string>
+    <string name="conn_status_connecting">เชื่อม ต่อ</string>
+    <string name="conn_status_not">ไม่ได้เชื่อมต่อ</string>
+    <string name="str_refresh">ล้างออก</string>
+    <string name="str_hang_up">วางหู</string>
+    <string name="str_answer">ตอบ</string>
+    <string name="str_unknown_call">สายเรียกเข้าที่ไม่รู้จัก</string>
+    <string name="str_not_connect_warn">อุปกรณ์ Bluetooth ไม่ได้เชื่อมต่ออยู่</string>
+    <string name="str_unknown_device">อุปกรณ์ที่ไม่รู้จัก</string>
+    <string name="str_no_number">กรุณาใส่หมายเลข</string>
+    <string name="str_contact_total1">เหมือนกัน</string>
+    <string name="str_contact_total2">โทร</string>
+    <string name="audio_in_car">คําตอบของเครื่องในรถยนต์</string>
+    <string name="audio_in_phone">รับโทรศัพท์มือถือ</string>
+    <string name="status_incoming">ในการโทร</string>
+    <string name="status_outgoing">การโทรออก</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

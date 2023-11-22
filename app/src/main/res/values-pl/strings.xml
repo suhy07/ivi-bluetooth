@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Łączność Bluetooth</string>
+    <string name="str_title_device">Zarządzanie urządzeniami</string>
+    <string name="title_phone">Telefon Bluetooth</string>
+    <string name="title_music">Muzyka Bluetooth</string>
+    <string name="title_address">książka telefoniczna</string>
+    <string name="title_contact">Kontakt</string>
+    <string name="title_call_log">Dzienniki połączeń</string>
+    <string name="title_dial">Strona zaproszenia</string>
+    <string name="bluetooth_switch">Przełącznik Bluetooth</string>
+    <string name="bluetooth_name">Nazwa urządzenia</string>
+    <string name="bluetooth_rename">przemianować</string>
+    <string name="bluetooth_scan">skanować</string>
+    <string name="str_finish">skończyć</string>
+    <string name="choose_options">Wybierz akcję</string>
+    <string name="connect">połączyć</string>
+    <string name="disconnect">Odłączyć</string>
+    <string name="unpair">Usuwanie parowania</string>
+    <string name="pair_status_pair">Rozpocznij parowanie</string>
+    <string name="pair_status_paired">Sparowane</string>
+    <string name="pair_status_pairing">Parowanie</string>
+    <string name="pair_status_unpaired">Nie sparowano</string>
+    <string name="pair_status_unknown">Nieznany stan</string>
+    <string name="pair_status_failed">Parowanie nie powiodło się</string>
+    <string name="conn_status_connected">Spójny</string>
+    <string name="conn_status_connecting">Podłączanie</string>
+    <string name="conn_status_not">Nie podłączono</string>
+    <string name="str_refresh">Opróżniany</string>
+    <string name="str_hang_up">Rozłącz się</string>
+    <string name="str_answer">Odpowiedź</string>
+    <string name="str_unknown_call">Nieznane połączenia przychodzące</string>
+    <string name="str_not_connect_warn">Urządzenie Bluetooth nie jest podłączone</string>
+    <string name="str_unknown_device">Nieznane urządzenie</string>
+    <string name="str_no_number">Podaj numer</string>
+    <string name="str_contact_total1">Wspólne</string>
+    <string name="str_contact_total2">Rejestry połączeń</string>
+    <string name="audio_in_car">Automat samochodowy odpowiada</string>
+    <string name="audio_in_phone">Odbieranie telefonów komórkowych</string>
+    <string name="status_incoming">W zaproszeniu do składania wniosków</string>
+    <string name="status_outgoing">Wybierania numeru</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

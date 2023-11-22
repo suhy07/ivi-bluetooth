@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Gestión de dispositivos</string>
+    <string name="title_phone">Teléfono Bluetooth</string>
+    <string name="title_music">Música Bluetooth</string>
+    <string name="title_address">guía telefónica</string>
+    <string name="title_contact">Contacto</string>
+    <string name="title_call_log">Registros de llamadas</string>
+    <string name="title_dial">Página de la convocatoria</string>
+    <string name="bluetooth_switch">Interruptor Bluetooth</string>
+    <string name="bluetooth_name">El nombre del dispositivo</string>
+    <string name="bluetooth_rename">rebautizar</string>
+    <string name="bluetooth_scan">escanear</string>
+    <string name="str_finish">terminar</string>
+    <string name="choose_options">Por favor, seleccione una acción</string>
+    <string name="connect">conectar</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="unpair">Desemparejamiento</string>
+    <string name="pair_status_pair">Iniciar el emparejamiento</string>
+    <string name="pair_status_paired">Emparejado</string>
+    <string name="pair_status_pairing">Apareamiento</string>
+    <string name="pair_status_unpaired">No emparejado</string>
+    <string name="pair_status_unknown">Estado desconocido</string>
+    <string name="pair_status_failed">Error de emparejamiento</string>
+    <string name="conn_status_connected">Conexo</string>
+    <string name="conn_status_connecting">Conectivo</string>
+    <string name="conn_status_not">No conectado</string>
+    <string name="str_refresh">Enrojecida</string>
+    <string name="str_hang_up">Cuelga</string>
+    <string name="str_answer">Respuesta</string>
+    <string name="str_unknown_call">Llamadas entrantes desconocidas</string>
+    <string name="str_not_connect_warn">El dispositivo Bluetooth no está conectado</string>
+    <string name="str_unknown_device">Dispositivo desconocido</string>
+    <string name="str_no_number">Por favor, introduzca un número</string>
+    <string name="str_contact_total1">en común</string>
+    <string name="str_contact_total2">Registros de llamadas</string>
+    <string name="audio_in_car">La máquina del coche responde</string>
+    <string name="audio_in_phone">Contestador de teléfono móvil</string>
+    <string name="status_incoming">En la llamada</string>
+    <string name="status_outgoing">Marcación</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

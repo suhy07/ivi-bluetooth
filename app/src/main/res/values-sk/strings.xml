@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Správa zariadení</string>
+    <string name="title_phone">Bluetooth telefón</string>
+    <string name="title_music">Bluetooth hudba</string>
+    <string name="title_address">telefónny zoznam</string>
+    <string name="title_contact">Kontakt</string>
+    <string name="title_call_log">Denníky hovorov</string>
+    <string name="title_dial">Stránka hovoru</string>
+    <string name="bluetooth_switch">Prepínač Bluetooth</string>
+    <string name="bluetooth_name">Názov zariadenia</string>
+    <string name="bluetooth_rename">premenovať</string>
+    <string name="bluetooth_scan">skenovať</string>
+    <string name="str_finish">dokončiť</string>
+    <string name="choose_options">Vyberte akciu</string>
+    <string name="connect">pripojiť</string>
+    <string name="disconnect">Odpojiť</string>
+    <string name="unpair">Zrušenie párovania</string>
+    <string name="pair_status_pair">Spustiť párovanie</string>
+    <string name="pair_status_paired">Spárovaný</string>
+    <string name="pair_status_pairing">Párovanie</string>
+    <string name="pair_status_unpaired">Nie je spárované</string>
+    <string name="pair_status_unknown">Neznámy stav</string>
+    <string name="pair_status_failed">Párovanie zlyhalo</string>
+    <string name="conn_status_connected">Spojený</string>
+    <string name="conn_status_connecting">Pripojenie</string>
+    <string name="conn_status_not">Nie je pripojené</string>
+    <string name="str_refresh">Vyprázdnia</string>
+    <string name="str_hang_up">zavesiť</string>
+    <string name="str_answer">Odpoveď</string>
+    <string name="str_unknown_call">Neznáme prichádzajúce hovory</string>
+    <string name="str_not_connect_warn">Zariadenie Bluetooth nie je pripojené</string>
+    <string name="str_unknown_device">Neznáme zariadenie</string>
+    <string name="str_no_number">Zadajte číslo</string>
+    <string name="str_contact_total1">spoločné</string>
+    <string name="str_contact_total2">Denníky hovorov</string>
+    <string name="audio_in_car">Autostroj odpovedá</string>
+    <string name="audio_in_phone">Odpovedanie na mobilný telefón</string>
+    <string name="status_incoming">Vo výzve</string>
+    <string name="status_outgoing">Vytáčanie</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

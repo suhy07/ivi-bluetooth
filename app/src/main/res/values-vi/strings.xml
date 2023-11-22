@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Quản lý thiết bị</string>
+    <string name="title_phone">Điện thoại Bluetooth</string>
+    <string name="title_music">Nhạc Bluetooth</string>
+    <string name="title_address">Danh bạ điện thoại</string>
+    <string name="title_contact">Sự tiếp xúc</string>
+    <string name="title_call_log">Nhật ký cuộc gọi</string>
+    <string name="title_dial">Trang cuộc gọi</string>
+    <string name="bluetooth_switch">Công tắc Bluetooth</string>
+    <string name="bluetooth_name">Tên của thiết bị</string>
+    <string name="bluetooth_rename">Rename</string>
+    <string name="bluetooth_scan">quét</string>
+    <string name="str_finish">kết thúc</string>
+    <string name="choose_options">Vui lòng chọn một hành động</string>
+    <string name="connect">kết nối</string>
+    <string name="disconnect">Ngắt kết nối</string>
+    <string name="unpair">Hủy ghép nối</string>
+    <string name="pair_status_pair">Bắt đầu ghép nối</string>
+    <string name="pair_status_paired">Kết nối</string>
+    <string name="pair_status_pairing">Ghép</string>
+    <string name="pair_status_unpaired">Không được ghép nối</string>
+    <string name="pair_status_unknown">Tình trạng không xác định</string>
+    <string name="pair_status_failed">Ghép nối không thành công</string>
+    <string name="conn_status_connected">Kết nối</string>
+    <string name="conn_status_connecting">Kết nối</string>
+    <string name="conn_status_not">Không kết nối</string>
+    <string name="str_refresh">đỏ bừng</string>
+    <string name="str_hang_up">Chờ máy</string>
+    <string name="str_answer">Trả lời</string>
+    <string name="str_unknown_call">Cuộc gọi đến không xác định</string>
+    <string name="str_not_connect_warn">Thiết bị Bluetooth không được kết nối</string>
+    <string name="str_unknown_device">Thiết bị không xác định</string>
+    <string name="str_no_number">Vui lòng nhập số</string>
+    <string name="str_contact_total1">Điểm chung</string>
+    <string name="str_contact_total2">Nhật ký cuộc gọi</string>
+    <string name="audio_in_car">Máy ô tô trả lời</string>
+    <string name="audio_in_phone">Điện thoại di động trả lời</string>
+    <string name="status_incoming">Trong cuộc gọi</string>
+    <string name="status_outgoing">Gọi</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

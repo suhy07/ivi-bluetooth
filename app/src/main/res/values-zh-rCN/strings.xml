@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">蓝牙</string>
     <string name="str_title_device">设备管理</string>
@@ -12,7 +13,7 @@
     <string name="bluetooth_rename">重命名</string>
     <string name="bluetooth_scan">扫描</string>
     <string name="str_finish">完成</string>
-    <string name="choose_options">请选择操作:</string>
+    <string name="choose_options">请选择操作</string>
     <string name="connect">连接</string>
     <string name="disconnect">断开连接</string>
     <string name="unpair">取消配对</string>
@@ -28,13 +29,13 @@
     <string name="str_refresh">刷新</string>
     <string name="str_hang_up">挂断</string>
     <string name="str_answer">接听</string>
-    <string name="str_unknown_call">未知号码</string>
+    <string name="str_unknown_call">未知来电</string>
     <string name="str_not_connect_warn">未连接蓝牙设备</string>
     <string name="str_unknown_device">未知设备</string>
     <string name="str_no_number">请输入号码</string>
-    <string name="str_contact_total1">共有 </string>
-    <string name="str_contact_total2"> 条通话记录</string>
-    <string name="audio_in_car">本机接听</string>
+    <string name="str_contact_total1">共有</string>
+    <string name="str_contact_total2">条通话记录</string>
+    <string name="audio_in_car">车机接听</string>
     <string name="audio_in_phone">手机接听</string>
     <string name="status_incoming">来电中</string>
     <string name="status_outgoing">拨号中</string>

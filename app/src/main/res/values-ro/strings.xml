@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Gestionarea dispozitivelor</string>
+    <string name="title_phone">Telefon Bluetooth</string>
+    <string name="title_music">Muzică Bluetooth</string>
+    <string name="title_address">carte de telefon</string>
+    <string name="title_contact">Contact</string>
+    <string name="title_call_log">Jurnale de apeluri</string>
+    <string name="title_dial">Pagina de apel</string>
+    <string name="bluetooth_switch">Comutator Bluetooth</string>
+    <string name="bluetooth_name">Numele dispozitivului</string>
+    <string name="bluetooth_rename">redenumire</string>
+    <string name="bluetooth_scan">scanare</string>
+    <string name="str_finish">termina</string>
+    <string name="choose_options">Vă rugăm să selectați o acțiune</string>
+    <string name="connect">conecta</string>
+    <string name="disconnect">Deconecta</string>
+    <string name="unpair">Anularea asocierii</string>
+    <string name="pair_status_pair">Începeți asocierea</string>
+    <string name="pair_status_paired">Asociat</string>
+    <string name="pair_status_pairing">Asocierea</string>
+    <string name="pair_status_unpaired">Nu este asociat</string>
+    <string name="pair_status_unknown">Statut necunoscut</string>
+    <string name="pair_status_failed">Împerecherea nu a reușit</string>
+    <string name="conn_status_connected">Conectat</string>
+    <string name="conn_status_connecting">Conectarea</string>
+    <string name="conn_status_not">Nu este conectat</string>
+    <string name="str_refresh">Eliminate</string>
+    <string name="str_hang_up">închide</string>
+    <string name="str_answer">Răspunde</string>
+    <string name="str_unknown_call">Apeluri primite necunoscute</string>
+    <string name="str_not_connect_warn">Dispozitivul Bluetooth nu este conectat</string>
+    <string name="str_unknown_device">Dispozitiv necunoscut</string>
+    <string name="str_no_number">Vă rugăm să introduceți un număr</string>
+    <string name="str_contact_total1">în comun</string>
+    <string name="str_contact_total2">Jurnale de apeluri</string>
+    <string name="audio_in_car">Mașina auto răspunde</string>
+    <string name="audio_in_phone">Răspuns la telefonul mobil</string>
+    <string name="status_incoming">În apel</string>
+    <string name="status_outgoing">Apelare</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

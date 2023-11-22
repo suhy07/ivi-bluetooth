@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Блютуз</string>
+    <string name="str_title_device">Управление устройствами</string>
+    <string name="title_phone">Bluetooth-телефон</string>
+    <string name="title_music">Музыка по Bluetooth</string>
+    <string name="title_address">Телефонный справочник</string>
+    <string name="title_contact">Контакт</string>
+    <string name="title_call_log">Журналы вызовов</string>
+    <string name="title_dial">Страница звонка</string>
+    <string name="bluetooth_switch">Переключатель Bluetooth</string>
+    <string name="bluetooth_name">Название устройства</string>
+    <string name="bluetooth_rename">переименовать</string>
+    <string name="bluetooth_scan">сканировать</string>
+    <string name="str_finish">заканчивать</string>
+    <string name="choose_options">Пожалуйста, выберите действие</string>
+    <string name="connect">соединять</string>
+    <string name="disconnect">Разъединять</string>
+    <string name="unpair">Отмена сопряжения</string>
+    <string name="pair_status_pair">Начать сопряжение</string>
+    <string name="pair_status_paired">Парный</string>
+    <string name="pair_status_pairing">Спаривание</string>
+    <string name="pair_status_unpaired">Не в паре</string>
+    <string name="pair_status_unknown">Неизвестный статус</string>
+    <string name="pair_status_failed">Не удалось выполнить сопряжение</string>
+    <string name="conn_status_connected">Связанный</string>
+    <string name="conn_status_connecting">Соединительный</string>
+    <string name="conn_status_not">Не подключено</string>
+    <string name="str_refresh">Покраснел</string>
+    <string name="str_hang_up">Повесь трубку</string>
+    <string name="str_answer">Ответ</string>
+    <string name="str_unknown_call">Неизвестные входящие звонки</string>
+    <string name="str_not_connect_warn">Устройство Bluetooth не подключено</string>
+    <string name="str_unknown_device">Неизвестное устройство</string>
+    <string name="str_no_number">Пожалуйста, введите номер</string>
+    <string name="str_contact_total1">Общее</string>
+    <string name="str_contact_total2">Журналы вызовов</string>
+    <string name="audio_in_car">Автомобильная машина отвечает</string>
+    <string name="audio_in_phone">Ответ на звонок по мобильному телефону</string>
+    <string name="status_incoming">В звонке</string>
+    <string name="status_outgoing">Набор</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

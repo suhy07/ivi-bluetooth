@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth-verbinding</string>
+    <string name="str_title_device">Apparaatbeheer</string>
+    <string name="title_phone">Bluetooth-telefoon</string>
+    <string name="title_music">Bluetooth-muziek</string>
+    <string name="title_address">telefoongids</string>
+    <string name="title_contact">Contact</string>
+    <string name="title_call_log">Oproep logs</string>
+    <string name="title_dial">Bel pagina</string>
+    <string name="bluetooth_switch">Bluetooth-schakelaar</string>
+    <string name="bluetooth_name">De naam van het apparaat</string>
+    <string name="bluetooth_rename">herdopen</string>
+    <string name="bluetooth_scan">scannen</string>
+    <string name="str_finish">Fins</string>
+    <string name="choose_options">Selecteer een actie</string>
+    <string name="connect">verbinden</string>
+    <string name="disconnect">Scheiden</string>
+    <string name="unpair">Ontkoppelen</string>
+    <string name="pair_status_pair">Begin met koppelen</string>
+    <string name="pair_status_paired">Gekoppeld</string>
+    <string name="pair_status_pairing">Koppeling</string>
+    <string name="pair_status_unpaired">Niet gekoppeld</string>
+    <string name="pair_status_unknown">Onbekende status</string>
+    <string name="pair_status_failed">Koppelen mislukt</string>
+    <string name="conn_status_connected">Verbonden</string>
+    <string name="conn_status_connecting">Aansluiten</string>
+    <string name="conn_status_not">Niet verbonden</string>
+    <string name="str_refresh">Gespoeld</string>
+    <string name="str_hang_up">Ophangen</string>
+    <string name="str_answer">Antwoorden</string>
+    <string name="str_unknown_call">Onbekende inkomende oproepen</string>
+    <string name="str_not_connect_warn">Het Bluetooth-apparaat is niet verbonden</string>
+    <string name="str_unknown_device">Onbekend apparaat</string>
+    <string name="str_no_number">Voer een nummer in</string>
+    <string name="str_contact_total1">gemeenschappelijk</string>
+    <string name="str_contact_total2">Logboeken van oproepen</string>
+    <string name="audio_in_car">De automachine antwoordt</string>
+    <string name="audio_in_phone">Mobiele telefoon beantwoorden</string>
+    <string name="status_incoming">In het gesprek</string>
+    <string name="status_outgoing">Kiezen</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

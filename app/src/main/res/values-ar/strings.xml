@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">بلوتوث</string>
+    <string name="str_title_device">إدارة الجهاز</string>
+    <string name="title_phone">هاتف بلوتوث</string>
+    <string name="title_music">موسيقى بلوتوث</string>
+    <string name="title_address">دليل الهاتف</string>
+    <string name="title_contact">الاتصال</string>
+    <string name="title_call_log">سجلات المكالمات</string>
+    <string name="title_dial">صفحة الاتصال</string>
+    <string name="bluetooth_switch">مفتاح بلوتوث</string>
+    <string name="bluetooth_name">اسم الجهاز</string>
+    <string name="bluetooth_rename">اعاده تسميه</string>
+    <string name="bluetooth_scan">مسح ضوئي</string>
+    <string name="str_finish">أنهى</string>
+    <string name="choose_options">الرجاء تحديد إجراء</string>
+    <string name="connect">عشق</string>
+    <string name="disconnect">قطع الاتصال</string>
+    <string name="unpair">إلغاء الاقتران</string>
+    <string name="pair_status_pair">بدء الاقتران</string>
+    <string name="pair_status_paired">اقران</string>
+    <string name="pair_status_pairing">الاقران</string>
+    <string name="pair_status_unpaired">غير مقترن</string>
+    <string name="pair_status_unknown">حالة غير معروفة</string>
+    <string name="pair_status_failed">فشل الإقران</string>
+    <string name="conn_status_connected">متصل</string>
+    <string name="conn_status_connecting">الاتصال</string>
+    <string name="conn_status_not">غير متصل</string>
+    <string name="str_refresh">مسح</string>
+    <string name="str_hang_up">قطع الاتصال</string>
+    <string name="str_answer">جواب</string>
+    <string name="str_unknown_call">مكالمات واردة غير معروفة</string>
+    <string name="str_not_connect_warn">جهاز البلوتوث غير متصل</string>
+    <string name="str_unknown_device">جهاز غير معروف</string>
+    <string name="str_no_number">الرجاء إدخال رقم</string>
+    <string name="str_contact_total1">مشترك</string>
+    <string name="str_contact_total2">سجلات المكالمات</string>
+    <string name="audio_in_car">إجابات آلة السيارة</string>
+    <string name="audio_in_phone">الرد على الهاتف المحمول</string>
+    <string name="status_incoming">في المكالمة</string>
+    <string name="status_outgoing">الطلب</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

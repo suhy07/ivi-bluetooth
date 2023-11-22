@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">בלוטות\'</string>
+    <string name="str_title_device">ניהול מכשירים</string>
+    <string name="title_phone">טלפון Bluetooth</string>
+    <string name="title_music">מוסיקת Bluetooth</string>
+    <string name="title_address">מדריך טלפונים</string>
+    <string name="title_contact">איש קשר</string>
+    <string name="title_call_log">יומני שיחות</string>
+    <string name="title_dial">דף שיחה</string>
+    <string name="bluetooth_switch">מתג Bluetooth</string>
+    <string name="bluetooth_name">שם המכשיר</string>
+    <string name="bluetooth_rename">לשנות</string>
+    <string name="bluetooth_scan">סרק</string>
+    <string name="str_finish">סיום</string>
+    <string name="choose_options">אנא בחר פעולה</string>
+    <string name="connect">התחבר</string>
+    <string name="disconnect">ניתק</string>
+    <string name="unpair">ביטול שיוך</string>
+    <string name="pair_status_pair">התחל להתאים</string>
+    <string name="pair_status_paired">לזווג</string>
+    <string name="pair_status_pairing">זיווג</string>
+    <string name="pair_status_unpaired">לא משויך</string>
+    <string name="pair_status_unknown">מצב לא ידוע</string>
+    <string name="pair_status_failed">השיוך נכשל</string>
+    <string name="conn_status_connected">מחובר</string>
+    <string name="conn_status_connecting">חיבור</string>
+    <string name="conn_status_not">לא מחובר</string>
+    <string name="str_refresh">סמוק</string>
+    <string name="str_hang_up">נתק</string>
+    <string name="str_answer">ענה</string>
+    <string name="str_unknown_call">שיחות נכנסות לא ידועות</string>
+    <string name="str_not_connect_warn">התקן Bluetooth אינו מחובר</string>
+    <string name="str_unknown_device">מכשיר לא ידוע</string>
+    <string name="str_no_number">אנא הכנס מספר</string>
+    <string name="str_contact_total1">במשותף</string>
+    <string name="str_contact_total2">יומני שיחות</string>
+    <string name="audio_in_car">מכונת הרכב עונה</string>
+    <string name="audio_in_phone">מענה לטלפון נייד</string>
+    <string name="status_incoming">בשיחה</string>
+    <string name="status_outgoing">חיוג</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

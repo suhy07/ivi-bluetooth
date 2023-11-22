@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Manajemen perangkat</string>
+    <string name="title_phone">Telepon Bluetooth</string>
+    <string name="title_music">Musik Bluetooth</string>
+    <string name="title_address">Direktori Telepon</string>
+    <string name="title_contact">Kontak</string>
+    <string name="title_call_log">Log panggilan</string>
+    <string name="title_dial">Halaman panggilan</string>
+    <string name="bluetooth_switch">Sakelar Bluetooth</string>
+    <string name="bluetooth_name">Nama perangkat</string>
+    <string name="bluetooth_rename">Ubah nama</string>
+    <string name="bluetooth_scan">memindai</string>
+    <string name="str_finish">selesai</string>
+    <string name="choose_options">Pilih tindakan</string>
+    <string name="connect">sambung</string>
+    <string name="disconnect">Lepaskan</string>
+    <string name="unpair">Melepas pasangan</string>
+    <string name="pair_status_pair">Mulai memasangkan</string>
+    <string name="pair_status_paired">Dipasangkan</string>
+    <string name="pair_status_pairing">Pasangan</string>
+    <string name="pair_status_unpaired">Tidak dipasangkan</string>
+    <string name="pair_status_unknown">Status tidak diketahui</string>
+    <string name="pair_status_failed">Pemasangan gagal</string>
+    <string name="conn_status_connected">Terhubung</string>
+    <string name="conn_status_connecting">Menghubungkan</string>
+    <string name="conn_status_not">Tidak terhubung</string>
+    <string name="str_refresh">Memerah</string>
+    <string name="str_hang_up">Tutup</string>
+    <string name="str_answer">Menjawab</string>
+    <string name="str_unknown_call">Panggilan masuk tidak diketahui</string>
+    <string name="str_not_connect_warn">Perangkat Bluetooth tidak tersambung</string>
+    <string name="str_unknown_device">Perangkat tidak dikenal</string>
+    <string name="str_no_number">Silakan masukkan nomor</string>
+    <string name="str_contact_total1">kesamaan</string>
+    <string name="str_contact_total2">Log panggilan</string>
+    <string name="audio_in_car">Mesin mobil menjawab</string>
+    <string name="audio_in_phone">Penjawab ponsel</string>
+    <string name="status_incoming">Dalam panggilan</string>
+    <string name="status_outgoing">Panggilan</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

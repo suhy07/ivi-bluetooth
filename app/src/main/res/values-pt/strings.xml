@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Gerenciamento de dispositivos</string>
+    <string name="title_phone">Telefone Bluetooth</string>
+    <string name="title_music">Música Bluetooth</string>
+    <string name="title_address">lista telefônica</string>
+    <string name="title_contact">Contato</string>
+    <string name="title_call_log">Registros de chamadas</string>
+    <string name="title_dial">Página de chamada</string>
+    <string name="bluetooth_switch">Interruptor Bluetooth</string>
+    <string name="bluetooth_name">O nome do dispositivo</string>
+    <string name="bluetooth_rename">renomear</string>
+    <string name="bluetooth_scan">varredura</string>
+    <string name="str_finish">acabar</string>
+    <string name="choose_options">Selecione uma ação</string>
+    <string name="connect">ligar</string>
+    <string name="disconnect">Desligar</string>
+    <string name="unpair">Desemparelhamento</string>
+    <string name="pair_status_pair">Iniciar emparelhamento</string>
+    <string name="pair_status_paired">Emparelhado</string>
+    <string name="pair_status_pairing">Emparelhamento</string>
+    <string name="pair_status_unpaired">Não emparelhado</string>
+    <string name="pair_status_unknown">Status desconhecido</string>
+    <string name="pair_status_failed">Falha no emparelhamento</string>
+    <string name="conn_status_connected">Conectado</string>
+    <string name="conn_status_connecting">Conectar</string>
+    <string name="conn_status_not">Não conectado</string>
+    <string name="str_refresh">Liberado</string>
+    <string name="str_hang_up">Desligar</string>
+    <string name="str_answer">Responder</string>
+    <string name="str_unknown_call">Chamadas recebidas desconhecidas</string>
+    <string name="str_not_connect_warn">O dispositivo Bluetooth não está conectado</string>
+    <string name="str_unknown_device">Dispositivo desconhecido</string>
+    <string name="str_no_number">Introduza um número</string>
+    <string name="str_contact_total1">em comum</string>
+    <string name="str_contact_total2">Registros de chamadas</string>
+    <string name="audio_in_car">A máquina do carro responde</string>
+    <string name="audio_in_phone">Atendimento de celular</string>
+    <string name="status_incoming">Na chamada</string>
+    <string name="status_outgoing">Discagem</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

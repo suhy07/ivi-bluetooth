@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Gestione dei dispositivi</string>
+    <string name="title_phone">Telefono Bluetooth</string>
+    <string name="title_music">Musica Bluetooth</string>
+    <string name="title_address">Elenco telefonico</string>
+    <string name="title_contact">Contatto</string>
+    <string name="title_call_log">Registri delle chiamate</string>
+    <string name="title_dial">Pagina di chiamata</string>
+    <string name="bluetooth_switch">Interruttore Bluetooth</string>
+    <string name="bluetooth_name">Il nome del dispositivo</string>
+    <string name="bluetooth_rename">ribattezzare</string>
+    <string name="bluetooth_scan">scannerizzare</string>
+    <string name="str_finish">finire</string>
+    <string name="choose_options">Seleziona un\'azione</string>
+    <string name="connect">connettersi</string>
+    <string name="disconnect">Disconnettere</string>
+    <string name="unpair">Annullamento dell\'abbinamento</string>
+    <string name="pair_status_pair">Avvia l\'associazione</string>
+    <string name="pair_status_paired">Accoppiato</string>
+    <string name="pair_status_pairing">Abbinamento</string>
+    <string name="pair_status_unpaired">Non accoppiato</string>
+    <string name="pair_status_unknown">Stato sconosciuto</string>
+    <string name="pair_status_failed">Accoppiamento non riuscito</string>
+    <string name="conn_status_connected">Connesso</string>
+    <string name="conn_status_connecting">Connettivo</string>
+    <string name="conn_status_not">Non connesso</string>
+    <string name="str_refresh">accaldato</string>
+    <string name="str_hang_up">Disconnetti</string>
+    <string name="str_answer">Risposta</string>
+    <string name="str_unknown_call">Chiamate in arrivo sconosciute</string>
+    <string name="str_not_connect_warn">Il dispositivo Bluetooth non è connesso</string>
+    <string name="str_unknown_device">Dispositivo sconosciuto</string>
+    <string name="str_no_number">Inserisci un numero</string>
+    <string name="str_contact_total1">in comune</string>
+    <string name="str_contact_total2">Registri delle chiamate</string>
+    <string name="audio_in_car">La macchina dell\'auto risponde</string>
+    <string name="audio_in_phone">Risposta telefonica da cellulare</string>
+    <string name="status_incoming">Nel bando</string>
+    <string name="status_outgoing">Composizione</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

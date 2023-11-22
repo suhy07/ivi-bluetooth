@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">Eszközkezelés</string>
+    <string name="title_phone">Bluetooth-telefon</string>
+    <string name="title_music">Bluetooth zene</string>
+    <string name="title_address">telefonkönyv</string>
+    <string name="title_contact">Érintkezés</string>
+    <string name="title_call_log">Hívásnaplók</string>
+    <string name="title_dial">Hívás oldal</string>
+    <string name="bluetooth_switch">Bluetooth kapcsoló</string>
+    <string name="bluetooth_name">Az eszköz neve</string>
+    <string name="bluetooth_rename">átnevez</string>
+    <string name="bluetooth_scan">átkutat</string>
+    <string name="str_finish">befejez</string>
+    <string name="choose_options">Kérjük, válasszon ki egy műveletet</string>
+    <string name="connect">összeköt</string>
+    <string name="disconnect">Szétkapcsol</string>
+    <string name="unpair">Párosítás megszüntetése</string>
+    <string name="pair_status_pair">Párosítás indítása</string>
+    <string name="pair_status_paired">Párosított</string>
+    <string name="pair_status_pairing">Párosítás</string>
+    <string name="pair_status_unpaired">Nincs párosítva</string>
+    <string name="pair_status_unknown">Ismeretlen állapot</string>
+    <string name="pair_status_failed">A párosítás sikertelen</string>
+    <string name="conn_status_connected">Összekapcsolt</string>
+    <string name="conn_status_connecting">Csatlakozó</string>
+    <string name="conn_status_not">Nincs csatlakoztatva</string>
+    <string name="str_refresh">Kipirult</string>
+    <string name="str_hang_up">lerakja</string>
+    <string name="str_answer">Válasz</string>
+    <string name="str_unknown_call">Ismeretlen bejövő hívások</string>
+    <string name="str_not_connect_warn">A Bluetooth-eszköz nincs csatlakoztatva</string>
+    <string name="str_unknown_device">Ismeretlen eszköz</string>
+    <string name="str_no_number">Kérjük, adjon meg egy számot</string>
+    <string name="str_contact_total1">közös</string>
+    <string name="str_contact_total2">hívási naplók</string>
+    <string name="audio_in_car">Az autógép válaszol</string>
+    <string name="audio_in_phone">Mobiltelefon fogadása</string>
+    <string name="status_incoming">A hívásban</string>
+    <string name="status_outgoing">Tárcsázás</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>

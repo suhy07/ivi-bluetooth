@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <!--2023-11-22 16:45 >> start-->
+    <string name="app_name">Bluetooth</string>
+    <string name="str_title_device">デバイス管理</string>
+    <string name="title_phone">Bluetooth電話</string>
+    <string name="title_music">Bluetooth音楽</string>
+    <string name="title_address">電話帳</string>
+    <string name="title_contact">接触</string>
+    <string name="title_call_log">通話履歴</string>
+    <string name="title_dial">通話ページ</string>
+    <string name="bluetooth_switch">Bluetoothスイッチ</string>
+    <string name="bluetooth_name">デバイスの名前</string>
+    <string name="bluetooth_rename">改名する</string>
+    <string name="bluetooth_scan">スキャン</string>
+    <string name="str_finish">終える</string>
+    <string name="choose_options">アクションを選択してください</string>
+    <string name="connect">繋ぐ</string>
+    <string name="disconnect">切る</string>
+    <string name="unpair">ペアリング解除</string>
+    <string name="pair_status_pair">ペアリングを開始する</string>
+    <string name="pair_status_paired">ペア</string>
+    <string name="pair_status_pairing">ペアリング</string>
+    <string name="pair_status_unpaired">ペアリングされていません</string>
+    <string name="pair_status_unknown">不明な状態</string>
+    <string name="pair_status_failed">ペアリングに失敗しました</string>
+    <string name="conn_status_connected">接続</string>
+    <string name="conn_status_connecting">接続</string>
+    <string name="conn_status_not">接続されていません</string>
+    <string name="str_refresh">フラッシュ</string>
+    <string name="str_hang_up">通信を切ってください</string>
+    <string name="str_answer">答える</string>
+    <string name="str_unknown_call">不明な着信</string>
+    <string name="str_not_connect_warn">Bluetoothデバイスが接続されていません</string>
+    <string name="str_unknown_device">不明なデバイス</string>
+    <string name="str_no_number">数値を入力してください</string>
+    <string name="str_contact_total1">共通点</string>
+    <string name="str_contact_total2">通話履歴</string>
+    <string name="audio_in_car">カーマシンが答える</string>
+    <string name="audio_in_phone">携帯電話の応対</string>
+    <string name="status_incoming">通話中</string>
+    <string name="status_outgoing">ダイヤル</string>
+    <!--2023-11-22 16:45 >> end-->
+</resources>
