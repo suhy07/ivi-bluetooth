@@ -46,7 +46,9 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
                 }
                 break;
             case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                deviceViewModel.setDeviceSet(bluetoothDevices);
+                if(deviceViewModel != null) {
+                    deviceViewModel.setDeviceSet(bluetoothDevices);
+                }
                 break;
         }
     }

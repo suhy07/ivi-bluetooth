@@ -6,19 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-       />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout_main"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         style="@style/MyTabLayout"
-        android:background="#201F34"
+        android:background="#1a1d29"
         app:tabTextColor="@color/white"
         app:tabSelectedTextColor="@color/teal_200"
         app:tabMinWidth="250dp"
@@ -29,6 +22,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#12131f"
          />
 
 

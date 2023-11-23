@@ -102,11 +102,11 @@ public class MainActivity extends AppCompatActivity {
     private void initView(){
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout_main);
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColors(new int[]{0xFF302642, 0xFF1b213d});
-        gradientDrawable.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-        gradientDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-        viewPager.setBackground(gradientDrawable);
+//        GradientDrawable gradientDrawable = new GradientDrawable();
+//        gradientDrawable.setColors(new int[]{0xFF302642, 0xFF1b213d});
+//        gradientDrawable.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+//        gradientDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+//        viewPager.setBackground(gradientDrawable);
     }
 
     private void init(){
