@@ -130,12 +130,13 @@ public class DeviceFragment extends Fragment {
                     if (res) {
                         bluetoothSwitch.setChecked(true);
                     }
+                    recyclerView.setVisibility(View.VISIBLE);
                 } else {
                     boolean res = bluetoothAdapter.disable();
                     if (res) {
                         bluetoothSwitch.setChecked(false);
                     }
-//                    deviceViewModel.setDeviceSet(new HashSet<>());
+                    recyclerView.setVisibility(View.GONE);
                     renameBtn.setEnabled(false);
                     renameBtn.setText(getText(R.string.bluetooth_rename));
                     scanBtn.setEnabled(false);
@@ -259,7 +260,7 @@ public class DeviceFragment extends Fragment {
             EventBus.getDefault().register(this);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel, getActivity());
+        deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
     }
 
