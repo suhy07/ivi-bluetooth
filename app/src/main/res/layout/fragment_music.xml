@@ -45,6 +45,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:background="@drawable/shape_button_ripple_prev"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline22"
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
@@ -53,6 +54,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:background="@drawable/shape_button_ripple_next"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline24"
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
@@ -61,6 +63,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/ic_play"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
@@ -106,5 +109,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="435dp" />
 
 </android.support.constraint.ConstraintLayout>
