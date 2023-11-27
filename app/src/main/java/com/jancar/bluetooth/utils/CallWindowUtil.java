@@ -102,6 +102,14 @@ public class CallWindowUtil {
         switchVoiceText.setOnClickListener(mOnClickListener);
         bigHangupText.setOnClickListener(mOnClickListener);
 
+        number0Text.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                click('+');
+                return true;
+            }
+        });
+
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         mLayoutParams.format = PixelFormat.RGBA_8888;
