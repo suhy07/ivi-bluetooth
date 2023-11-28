@@ -19,6 +19,16 @@ public class CallWindowUtil {
     private WindowManager mWindowManager = null;
     private Handler mHandler = null;
 
+    public boolean isBackCar() {
+        return isBackCar;
+    }
+
+    public void setBackCar(boolean backCar) {
+        isBackCar = backCar;
+    }
+
+    private boolean isBackCar = false;
+
     public CallWindowUtil(Context mContext){
         this.mContext = mContext;
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -337,8 +347,10 @@ public class CallWindowUtil {
         smallCallWindowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideSmallCallWindow();
-                showCallWindow();
+                if(!isBackCar){
+                    hideSmallCallWindow();
+                    showCallWindow();
+                }
             }
         });
 

@@ -152,8 +152,10 @@ public class MainApplication extends Application {
             String action = intent.getAction();
             if(IVISystem.ACTION_BACKCAR_FINISH.equals(action)){
                 isBackCar = false;
+                mCallWindowUtil.setBackCar(false);
             }else if(IVISystem.ACTION_BACKCAR_STARTED.equals(action)){
                 isBackCar = true;
+                mCallWindowUtil.setBackCar(true);
                 if(mCallWindowUtil.isShowCallWindow()){
                     mCallWindowUtil.hideCallWindow();
                     mCallWindowUtil.showSmallCallWindow();
