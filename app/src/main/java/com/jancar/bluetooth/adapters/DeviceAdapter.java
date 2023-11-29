@@ -52,7 +52,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private BluetoothManager jancarBluetoothManager;
     private final static int CONNECT_WHAT = 0;
     private final static int CONNECT_TIMEOUT = 1500;
-    private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
+    //private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
     public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
             , DeviceViewModel deviceViewModel) {
@@ -263,14 +263,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             if (deviceViewModel != null) {
                 deviceViewModel.setConnMap(connMap);
             }
-            new Thread(() -> {
+            jancarBluetoothManager.linkDevice(device.getAddress(), null);
+            /*new Thread(() -> {
                 synchronized (this) {
                     Message msg = Message.obtain();
                     msg.what = CONNECT_WHAT;
                     msg.obj = device;
                     mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);
                 }
-            }).start();
+            }).start();*/
         }
     }
 
@@ -279,7 +280,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         jancarBluetoothManager.stopContactOrHistoryLoad(null);
     }
 
-    class mHandler extends Handler {
+    /*class mHandler extends Handler {
         //重写handleMessage（）方法
         @Override
         public void handleMessage(Message msg) {
@@ -304,5 +305,5 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     break;
             }
         }
-    }
+    }*/
 }

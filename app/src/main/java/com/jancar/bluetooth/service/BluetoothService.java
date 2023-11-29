@@ -34,6 +34,9 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 
 public class BluetoothService extends Service {
+
+    public static final String BT_CONNECTION_STATE_CHANGED = "android.bluetooth.headsetclient.profile.action.CONNECTION_STATE_CHANGED";
+
     private BluetoothAdapter bluetoothAdapter;
     private final BluetoothScanReceiver bluetoothScanReceiver = new BluetoothScanReceiver();
     private final BluetoothPairReceiver bluetoothPairReceiver = new BluetoothPairReceiver();
@@ -71,8 +74,9 @@ public class BluetoothService extends Service {
         registerReceiver(bluetoothStateReceiver, filter2);
         // 监听连接状态
         IntentFilter filter3 = new IntentFilter();
-        filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        //filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        //filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        filter3.addAction(BT_CONNECTION_STATE_CHANGED);
         registerReceiver(bluetoothConnectionReceiver, filter3);
     }
 
