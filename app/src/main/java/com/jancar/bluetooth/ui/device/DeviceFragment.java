@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -171,6 +173,8 @@ public class DeviceFragment extends Fragment {
             if (nameTv.isEnabled()) {
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 nameTv.setEnabled(false);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
                 if (deviceViewModel != null) {
                     if (nameTv.getText().toString().trim().equals("")) {
                         nameTv.setText(deviceViewModel.getBluetoothName().getValue());
@@ -181,11 +185,14 @@ public class DeviceFragment extends Fragment {
             } else {
                 renameBtn.setText(getText(R.string.str_finish));
                 nameTv.setEnabled(true);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(nameTv, InputMethodManager.SHOW_IMPLICIT);
             }
         });
         scanBtn.setOnClickListener(v -> {
             searchDevice();
         });
+        nameTv.setImeOptions(EditorInfo.IME_ACTION_DONE);
         nameTv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -208,6 +215,23 @@ public class DeviceFragment extends Fragment {
                     editable.delete(maxLength, textLength);
                 }
             }
+        });
+        nameTv.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                renameBtn.setText(getText(R.string.bluetooth_rename));
+                nameTv.setEnabled(false);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
+                if (deviceViewModel != null) {
+                    if (nameTv.getText().toString().trim().equals("")) {
+                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+                    } else {
+                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
+                    }
+                }
+                return true;
+            }
+            return false;
         });
         return view;
     }

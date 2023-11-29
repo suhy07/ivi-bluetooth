@@ -12,6 +12,7 @@
         android:text="@string/bluetooth_switch"
         android:textAppearance="@style/MyTabLayoutText"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
@@ -22,6 +23,7 @@
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:switchMinWidth="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
@@ -31,6 +33,7 @@
         android:text="@string/bluetooth_name"
         android:textAppearance="@style/MyTabLayoutText"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -45,17 +48,20 @@
         android:text="@string/bluetooth_name"
         android:textAppearance="@style/CallLogText"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <Button
         android:id="@+id/btn_bluetooth_name"
-        android:layout_width="120dp"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_rounded_button_blue"
+        android:singleLine="true"
         android:text="@string/bluetooth_rename"
         android:textAppearance="@style/MyTabLayoutText"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline3"></Button>
 
@@ -76,6 +82,7 @@
         android:text="@string/bluetooth_scan"
         android:textAppearance="@style/MyTabLayoutText"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline9">
 

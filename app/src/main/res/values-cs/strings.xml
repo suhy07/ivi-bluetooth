@@ -17,7 +17,7 @@
     <string name="choose_options">Vyberte akci</string>
     <string name="connect">spojit</string>
     <string name="disconnect">Odpojit</string>
-    <string name="unpair">Zrušení párování</string>
+    <string name="unpair">pár</string>
     <string name="pair_status_pair">Začněte párovat</string>
     <string name="pair_status_paired">Spárované</string>
     <string name="pair_status_pairing">Párování</string>
