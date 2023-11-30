@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,6 +153,15 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void init() {
+//        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+//        int screenWidthDp = Math.round(displayMetrics.widthPixels / displayMetrics.density);
+//        int screenHeightDp = Math.round(displayMetrics.heightPixels / displayMetrics.density);
+//        float density = displayMetrics.density;
+//
+//        Log.d("ScreenInfo", "Screen Width (dp): " + screenWidthDp);
+//        Log.d("ScreenInfo", "Screen Height (dp): " + screenHeightDp);
+//        Log.d("ScreenInfo", "Screen Density: " + density);
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

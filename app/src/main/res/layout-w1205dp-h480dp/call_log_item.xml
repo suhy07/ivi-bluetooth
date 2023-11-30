@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    android:layout_marginStart="300dp">
+    android:layout_marginStart="150dp">
 
     <ImageView
         android:id="@+id/iv_call_log"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/tv_call_log_number"
-        android:layout_width="380dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/CallLogText"
         android:textColor="@color/white"

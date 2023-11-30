@@ -5,11 +5,11 @@
     android:orientation="horizontal"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    android:layout_marginStart="350dp">
+    android:layout_marginStart="150dp">
 
     <TextView
         android:id="@+id/tv_contact_name"
-        android:layout_width="260dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Aaron"
