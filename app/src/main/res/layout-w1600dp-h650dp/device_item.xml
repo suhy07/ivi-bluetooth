@@ -6,7 +6,7 @@
     android:orientation="horizontal">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="80dp">
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="match_parent"
@@ -25,14 +25,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pair_status_unpaired"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textAppearance="@style/DeviceText"
                 tools:layout_editor_absoluteX="598dp"
                 tools:layout_editor_absoluteY="44dp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_device_address"
-            android:layout_width="200dp"
+            android:layout_width="500dp"
             android:layout_height="match_parent"
             android:text="Device Address"
             android:textAppearance="@style/DeviceText"

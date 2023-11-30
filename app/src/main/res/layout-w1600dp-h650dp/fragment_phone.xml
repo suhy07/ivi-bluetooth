@@ -180,8 +180,7 @@
     <ImageButton
         android:id="@+id/btn_call"
         android:layout_width="210dp"
-        android:layout_height="190dp"
-        android:layout_marginStart="15dp"
+        android:layout_height="200dp"
         android:background="@drawable/shape_button_ripple_call"
         app:layout_constraintBottom_toTopOf="@+id/guideline25"
         app:layout_constraintStart_toStartOf="@+id/guideline31"
@@ -190,9 +189,8 @@
     <ImageButton
         android:id="@+id/btn_cancel"
         android:layout_width="210dp"
-        android:layout_height="190dp"
+        android:layout_height="200dp"
         android:layout_marginTop="5dp"
-        android:layout_marginStart="15dp"
         android:background="@drawable/shape_button_ripple_back"
         app:layout_constraintBottom_toTopOf="@+id/guideline27"
         app:layout_constraintStart_toStartOf="@+id/guideline31"
@@ -240,27 +238,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="300dp" />
+        app:layout_constraintGuide_begin="290dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="555dp" />
+        app:layout_constraintGuide_begin="550dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="825dp" />
+        app:layout_constraintGuide_begin="810dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="1065dp" />
+        app:layout_constraintGuide_begin="1070dp" />
 
 </android.support.constraint.ConstraintLayout>
