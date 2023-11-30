@@ -3,6 +3,8 @@ package com.jancar.bluetooth.utils;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,12 @@ public class CallWindowUtil {
     private TextView bigHangupText;
 
     public void showCallWindow(){
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
+        Log.i("liyongde","showCallWindow:"+displayMetrics.widthPixels+"_"+displayMetrics.heightPixels);
 
         if(isShowCallWindow){
             return;
@@ -140,6 +148,7 @@ public class CallWindowUtil {
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.switchVoiceText:
+                    Log.i("liyongde","switchVoiceText");
                     CallUtil.getInstance().switchVoice();
                     break;
                 case R.id.acceptText:
