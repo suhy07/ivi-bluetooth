@@ -1,0 +1,31 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginStart="350dp">
+
+    <TextView
+        android:id="@+id/tv_contact_name"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Aaron"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textAppearance="@style/CallLogText" />
+
+    <TextView
+        android:id="@+id/tv_contact_number"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/CallLogText"
+        android:textColor="@color/white"
+        android:text="185888185188"
+        android:singleLine="true"
+        android:layout_marginStart="500dp"
+        />
+</LinearLayout>

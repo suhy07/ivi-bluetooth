@@ -29,7 +29,7 @@
     <string name="str_refresh">刷新</string>
     <string name="str_hang_up">挂断</string>
     <string name="str_answer">接听</string>
-    <string name="str_unknown_call">未知来电</string>
+    <string name="str_unknown_call">未知号码</string>
     <string name="str_not_connect_warn">未连接蓝牙设备</string>
     <string name="str_unknown_device">未知设备</string>
     <string name="str_no_number">请输入号码</string>
