@@ -1,0 +1,49 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginStart="300dp">
+
+    <ImageView
+        android:id="@+id/iv_call_log"
+        android:src="@drawable/ic_call_log_out"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:id="@+id/tv_call_log_name"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="Aaron"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textAppearance="@style/CallLogText" />
+
+    <TextView
+        android:id="@+id/tv_call_log_number"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/CallLogText"
+        android:textColor="@color/white"
+        android:layout_marginStart="50dp"
+        android:text="185888185188"
+        android:singleLine="true"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_call_log_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/CallLogText"
+        android:singleLine="true"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/white"
+        android:text="2023/11/14 10:26:39"
+        />
+</LinearLayout>
