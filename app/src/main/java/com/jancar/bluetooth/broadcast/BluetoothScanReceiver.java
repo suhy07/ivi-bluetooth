@@ -36,7 +36,7 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
                 }
                 break;
             case BluetoothDevice.ACTION_FOUND:
-                if (deviceViewModel != null && device != null) {
+                if (deviceViewModel != null && device != null && bluetoothDevices != null) {
                     bluetoothDevices.add(device);
                     count++;
                     if (count == REFRESH_COUNT) {

@@ -185,6 +185,7 @@ public class DeviceFragment extends Fragment {
             } else {
                 renameBtn.setText(getText(R.string.str_finish));
                 nameTv.setEnabled(true);
+                nameTv.setSelection(nameTv.getText().length());
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(nameTv, InputMethodManager.SHOW_IMPLICIT);
             }
