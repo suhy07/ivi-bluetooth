@@ -146,10 +146,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         } else {
             tempList = new ArrayList<>();
         }
-        for (BluetoothDevice device : deviceSet) {
-            if (device.isConnected()) {
-                sortDeviceList.add(device);
-                tempList.remove(device);
+        if (deviceSet != null) {
+            for (BluetoothDevice device : deviceSet) {
+                if (device.isConnected()) {
+                    sortDeviceList.add(device);
+                    tempList.remove(device);
+                }
             }
         }
         deviceSet = new HashSet<>(tempList);
