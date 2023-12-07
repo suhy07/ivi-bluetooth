@@ -96,18 +96,20 @@ public class DeviceFragment extends Fragment {
         // 观察设备列表的变化
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
-                Log.d(TAG, "观察到devices列表变化");
-                deviceAdapter.setDeviceSet(devices);
-                connMap.clear();
-                for (BluetoothDevice device : devices) {
-                    if (device.isConnected()) {
-                        Global.connStatus = Global.CONNECTED;
+                if (devices != null) {
+                    Log.d(TAG, "观察到devices列表变化");
+                    deviceAdapter.setDeviceSet(devices);
+                    connMap.clear();
+                    for (BluetoothDevice device : devices) {
+                        if (device.isConnected()) {
+                            Global.connStatus = Global.CONNECTED;
+                        }
+                        connMap.put(device, device.isConnected() ?
+                                Global.CONNECTED : Global.NOT_CONNECTED);
                     }
-                    connMap.put(device, device.isConnected() ?
-                            Global.CONNECTED : Global.NOT_CONNECTED);
+                    deviceViewModel.setConnMap(connMap);
+                    deviceAdapter.notifyDataSetChanged();
                 }
-                deviceViewModel.setConnMap(connMap);
-                deviceAdapter.notifyDataSetChanged();
             });
             deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
                 Log.d(TAG, "观察到connMap变化");
