@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -75,6 +76,9 @@ public class CallWindowUtil {
         if(isShowCallWindow){
             return;
         }
+
+        MainApplication.getInstance().startCallActivity();
+
         isShowCallWindow = true;
         LayoutInflater  layoutInflater = LayoutInflater.from(mContext);
         callWindowView = layoutInflater.inflate(R.layout.big_window_call,null);
@@ -141,6 +145,24 @@ public class CallWindowUtil {
         changeViewByStatus(CallUtil.getInstance().getCallStatus());
         changeVoiceStatus();
 
+        //showNavi(callWindowView);
+
+    }
+
+    private void showNavi(View view){
+        View decorView = view.getRootView();
+
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    private void hideNavi(View view){
+
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+        view.setSystemUiVisibility(uiOptions);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -148,7 +170,6 @@ public class CallWindowUtil {
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.switchVoiceText:
-                    Log.i("liyongde","switchVoiceText");
                     CallUtil.getInstance().switchVoice();
                     break;
                 case R.id.acceptText:
