@@ -25,6 +25,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bluetooth"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.CallActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:launchMode="singleTask"
+            >
+
+        </activity>
+
         <receiver
             android:name=".broadcast.MyReceiver"
             android:enabled="true"
@@ -49,7 +57,6 @@
         </activity>
 
         <service android:name=".service.BluetoothService" />
-
     </application>
 
 </manifest>

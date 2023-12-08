@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.service.BluetoothService;
+import com.jancar.bluetooth.ui.CallActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.CallWindowUtil;
@@ -163,6 +164,13 @@ public class MainApplication extends Application {
             }
         }
     };
+
+
+    public void startCallActivity(){
+        Intent intent = new Intent();
+        intent.setClass(this, CallActivity.class);
+        startActivity(intent);
+    }
 
 
 
