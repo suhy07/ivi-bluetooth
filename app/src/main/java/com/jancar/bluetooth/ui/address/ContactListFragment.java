@@ -46,6 +46,8 @@ public class ContactListFragment extends Fragment {
     private ProgressBar contactPb;
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
+    private View rootView;
+    private boolean isFirst = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public class ContactListFragment extends Fragment {
                 }
             }
         });
+        this.rootView = rootView;
         return rootView;
     }
 
@@ -164,6 +167,7 @@ public class ContactListFragment extends Fragment {
     }
 
     private void searchContact() {
+        Log.i(TAG, "search");
         if(Global.connStatus != Global.CONNECTED) {
             return;
         }
@@ -180,12 +184,26 @@ public class ContactListFragment extends Fragment {
         if (Global.connStatus == Global.NOT_CONNECTED) {
             addressViewModel.setCallLogList(new ArrayList<>());
         }
+        if (isFirst) {
+            isFirst = false;
+            if (addressViewModel != null) {
+                List<Contact> contacts = addressViewModel.getContactList().getValue();
+                if (contacts != null && contacts.isEmpty()) {
+                    searchContact();
+                }
+                if (Global.connStatus == Global.NOT_CONNECTED) {
+                    addressViewModel.setContactList(new ArrayList<>());
+                    Global.setContactList(new ArrayList<>());
+                }
+            }
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        Log.i(TAG, "setUserVisibleHint");
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && ! isFirst) {
             if (addressViewModel != null) {
                 List<Contact> contacts = addressViewModel.getContactList().getValue();
                 if (contacts != null && contacts.isEmpty()) {
