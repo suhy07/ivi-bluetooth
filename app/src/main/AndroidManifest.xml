@@ -28,7 +28,7 @@
         <activity
             android:name=".ui.CallActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             >
 
         </activity>
