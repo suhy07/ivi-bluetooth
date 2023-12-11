@@ -29,7 +29,8 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         switch (action) {
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null) {
+                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
+                        && deviceViewModel.getDeviceSet().getValue() != null) {
                     bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 } else {
                     bluetoothDevices = new HashSet<>();
