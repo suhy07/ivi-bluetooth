@@ -37,7 +37,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (deviceViewModel != null) {
+        if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
+        && deviceViewModel.getDeviceSet().getValue() != null) {
             deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
         } else {
             deviceSet = new HashSet<>();
