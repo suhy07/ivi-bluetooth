@@ -60,10 +60,15 @@ public class CallActivity extends Activity {
             if(IVISystem.ACTION_BACKCAR_FINISH.equals(action)){
 
             }else if(IVISystem.ACTION_BACKCAR_STARTED.equals(action)){
-                CallActivity.this.finish();
+                //CallActivity.this.finish();
+                finishMe();
             }
         }
     };
+
+    private void finishMe(){
+        CallActivity.this.finishAndRemoveTask();
+    }
 
     @Override
     public void onBackPressed() {
@@ -75,7 +80,7 @@ public class CallActivity extends Activity {
         Log.i("MainApplication", event.toString());
         if (event.mStatus == IVIBluetooth.CallStatus.HANGUP) {
 
-            CallActivity.this.finish();
+            finishMe();
 
         }
     }
