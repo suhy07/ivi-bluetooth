@@ -118,7 +118,12 @@ public class DeviceFragment extends Fragment {
             });
 //        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             //获取已配对的设备
-            deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            if (deviceViewModel.getDeviceSet() != null
+                    && deviceViewModel.getDeviceSet().getValue() != null) {
+                deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            } else {
+                deviceSet = new HashSet<>();
+            }
             deviceSet.addAll(BluetoothUtil.getBondedDevices());
             deviceViewModel.setDeviceSet(deviceSet);
             deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {

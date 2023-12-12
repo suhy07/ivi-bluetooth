@@ -250,7 +250,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private void reFreshDeviceSet(BluetoothDevice device) {
         if (deviceViewModel != null) {
-            Set<BluetoothDevice> devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            Set<BluetoothDevice> devices;
+            if (deviceViewModel.getDeviceSet() != null
+                    && deviceViewModel.getDeviceSet().getValue() != null) {
+                devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+            } else {
+                devices = new HashSet<>();
+            }
             devices.remove(device);
             devices.add(device);
             deviceViewModel.setDeviceSet(devices);
