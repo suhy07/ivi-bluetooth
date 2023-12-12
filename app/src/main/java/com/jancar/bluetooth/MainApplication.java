@@ -199,9 +199,12 @@ public class MainApplication extends Application {
     private boolean isInAutoScreen(){
         ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> appTask = am.getRunningTasks(1);
-        String topActivityName = ((ActivityManager.RunningTaskInfo)appTask.get(0)).topActivity.getClassName();
-        Log.i("MainApplication", "topActivityName:"+topActivityName);
-        return topActivityName.equals("com.google.android.projection.sink.ui.AndroidAutoActivity")||topActivityName.equals(IVISystem.ACTIVITY_ANDROID_AUTO);
+        if(appTask!=null && appTask.size()>0){
+            String topActivityName = ((ActivityManager.RunningTaskInfo)appTask.get(0)).topActivity.getClassName();
+            Log.i("MainApplication", "topActivityName:"+topActivityName);
+            return topActivityName.equals("com.google.android.projection.sink.ui.AndroidAutoActivity")||topActivityName.equals(IVISystem.ACTIVITY_ANDROID_AUTO);
+        }
+        return false;
     }
 
 
