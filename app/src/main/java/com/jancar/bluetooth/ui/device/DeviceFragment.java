@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.device;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothAdapter;
@@ -24,6 +25,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -83,6 +85,7 @@ public class DeviceFragment extends Fragment {
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView");
@@ -201,6 +204,7 @@ public class DeviceFragment extends Fragment {
         });
         scanBtn.setOnClickListener(v -> {
             searchDevice();
+            hideKeyboard(v);
         });
         nameTv.setImeOptions(EditorInfo.IME_ACTION_DONE);
         nameTv.addTextChangedListener(new TextWatcher() {
@@ -241,6 +245,11 @@ public class DeviceFragment extends Fragment {
                 }
                 return true;
             }
+            return false;
+        });
+        view.setOnClickListener(this::hideKeyboard);
+        view.setOnTouchListener((v, event) -> {
+            hideKeyboard(v);
             return false;
         });
         return view;
@@ -319,6 +328,11 @@ public class DeviceFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         Log.i(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     class mHandler extends Handler {

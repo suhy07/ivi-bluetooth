@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
@@ -147,11 +148,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        tabLayout.setOnClickListener(this::hideKeyboard);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                hideKeyboard(viewPager);
             }
 
             @Override
@@ -188,6 +190,11 @@ public class MainActivity extends AppCompatActivity {
         // 启动服务
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     @Override

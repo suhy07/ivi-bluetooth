@@ -1,5 +1,6 @@
 package com.jancar.bluetooth.ui.address;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -49,6 +51,7 @@ public class ContactListFragment extends Fragment {
     private View rootView;
     private boolean isFirst = true;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
@@ -70,14 +73,16 @@ public class ContactListFragment extends Fragment {
             }
 
         });
+        recyclerView.setOnTouchListener((v, event) -> {
+            hideKeyboard(v);
+            return false;
+        });
         searchEt.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus) {
                 hideKeyboard(v);
             }
         });
-        rootView.setOnClickListener(v -> {
-            hideKeyboard(v);
-        });
+        rootView.setOnClickListener(this::hideKeyboard);
         searchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
