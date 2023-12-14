@@ -34,6 +34,7 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothDevice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
     private final static int CONNECT_WHAT = 0;
-    private final static int CONNECT_TIMEOUT = 1500;
-    //private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
+    private final static int CONNECT_TIMEOUT = 10000;
+    private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
     public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
             , DeviceViewModel deviceViewModel) {
@@ -128,7 +129,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
         });
         holder.itemView.setOnLongClickListener((view) -> {
-            showOptionsDialog(position, view.getContext());
+            showOptionsDialog(device, view.getContext());
             return false;
         });
     }
@@ -181,7 +182,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
     }
 
-    private void showOptionsDialog(int position, Context context) {
+    private void showOptionsDialog(BluetoothDevice device, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_options, null);
@@ -191,7 +192,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         Button connectButton = dialogView.findViewById(R.id.btn_connect);
         Button pairButton = dialogView.findViewById(R.id.btn_pair);
-        BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
         int bondState = device.getBondState();
         boolean isConnected = device.isConnected();
         if (isConnected) {
@@ -272,14 +272,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 deviceViewModel.setConnMap(connMap);
             }
             jancarBluetoothManager.linkDevice(device.getAddress(), null);
-            /*new Thread(() -> {
-                synchronized (this) {
-                    Message msg = Message.obtain();
-                    msg.what = CONNECT_WHAT;
-                    msg.obj = device;
-                    mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);
-                }
-            }).start();*/
+            Message msg = Message.obtain();
+            msg.what = CONNECT_WHAT;
+            msg.obj = device;
+            mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);  // 处理一直在连接中的问题
         }
     }
 
@@ -288,7 +284,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         jancarBluetoothManager.stopContactOrHistoryLoad(null);
     }
 
-    /*class mHandler extends Handler {
+    class mHandler extends Handler {
         //重写handleMessage（）方法
         @Override
         public void handleMessage(Message msg) {
@@ -296,22 +292,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             //执行的UI操作
             switch (msg.what) {
                 case CONNECT_WHAT:
-                    BluetoothDevice device = (BluetoothDevice) msg.obj;
-                    jancarBluetoothManager.linkDevice(device.getAddress(), new IBluetoothExecCallback.Stub() {
-                        @Override
-                        public void onSuccess(String s) {
-                            Global.connStatus = Global.CONNECTED;
-                            reFreshDeviceSet(device);
+                    if (Global.connStatus == Global.CONNECTING) {
+                        BluetoothDevice device = (BluetoothDevice) msg.obj;
+                        if (deviceViewModel.getConnMap() != null &&
+                                deviceViewModel.getConnMap().getValue() != null) {
+                            deviceViewModel.getConnMap().getValue().put(device, Global.NOT_CONNECTED);
                         }
-
-                        @Override
-                        public void onFailure(int i) {
-                            Global.connStatus = Global.NOT_CONNECTED;
-                            reFreshDeviceSet(device);
-                        }
-                    });
+                        Global.connStatus = Global.NOT_CONNECTED;
+                    }
                     break;
             }
         }
-    }*/
+    }
 }

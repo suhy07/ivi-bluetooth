@@ -177,6 +177,7 @@ public class DeviceFragment extends Fragment {
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
             }
+            Log.i(TAG, nameTv.isEnabled() + "");
             if (nameTv.isEnabled()) {
                 renameBtn.setText(getText(R.string.bluetooth_rename));
                 nameTv.setEnabled(false);
@@ -192,9 +193,10 @@ public class DeviceFragment extends Fragment {
             } else {
                 renameBtn.setText(getText(R.string.str_finish));
                 nameTv.setEnabled(true);
+                nameTv.requestFocus();
                 nameTv.setSelection(nameTv.getText().length());
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(nameTv, InputMethodManager.SHOW_IMPLICIT);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
         scanBtn.setOnClickListener(v -> {
