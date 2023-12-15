@@ -52,7 +52,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
     private final static int CONNECT_WHAT = 0;
-    private final static int CONNECT_TIMEOUT = 10000;
+    private final static int CONNECT_TIMEOUT = 30000;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
     public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
@@ -294,13 +294,14 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 case CONNECT_WHAT:
                     if (Global.connStatus == Global.CONNECTING) {
                         BluetoothDevice device = (BluetoothDevice) msg.obj;
+                        jancarBluetoothManager.unlinkDevice(unlinkStub);
                         if (deviceViewModel.getConnMap() != null &&
                                 deviceViewModel.getConnMap().getValue() != null) {
                             deviceViewModel.getConnMap().getValue().put(device, Global.NOT_CONNECTED);
                         }
                         Global.connStatus = Global.NOT_CONNECTED;
+                        break;
                     }
-                    break;
             }
         }
     }

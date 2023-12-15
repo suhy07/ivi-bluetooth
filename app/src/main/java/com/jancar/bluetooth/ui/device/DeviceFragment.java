@@ -155,6 +155,7 @@ public class DeviceFragment extends Fragment {
                     nameTv.setEnabled(false);
                     scanPb.setVisibility(View.INVISIBLE);
                     bluetoothSwitch.setChecked(false);
+                    Global.connStatus = Global.NOT_CONNECTED;
                 }
                 nameTv.setText(deviceViewModel.getBluetoothName().getValue());
             });

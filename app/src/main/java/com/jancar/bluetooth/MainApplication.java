@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.service.BluetoothService;
@@ -35,6 +36,7 @@ import java.util.List;
 public class MainApplication extends Application {
     private static MainApplication mInstance = null;
     private BluetoothManager bluetoothManager = null;
+    private static Toast mToast;
     public static MainApplication getInstance() {
         if (mInstance == null){
             synchronized (MainApplication.class) {
@@ -92,7 +94,12 @@ public class MainApplication extends Application {
     }
 
     public static void showToast(String val) {
-        Toast.makeText(getInstance(), val, Toast.LENGTH_SHORT).show();
+        if (mToast == null) {
+            mToast = Toast.makeText(getInstance(), val, Toast.LENGTH_SHORT);
+        } else {
+            mToast.setText(val);
+        }
+        mToast.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
