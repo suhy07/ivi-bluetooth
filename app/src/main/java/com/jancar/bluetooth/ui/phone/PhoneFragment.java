@@ -134,7 +134,7 @@ public class PhoneFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
-        if(event!=null && event.mStatus == IVIBluetooth.CallStatus.HANGUP){
+        if(event!=null && (event.mStatus == IVIBluetooth.CallStatus.HANGUP||event.mStatus == IVIBluetooth.CallStatus.OUTGOING)){
             String number = event.mPhoneNumber;
             if (phoneViewModel != null) {
                 String tempValue = phoneViewModel.getCallNumber().getValue();
