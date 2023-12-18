@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="50sp"
+        android:textSize="45sp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -28,24 +28,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="26sp"
-        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
         />
     <TextView
         android:id="@+id/timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="36sp"
-        android:layout_marginTop="16dp"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
         />
     <TextView
         android:id="@+id/keyboardText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="36sp"
-        android:layout_marginTop="16dp"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
         />
     <LinearLayout
         android:id="@+id/incomingLayout"
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="25dp"
         >
         <LinearLayout
             android:layout_width="wrap_content"
@@ -97,18 +97,18 @@
                 <TextView
                     android:id="@+id/number1Text"
                     android:text="1"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     />
                 <TextView
                     android:id="@+id/number2Text"
                     android:text="2"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
                 <TextView
                     android:id="@+id/number3Text"
                     android:text="3"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
             </LinearLayout>
@@ -116,23 +116,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 >
                 <TextView
                     android:id="@+id/number4Text"
                     android:text="4"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     />
                 <TextView
                     android:id="@+id/number5Text"
                     android:text="5"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
                 <TextView
                     android:id="@+id/number6Text"
                     android:text="6"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
             </LinearLayout>
@@ -140,23 +140,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 >
                 <TextView
                     android:id="@+id/number7Text"
                     android:text="7"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     />
                 <TextView
                     android:id="@+id/number8Text"
                     android:text="8"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
                 <TextView
                     android:id="@+id/number9Text"
                     android:text="9"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
             </LinearLayout>
@@ -164,23 +164,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 >
                 <TextView
                     android:id="@+id/numberXinText"
                     android:text="*"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     />
                 <TextView
                     android:id="@+id/number0Text"
                     android:text="0+"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
                 <TextView
                     android:id="@+id/numberJinText"
                     android:text="#"
-                    style="@style/style_number_text"
+                    style="@style/style_number_text_720"
                     android:layout_marginLeft="10dp"
                     />
             </LinearLayout>
@@ -194,8 +194,8 @@
             >
             <TextView
                 android:id="@+id/switchVoiceText"
-                android:layout_width="224dp"
-                android:layout_height="160dp"
+                android:layout_width="240dp"
+                android:layout_height="167dp"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:background="@drawable/shape_switch_voice_bg"
@@ -203,17 +203,19 @@
                 />
             <TextView
                 android:id="@+id/bigHangupText"
-                android:layout_width="224dp"
-                android:layout_height="160dp"
+                android:layout_width="240dp"
+                android:layout_height="167dp"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:background="@drawable/shape_hangup_big_bg"
                 android:text="@string/str_hang_up"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 />
         </LinearLayout>
+
     </LinearLayout>
+
     <View
         android:layout_width="1dp"
         android:layout_height="0dp"
