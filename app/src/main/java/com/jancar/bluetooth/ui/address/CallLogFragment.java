@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.CallLogAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
+import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
@@ -98,6 +100,32 @@ public class CallLogFragment extends Fragment {
         }
     };
 
+    public IBluetoothVCardCallback.Stub stub1 = new IBluetoothVCardCallback.Stub() {
+        @Override
+        public void onProgress(List<BluetoothVCardBook> list) {
+            List<Contact> contacts = new ArrayList<>();
+            for (BluetoothVCardBook book: list) {
+                Contact contact = new Contact(book.name, book.phoneNumber);
+                contacts.add(contact);
+            }
+            if (addressViewModel != null) {
+                addressViewModel.setContactList(contacts);
+            }
+        }
+
+        @Override
+        public void onFailure(int i) {
+
+        }
+
+        @Override
+        public void onSuccess(String s) {
+
+        }
+
+
+    };
+
     public void setAddressViewModel(AddressViewModel addressViewModel) {
         this.addressViewModel = addressViewModel;
     }
@@ -108,6 +136,7 @@ public class CallLogFragment extends Fragment {
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
         if(bluetoothManager != null) {
+            bluetoothManager.getPhoneContacts(stub1);
             bluetoothManager.getAllCallRecord(stub);
             callLogPb.setVisibility(View.VISIBLE);
         }

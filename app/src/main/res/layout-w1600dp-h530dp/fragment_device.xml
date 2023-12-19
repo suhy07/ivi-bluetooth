@@ -90,7 +90,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bluetooth_devices"
-        android:layout_width="1240dp"
+        android:layout_width="1500dp"
         android:layout_height="265dp"
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -131,21 +131,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="180dp" />
+        app:layout_constraintGuide_end="50dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="350dp" />
+        app:layout_constraintGuide_end="200dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="180dp" />
+        app:layout_constraintGuide_begin="50dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline10"

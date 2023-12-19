@@ -51,7 +51,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
-    private final static int CONNECT_WHAT = 0;
+    private final static int CONNECT_DISCONNECT = 0;
     private final static int CONNECT_TIMEOUT = 30000;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
@@ -93,7 +93,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
         holder.connectStatus.setText(getConnectStatus(status));
-        if(status == Global.CONNECTING || status == Global.CONNECTED ) {
+        if(status == Global.CONNECTING || status == Global.CONNECTED ||
+                devicePairStatus == BluetoothDevice.BOND_BONDING) {
             holder.deviceName.setTextColor(0xFF00C2C2);
             holder.deviceAddress.setTextColor(0xFF00C2C2);
             holder.pairingStatus.setTextColor(0xFF00C2C2);
@@ -273,7 +274,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
             jancarBluetoothManager.linkDevice(device.getAddress(), null);
             Message msg = Message.obtain();
-            msg.what = CONNECT_WHAT;
+            msg.what = CONNECT_DISCONNECT ;
             msg.obj = device;
             mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);  // 处理一直在连接中的问题
         }
@@ -291,7 +292,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             super.handleMessage(msg);
             //执行的UI操作
             switch (msg.what) {
-                case CONNECT_WHAT:
+                case CONNECT_DISCONNECT:
                     if (Global.connStatus == Global.CONNECTING) {
                         BluetoothDevice device = (BluetoothDevice) msg.obj;
                         jancarBluetoothManager.unlinkDevice(unlinkStub);
@@ -300,6 +301,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                             deviceViewModel.getConnMap().getValue().put(device, Global.NOT_CONNECTED);
                         }
                         Global.connStatus = Global.NOT_CONNECTED;
+                        Log.i(TAG, "Disconnect");
+                        notifyDataSetChanged();
                         break;
                     }
             }

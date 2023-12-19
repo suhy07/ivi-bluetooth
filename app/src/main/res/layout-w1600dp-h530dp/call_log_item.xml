@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    android:layout_marginStart="300dp">
+    android:layout_marginStart="50dp">
 
     <ImageView
         android:id="@+id/iv_call_log"
@@ -17,7 +17,7 @@
         android:id="@+id/tv_call_log_name"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="150dp"
         android:text="Aaron"
         android:singleLine="true"
         android:gravity="center_vertical"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/CallLogText"
         android:textColor="@color/white"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="150dp"
         android:text="185888185188"
         android:singleLine="true"
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/CallLogText"
         android:singleLine="true"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="150dp"
         android:textColor="@color/white"
         android:text="2023/11/14 10:26:39"
         />
