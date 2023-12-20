@@ -1,23 +1,14 @@
 package com.jancar.bluetooth.ui.device;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +16,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -34,22 +24,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
-import android.bluetooth.BluetoothDevice;
-
-import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.service.BluetoothService;
-import com.jancar.bluetooth.ui.MainActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
-
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,7 +39,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -103,8 +84,10 @@ public class DeviceFragment extends Fragment {
                     Log.d(TAG, "观察到devices列表变化");
                     deviceAdapter.setDeviceSet(devices);
                     connMap.clear();
+                    Global.connStatus = Global.NOT_CONNECTED;
                     for (BluetoothDevice device : devices) {
                         if (device.isConnected()) {
+                            Log.i(TAG, "监测到设备已连接");
                             Global.connStatus = Global.CONNECTED;
                         }
                         connMap.put(device, device.isConnected() ?
@@ -318,6 +301,39 @@ public class DeviceFragment extends Fragment {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        checkConnect();
+    }
+
+    private void checkConnect(){
+        // 检查连接情况，排除蓝牙投屏模式的假连接
+        Set<BluetoothDevice> devices;
+        if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
+                && deviceViewModel.getDeviceSet().getValue() !=null) {
+            devices = deviceViewModel.getDeviceSet().getValue();
+        } else {
+            devices = new HashSet<>();
+        }
+        if (devices != null) {
+            Log.d(TAG, "观察到devices列表变化");
+            deviceAdapter.setDeviceSet(devices);
+            connMap.clear();
+            Global.connStatus = Global.NOT_CONNECTED;
+            for (BluetoothDevice device : devices) {
+                if (device.isConnected()) {
+                    Log.i(TAG, "监测到设备已连接");
+                    Global.connStatus = Global.CONNECTED;
+                }
+                connMap.put(device, device.isConnected() ?
+                        Global.CONNECTED : Global.NOT_CONNECTED);
+            }
+            deviceViewModel.setConnMap(connMap);
+            deviceAdapter.notifyDataSetChanged();
         }
     }
 
