@@ -26,6 +26,7 @@ import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
@@ -66,7 +67,7 @@ public class ContactListFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (Global.connStatus != Global.CONNECTED) {
+            if (!CallUtil.getInstance().canCallNumber()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
             } else {
                 searchContact();
@@ -173,7 +174,7 @@ public class ContactListFragment extends Fragment {
 
     private void searchContact() {
         Log.i(TAG, "search");
-        if(Global.connStatus != Global.CONNECTED) {
+        if(!CallUtil.getInstance().canCallNumber()) {
             return;
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
@@ -186,8 +187,9 @@ public class ContactListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Global.connStatus != Global.CONNECTED) {
+        if (!CallUtil.getInstance().canCallNumber()) {
             addressViewModel.setCallLogList(new ArrayList<>());
+            contactPb.setVisibility(View.GONE);
         }
         if (isFirst) {
             isFirst = false;
@@ -196,7 +198,7 @@ public class ContactListFragment extends Fragment {
                 if (contacts != null && contacts.isEmpty()) {
                     searchContact();
                 }
-                if (Global.connStatus != Global.CONNECTED) {
+                if (!CallUtil.getInstance().canCallNumber()) {
                     addressViewModel.setContactList(new ArrayList<>());
                     Global.setContactList(new ArrayList<>());
                 }
@@ -214,7 +216,7 @@ public class ContactListFragment extends Fragment {
                 if (contacts != null && contacts.isEmpty()) {
                    searchContact();
                 }
-                if (Global.connStatus != Global.CONNECTED) {
+                if (!CallUtil.getInstance().canCallNumber()) {
                     addressViewModel.setContactList(new ArrayList<>());
                     Global.setContactList(new ArrayList<>());
                 }

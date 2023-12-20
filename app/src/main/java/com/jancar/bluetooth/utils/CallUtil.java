@@ -1,7 +1,12 @@
 package com.jancar.bluetooth.utils;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothProfile;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.os.SystemProperties;
+import android.util.Log;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
@@ -15,8 +20,97 @@ public class CallUtil {
 
     private Handler mHandler;
 
+    private BluetoothAdapter bluetoothAdapter;
+
+    private String disconnectHfpMac = "";
+
+    private int a2dpStatus;
+    private int a2dpSinkStatus;
+    private int hfpStatus;
+
     private CallUtil() {
+
         mHandler = new Handler();
+        init();
+    }
+
+    public void init(){
+
+        if(bluetoothAdapter == null){
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        }
+        a2dpStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP);
+        a2dpSinkStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP_SINK);
+        hfpStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.HEADSET_CLIENT);
+
+        Log.i("liyongde","init a2dpStatus:"+a2dpStatus+" hfpStatus:"+hfpStatus+" a2dpSinkStatus:"+a2dpSinkStatus);
+
+    }
+
+    public int getA2dpStatus() {
+        return a2dpStatus;
+    }
+
+    public void setA2dpStatus(int a2dpStatus) {
+        this.a2dpStatus = a2dpStatus;
+    }
+
+    public int getHfpStatus() {
+        return hfpStatus;
+    }
+
+    public void setHfpStatus(int hfpStatus) {
+        this.hfpStatus = hfpStatus;
+    }
+
+    public int getA2dpSinkStatus() {
+        return a2dpSinkStatus;
+    }
+
+    public void setA2dpSinkStatus(int a2dpSinkStatus) {
+        this.a2dpSinkStatus = a2dpSinkStatus;
+    }
+
+    public boolean isConnected(){
+        if(isBluetoothSendStatus()){
+            return a2dpStatus == BluetoothProfile.STATE_CONNECTED;
+        }else{
+            return a2dpSinkStatus == BluetoothProfile.STATE_CONNECTED || hfpStatus == BluetoothProfile.STATE_CONNECTED;
+        }
+    }
+
+    public boolean isDeviceConnected(BluetoothDevice device){
+        if(!device.isConnected()){
+            return false;
+        }
+        if(isBluetoothSendStatus()){
+            return a2dpStatus == BluetoothProfile.STATE_CONNECTED && !device.getAddress().equals(disconnectHfpMac);
+        }else{
+            return a2dpSinkStatus == BluetoothProfile.STATE_CONNECTED || hfpStatus == BluetoothProfile.STATE_CONNECTED;
+        }
+
+    }
+
+
+    public String getDisconnectHfpMac() {
+        return disconnectHfpMac;
+    }
+
+    public void setDisconnectHfpMac(String disconnectHfpMac) {
+        this.disconnectHfpMac = disconnectHfpMac;
+    }
+
+    public boolean canCallNumber(){
+        if(isBluetoothSendStatus()){
+            return false;
+        }
+        return hfpStatus == BluetoothProfile.STATE_CONNECTED;
+    }
+
+    public static boolean isBluetoothSendStatus(){
+        String value = SystemProperties.get("persist.atc.bt.a2dpsourcerole","");
+        Logcat.i("value:"+value);
+        return value!=null && value.equals("enable");
     }
 
     public static CallUtil getInstance() {
@@ -168,4 +262,6 @@ public class CallUtil {
     public void setCallTime(int callTime) {
         this.callTime = callTime;
     }
+
+
 }

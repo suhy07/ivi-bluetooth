@@ -27,6 +27,7 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.ui.device.DeviceFragment;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
@@ -92,8 +93,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceName.setText(deviceName);
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
-        holder.connectStatus.setText(getConnectStatus(status));
-        if(status == Global.CONNECTING || status == Global.CONNECTED ||
+        holder.connectStatus.setText(getConnectStatus(status,device));
+        if(status == Global.CONNECTING || CallUtil.getInstance().isDeviceConnected(device) ||
                 devicePairStatus == BluetoothDevice.BOND_BONDING) {
             holder.deviceName.setTextColor(0xFF00C2C2);
             holder.deviceAddress.setTextColor(0xFF00C2C2);
@@ -109,7 +110,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTED;
         }
         holder.itemView.setOnClickListener( v -> {
-            if (device.isConnected()) {
+            if (device.isConnected() && CallUtil.getInstance().isConnected()) {
                 //已连接，只断开
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
                 reFreshDeviceSet(device);

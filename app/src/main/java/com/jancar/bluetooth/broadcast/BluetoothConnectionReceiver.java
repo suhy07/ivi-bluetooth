@@ -1,5 +1,9 @@
 package com.jancar.bluetooth.broadcast;
 
+import android.bluetooth.BluetoothA2dp;
+import android.bluetooth.BluetoothA2dpSink;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,10 +16,10 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
-import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -37,6 +41,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        Log.i("liyongde","onReceive:"+action);
         if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
         && deviceViewModel.getDeviceSet().getValue() != null) {
             deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
@@ -44,23 +49,38 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceSet = new HashSet<>();
         }
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
-        if(BluetoothService.BT_CONNECTION_STATE_CHANGED.equals(action)){
+        boolean isHfpAction = BluetoothService.BT_CONNECTION_STATE_CHANGED.equals(action);
+        boolean isA2dpAction = BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action);
+        boolean isA2dpSinkAction = BluetoothA2dpSink.ACTION_CONNECTION_STATE_CHANGED.equals(action);
+        if(isHfpAction|| isA2dpAction || isA2dpSinkAction){
             int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1);
             BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            Log.i("liyongde",device.getName()+" "+device.getAddress()+" "+state+" "+device.isConnected());
+            if(isHfpAction){
+                CallUtil.getInstance().setHfpStatus(state);
+            }
+            if(isA2dpAction){
+                CallUtil.getInstance().setA2dpStatus(state);
+            }
+            if(isA2dpSinkAction){
+                CallUtil.getInstance().setA2dpSinkStatus(state);
+            }
+
             if(device!=null){
-                if(state == 0){
-                    // 蓝牙设备已断开连接
-                    //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    deviceSet.remove(device);
-                    try{
-                        Thread.sleep(1000);
-                    }catch(Exception e){
-                        e.printStackTrace();
+                if(state == BluetoothProfile.STATE_DISCONNECTED){
+
+                    if(isHfpAction){
+                        CallUtil.getInstance().setDisconnectHfpMac(device.getAddress());
                     }
-                    BluetoothDevice newDevice = getDeviceByMac(device.getAddress());
+
+                    // 蓝牙设备已断开连接
+
+                    deviceSet.remove(device);
+
+                    BluetoothDevice newDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(device.getAddress());
+
                     if(newDevice!=null){
                         deviceSet.add(newDevice);
-                        Log.i("liyongde",state+" "+newDevice.getName()+" "+newDevice.getAddress()+" "+newDevice.isConnected());
                     }
 
                     if (deviceViewModel != null) {
@@ -84,6 +104,9 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                 }else if(state == 1){
 
                 }else if(state == 2){
+                    if(isHfpAction){
+                        CallUtil.getInstance().setDisconnectHfpMac("");
+                    }
                     // 蓝牙设备已连接
                     //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     deviceSet.remove(device);

@@ -1,5 +1,6 @@
 package com.jancar.bluetooth.broadcast;
 
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
@@ -50,9 +52,13 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                         musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
                     }
                     Global.connStatus = Global.NOT_CONNECTED;
+                    CallUtil.getInstance().setA2dpStatus(BluetoothProfile.STATE_DISCONNECTED);
+                    CallUtil.getInstance().setHfpStatus(BluetoothProfile.STATE_DISCONNECTED);
+                    CallUtil.getInstance().setDisconnectHfpMac("");
                     break;
 
                 case BluetoothAdapter.STATE_ON:
+                    CallUtil.getInstance().init();
                     if (deviceViewModel != null) {
                         deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
                         deviceViewModel.setOnOff(true);

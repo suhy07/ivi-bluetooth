@@ -18,6 +18,7 @@ import com.jancar.bluetooth.adapters.CallLogAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
@@ -55,7 +56,7 @@ public class CallLogFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (Global.connStatus != Global.CONNECTED) {
+            if (!CallUtil.getInstance().canCallNumber()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
             } else {
                 searchCallLog();
@@ -131,7 +132,7 @@ public class CallLogFragment extends Fragment {
     }
 
     private void searchCallLog() {
-        if(Global.connStatus != Global.CONNECTED) {
+        if(!CallUtil.getInstance().canCallNumber()) {
             return;
         }
 //        bluetoothManager.stopContactOrHistoryLoad(stub1);
@@ -146,8 +147,9 @@ public class CallLogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Global.connStatus != Global.CONNECTED) {
+        if (!CallUtil.getInstance().canCallNumber()) {
             addressViewModel.setCallLogList(new ArrayList<>());
+            callLogPb.setVisibility(View.GONE);
         }
     }
 
@@ -160,7 +162,7 @@ public class CallLogFragment extends Fragment {
                 if (callLogs != null && callLogs.isEmpty()) {
                     searchCallLog();
                 }
-                if (Global.connStatus != Global.CONNECTED) {
+                if (!CallUtil.getInstance().canCallNumber()) {
                     addressViewModel.setCallLogList(new ArrayList<>());
                 }
             }
