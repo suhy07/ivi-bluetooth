@@ -66,7 +66,7 @@ public class ContactListFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
             } else {
                 searchContact();
@@ -186,7 +186,7 @@ public class ContactListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Global.connStatus == Global.NOT_CONNECTED) {
+        if (Global.connStatus != Global.CONNECTED) {
             addressViewModel.setCallLogList(new ArrayList<>());
         }
         if (isFirst) {
@@ -196,7 +196,7 @@ public class ContactListFragment extends Fragment {
                 if (contacts != null && contacts.isEmpty()) {
                     searchContact();
                 }
-                if (Global.connStatus == Global.NOT_CONNECTED) {
+                if (Global.connStatus != Global.CONNECTED) {
                     addressViewModel.setContactList(new ArrayList<>());
                     Global.setContactList(new ArrayList<>());
                 }
@@ -214,7 +214,7 @@ public class ContactListFragment extends Fragment {
                 if (contacts != null && contacts.isEmpty()) {
                    searchContact();
                 }
-                if (Global.connStatus == Global.NOT_CONNECTED) {
+                if (Global.connStatus != Global.CONNECTED) {
                     addressViewModel.setContactList(new ArrayList<>());
                     Global.setContactList(new ArrayList<>());
                 }

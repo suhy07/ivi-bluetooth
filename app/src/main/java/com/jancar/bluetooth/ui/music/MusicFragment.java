@@ -83,7 +83,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             });
         }
         playBtn.setOnClickListener(v -> {
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
@@ -96,7 +96,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             updateMusicName();
         });
         prevBtn.setOnClickListener(v -> {
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
@@ -104,7 +104,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             updateMusicName();
         });
         nextBtn.setOnClickListener(v -> {
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }

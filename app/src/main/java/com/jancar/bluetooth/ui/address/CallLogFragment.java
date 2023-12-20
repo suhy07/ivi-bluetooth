@@ -55,7 +55,7 @@ public class CallLogFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
             } else {
                 searchCallLog();
@@ -146,7 +146,7 @@ public class CallLogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Global.connStatus == Global.NOT_CONNECTED) {
+        if (Global.connStatus != Global.CONNECTED) {
             addressViewModel.setCallLogList(new ArrayList<>());
         }
     }
@@ -160,7 +160,7 @@ public class CallLogFragment extends Fragment {
                 if (callLogs != null && callLogs.isEmpty()) {
                     searchCallLog();
                 }
-                if (Global.connStatus == Global.NOT_CONNECTED) {
+                if (Global.connStatus != Global.CONNECTED) {
                     addressViewModel.setCallLogList(new ArrayList<>());
                 }
             }

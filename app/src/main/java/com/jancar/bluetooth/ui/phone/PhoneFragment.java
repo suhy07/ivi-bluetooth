@@ -114,7 +114,7 @@ public class PhoneFragment extends Fragment {
             String name = Global.findNameByNumber(number);
             boolean isComing = false;
             //号码为空或未连接蓝牙时，不能拨号
-            if (Global.connStatus == Global.NOT_CONNECTED) {
+            if (Global.connStatus != Global.CONNECTED) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             } else if(number.equals("")) {
