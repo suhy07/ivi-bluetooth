@@ -105,7 +105,7 @@ public class BluetoothUtil {
 
     public static String getConnectStatus(int status,BluetoothDevice device) {
         String connectStatus = context.getString(R.string.conn_status_not);
-        switch (status) {
+        /*switch (status) {
             case Global.NOT_CONNECTED:
                 connectStatus = context.getString(R.string.conn_status_not);
                 break;
@@ -118,6 +118,11 @@ public class BluetoothUtil {
         }
         if(status == Global.CONNECTED && !CallUtil.getInstance().isDeviceConnected(device)){
             connectStatus = context.getString(R.string.conn_status_not);
+        }*/
+        if(CallUtil.getInstance().isDeviceConnected(device)){
+            connectStatus = context.getString(R.string.conn_status_connected);
+        }else if(CallUtil.getInstance().isDeviceConnecting(device)){
+            connectStatus = context.getString(R.string.conn_status_connecting);
         }
         return connectStatus;
     }

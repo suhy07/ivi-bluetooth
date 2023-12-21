@@ -54,7 +54,6 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                     Global.connStatus = Global.NOT_CONNECTED;
                     CallUtil.getInstance().setA2dpStatus(BluetoothProfile.STATE_DISCONNECTED);
                     CallUtil.getInstance().setHfpStatus(BluetoothProfile.STATE_DISCONNECTED);
-                    CallUtil.getInstance().setDisconnectHfpMac("");
                     break;
 
                 case BluetoothAdapter.STATE_ON:

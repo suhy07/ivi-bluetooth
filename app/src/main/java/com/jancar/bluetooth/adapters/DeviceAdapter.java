@@ -94,7 +94,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
         holder.connectStatus.setText(getConnectStatus(status,device));
-        if(status == Global.CONNECTING || CallUtil.getInstance().isDeviceConnected(device) ||
+        if(CallUtil.getInstance().isDeviceConnecting(device) || CallUtil.getInstance().isDeviceConnected(device) ||
                 devicePairStatus == BluetoothDevice.BOND_BONDING) {
             holder.deviceName.setTextColor(0xFF00C2C2);
             holder.deviceAddress.setTextColor(0xFF00C2C2);
@@ -110,7 +110,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTED;
         }
         holder.itemView.setOnClickListener( v -> {
-            if (device.isConnected() && CallUtil.getInstance().isConnected()) {
+            if (CallUtil.getInstance().isDeviceConnected(device)) {
                 //已连接，只断开
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
                 reFreshDeviceSet(device);
@@ -266,7 +266,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     }
 
     private void startConnect(BluetoothDevice device) {
-        if(Global.connStatus != Global.CONNECTING) {
+        if(!CallUtil.getInstance().isConnecting()) {
             Global.connStatus = Global.CONNECTING;
             connMap.remove(device);
             connMap.put(device, Global.CONNECTING);
@@ -274,10 +274,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 deviceViewModel.setConnMap(connMap);
             }
             jancarBluetoothManager.linkDevice(device.getAddress(), null);
-            Message msg = Message.obtain();
+            /*Message msg = Message.obtain();
             msg.what = CONNECT_DISCONNECT ;
             msg.obj = device;
-            mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);  // 处理一直在连接中的问题
+            mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);*/  // 处理一直在连接中的问题
         }
     }
 

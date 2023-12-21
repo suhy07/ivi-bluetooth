@@ -68,9 +68,11 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
             if(device!=null){
                 if(state == BluetoothProfile.STATE_DISCONNECTED){
-
                     if(isHfpAction){
-                        CallUtil.getInstance().setDisconnectHfpMac(device.getAddress());
+                        CallUtil.getInstance().setConnectingHfpMac("");
+                    }
+                    if(isA2dpAction||isA2dpSinkAction){
+                        CallUtil.getInstance().setConnectingA2dpMac("");
                     }
 
                     // 蓝牙设备已断开连接
@@ -101,11 +103,24 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     }
                     Global.connStatus = Global.NOT_CONNECTED;
 
-                }else if(state == 1){
-
-                }else if(state == 2){
+                }else if(state == BluetoothProfile.STATE_CONNECTING){
                     if(isHfpAction){
-                        CallUtil.getInstance().setDisconnectHfpMac("");
+                        CallUtil.getInstance().setConnectingHfpMac(device.getAddress());
+                    }
+                    if(isA2dpAction||isA2dpSinkAction){
+                        CallUtil.getInstance().setConnectingA2dpMac(device.getAddress());
+                    }
+                    deviceSet.remove(device);
+                    deviceSet.add(device);
+                    if (deviceViewModel != null) {
+                        deviceViewModel.setDeviceSet(deviceSet);
+                    }
+                }else if(state == BluetoothProfile.STATE_CONNECTED){
+                    if(isHfpAction){
+                       CallUtil.getInstance().setConnectingHfpMac("");
+                    }
+                    if(isA2dpAction||isA2dpSinkAction){
+                        CallUtil.getInstance().setConnectingA2dpMac("");
                     }
                     // 蓝牙设备已连接
                     //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
