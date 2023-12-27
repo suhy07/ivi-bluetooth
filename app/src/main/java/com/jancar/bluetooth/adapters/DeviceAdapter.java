@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -273,7 +274,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             if (deviceViewModel != null) {
                 deviceViewModel.setConnMap(connMap);
             }
-            jancarBluetoothManager.linkDevice(device.getAddress(), null);
+            jancarBluetoothManager.linkDevice(device.getAddress(), stub);
             /*Message msg = Message.obtain();
             msg.what = CONNECT_DISCONNECT ;
             msg.obj = device;
@@ -309,4 +310,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
         }
     }
+    IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
+        @Override
+        public void onSuccess(String s) {
+        }
+
+        @Override
+        public void onFailure(int i) {
+            Log.i(TAG, "Connect Failure：" + i);
+            String value = SystemProperties.get("persist.atc.bt.a2dpsourcerole","");
+            Log.i(TAG, "a2dpsourcerole：" + value);
+            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+        }
+    };
 }

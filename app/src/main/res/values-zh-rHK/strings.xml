@@ -40,5 +40,5 @@
     <string name="audio_in_phone">手機接聽</string>
     <string name="status_incoming">來電中</string>
     <string name="status_outgoing">撥號中</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connect_on_failure_tips">連接失敗，請目標檢查設備藍牙是否開啟，或設備是否需要打開藍牙發射</string>
 </resources>

@@ -91,7 +91,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bluetooth_devices"
         android:layout_width="1500dp"
-        android:layout_height="265dp"
+        android:layout_height="240dp"
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline7"

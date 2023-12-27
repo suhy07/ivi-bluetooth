@@ -40,4 +40,5 @@
     <string name="status_incoming">來電中</string>
     <string name="status_outgoing">撥號中</string>
     <string name="str_contact_search">聯繫人搜索</string>
+    <string name="str_connect_on_failure_tips">連接失敗，請目標檢查設備藍牙是否開啟，或設備是否需要打開藍牙發射</string>
 </resources>

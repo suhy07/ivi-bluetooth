@@ -40,4 +40,6 @@
     <string name="status_incoming">Incoming</string>
     <string name="status_outgoing">OutGoing</string>
     <string name="str_contact_search">Contact Search</string>
+    <string name="str_connect_on_failure_tips">Connection failed, please check if the device\'s Bluetooth
+        is enabled or if the device needs to enable Bluetooth transmission</string>
 </resources>
