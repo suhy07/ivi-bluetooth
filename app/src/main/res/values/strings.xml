@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Bluetooth</string>
     <string name="str_title_device">Device Manager</string>
     <string name="title_phone">Bluetooth Phone</string>
@@ -42,4 +42,8 @@
     <string name="str_contact_search">Contact Search</string>
     <string name="str_connect_on_failure_tips">Connection failed, please check if the device\'s Bluetooth
         is enabled or if the device needs to enable Bluetooth transmission</string>
+
+    <string name="bluetooth_connect_success" tools:ignore="MissingTranslation">Bluetooth connect success</string>
+    <string name="bluetooth_not_connect" tools:ignore="MissingTranslation">Bluetooth not success</string>
+
 </resources>

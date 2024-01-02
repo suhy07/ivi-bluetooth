@@ -1,8 +1,10 @@
 package com.jancar.bluetooth.ui.phone;
 
 import android.annotation.NonNull;
+import android.arch.lifecycle.Observer;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +48,17 @@ public class PhoneFragment extends Fragment {
         init();
         if (phoneViewModel != null) {
             phoneViewModel.getCallNumber().observe(this, s -> callNum.setText(s));
+            phoneViewModel.getConnectStatus().observe(this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    if(aBoolean){
+                        callNum.setHint(R.string.bluetooth_connect_success);
+                    }else{
+                        callNum.setHint(R.string.bluetooth_not_connect);
+                    }
+                }
+            });
+            phoneViewModel.setConnectStatus(CallUtil.getInstance().canCallNumber());
         }
         return rootView;
     }
@@ -67,6 +80,8 @@ public class PhoneFragment extends Fragment {
         cancelBtn = rootView.findViewById(R.id.btn_cancel);
         cancelBtn = rootView.findViewById(R.id.btn_cancel);
         callNum = rootView.findViewById(R.id.tv_phone_number);
+
+
     }
 
     private void init() {
@@ -136,7 +151,7 @@ public class PhoneFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
-        if(event!=null && (event.mStatus == IVIBluetooth.CallStatus.HANGUP||event.mStatus == IVIBluetooth.CallStatus.OUTGOING)){
+        if(event!=null && event.mStatus == IVIBluetooth.CallStatus.OUTGOING){
             String number = event.mPhoneNumber;
             if (phoneViewModel != null) {
                 String tempValue = phoneViewModel.getCallNumber().getValue();

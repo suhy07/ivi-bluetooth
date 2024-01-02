@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothService.setDeviceViewModel(deviceViewModel);
                 bluetoothService.setAddressViewModel(addressViewModel);
                 bluetoothService.setMusicViewModel(musicViewModel);
+                bluetoothService.setPhoneViewModel(phoneViewModel);
             }
 
             @Override

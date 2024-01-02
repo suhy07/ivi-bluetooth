@@ -21,6 +21,7 @@ import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
+import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -38,6 +39,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private DeviceViewModel deviceViewModel;
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
+    private PhoneViewModel phoneViewModel;
+
     private Set<BluetoothDevice> deviceSet;
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,6 +52,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         } else {
             deviceSet = new HashSet<>();
         }
+
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
         boolean isHfpAction = BluetoothHeadsetClient.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         boolean isA2dpAction = BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action);
@@ -56,7 +60,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         if(isHfpAction|| isA2dpAction || isA2dpSinkAction){
             int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1);
             BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            Log.i("liyongde",device.getName()+" "+device.getAddress()+" "+state+" "+device.isConnected());
+            //Log.i("liyongde",device.getName()+" "+device.getAddress()+" "+state+" "+device.isConnected());
             if(isHfpAction){
                 CallUtil.getInstance().setHfpStatus(state);
             }
@@ -65,6 +69,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             }
             if(isA2dpSinkAction){
                 CallUtil.getInstance().setA2dpSinkStatus(state);
+            }
+
+            if(phoneViewModel!=null){
+                phoneViewModel.setConnectStatus(CallUtil.getInstance().canCallNumber());
             }
 
             if(device!=null){
@@ -140,6 +148,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             }
 
         }
+
         /*if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
             // 蓝牙设备已连接
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -188,6 +197,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
     public void setMusicViewModel(MusicViewModel musicViewModel) {
         this.musicViewModel = musicViewModel;
+    }
+
+    public void setPhoneViewModel(PhoneViewModel phoneViewModel) {
+        this.phoneViewModel = phoneViewModel;
     }
 
     private BluetoothDevice getDeviceByMac(String mac){
