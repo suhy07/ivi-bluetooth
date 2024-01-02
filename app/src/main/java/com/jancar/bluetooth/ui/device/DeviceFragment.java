@@ -236,13 +236,13 @@ public class DeviceFragment extends Fragment {
             hideKeyboard(v);
             return false;
         });
+        if (bluetoothAdapter.isEnabled()) {
+            searchDevice();
+        }
         return view;
     }
 
     private void searchDevice() {
-        if (!bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.enable();
-        }
         bluetoothAdapter.startDiscovery();
         scanPb.setVisibility(View.VISIBLE);
         new Thread(() -> {

@@ -56,11 +56,7 @@ public class CallLogFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (!CallUtil.getInstance().canCallNumber()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
-            } else {
-                searchCallLog();
-            }
+            searchCallLog();
         });
         return rootView;
     }
@@ -132,14 +128,15 @@ public class CallLogFragment extends Fragment {
     }
 
     private void searchCallLog() {
-        if(!CallUtil.getInstance().canCallNumber()) {
-            return;
+        if (!CallUtil.getInstance().canCallNumber()) {
+            MainApplication.showToast(getString(R.string.str_not_connect_warn));
         }
-//        bluetoothManager.stopContactOrHistoryLoad(stub1);
-        if(bluetoothManager != null) {
-            bluetoothManager.getPhoneContacts(stub1);
-            bluetoothManager.getAllCallRecord(stub);
-            callLogPb.setVisibility(View.VISIBLE);
+        else {
+            if (bluetoothManager != null) {
+                bluetoothManager.getPhoneContacts(stub1);
+                bluetoothManager.getAllCallRecord(stub);
+                callLogPb.setVisibility(View.VISIBLE);
+            }
         }
         //超时
     }

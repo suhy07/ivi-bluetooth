@@ -67,12 +67,7 @@ public class ContactListFragment extends Fragment {
             });
         }
         refreshBtn.setOnClickListener(v -> {
-            if (!CallUtil.getInstance().canCallNumber()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
-            } else {
-                searchContact();
-            }
-
+            searchContact();
         });
         recyclerView.setOnTouchListener((v, event) -> {
             hideKeyboard(v);
@@ -175,12 +170,12 @@ public class ContactListFragment extends Fragment {
     private void searchContact() {
         Log.i(TAG, "search");
         if(!CallUtil.getInstance().canCallNumber()) {
-            return;
-        }
-//        bluetoothManager.stopContactOrHistoryLoad(stub1);
-        if (bluetoothManager != null) {
-            bluetoothManager.getPhoneContacts(stub);
-            contactPb.setVisibility(View.VISIBLE);
+            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+        } else {
+            if (bluetoothManager != null) {
+                bluetoothManager.getPhoneContacts(stub);
+                contactPb.setVisibility(View.VISIBLE);
+            }
         }
     }
 
