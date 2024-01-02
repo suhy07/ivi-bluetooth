@@ -71,7 +71,7 @@ android {
 
 dependencies {
     //noinspection GradleCompatible
-//    implementation project(':sdk')
+    implementation project(':sdk')
 //    implementation project(':base')
     implementation files('libs/mvp.jar')
     implementation 'com.belerweb:pinyin4j:2.5.1'
@@ -85,7 +85,7 @@ dependencies {
     implementation 'android.arch.navigation:navigation-ui:1.0.0'
     implementation 'com.android.support:design:28.0.0'
 //    implementation files('libs/frame.jar')
-    implementation files('libs/sdk-release.aar')
+//    implementation files('libs/sdk-release.aar')
     compileOnly files('libs/framework.jar')
 
 }

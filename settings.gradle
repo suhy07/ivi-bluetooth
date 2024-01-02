@@ -4,8 +4,8 @@ include ':app'
 //include ':base'
 //project(":base").projectDir = new File("../../base")
 //
-//include ':sdk'
-//project(":sdk").projectDir = new File("../../sdk")
+include ':sdk'
+project(":sdk").projectDir = new File("../../sdk")
 //
 //include ':uibase'
 //project(":uibase").projectDir = new File("../../uibase")

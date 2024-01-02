@@ -8,17 +8,18 @@
 
     <EditText
         android:id="@+id/tv_phone_number"
-        android:layout_width="220dp"
-        android:layout_height="330dp"
+        android:layout_width="750dp"
+        android:layout_height="85dp"
         android:background="#00000000"
-        android:text="1234567"
         android:enabled="false"
         android:gravity="center"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="50sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline18"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline20" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_num1"
@@ -179,22 +180,20 @@
     <ImageButton
         android:id="@+id/btn_call"
         android:layout_width="210dp"
-        android:layout_height="160dp"
+        android:layout_height="152dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/shape_button_ripple_call"
         app:layout_constraintBottom_toTopOf="@+id/guideline25"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline31"
         app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
     <ImageButton
         android:id="@+id/btn_cancel"
         android:layout_width="210dp"
-        android:layout_height="160dp"
+        android:layout_height="152dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/shape_button_ripple_back"
         app:layout_constraintBottom_toTopOf="@+id/guideline27"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline31"
         app:layout_constraintTop_toTopOf="@+id/guideline25" />
 
@@ -205,68 +204,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="50dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="100dp" />
+        app:layout_constraintGuide_begin="125dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="180dp" />
+        app:layout_constraintGuide_begin="200dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="260dp" />
+        app:layout_constraintGuide_begin="275dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="340dp" />
+        app:layout_constraintGuide_begin="350dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="330dp" />
+        app:layout_constraintGuide_begin="170dp" />
+
     <android.support.constraint.Guideline
         android:id="@+id/guideline29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="570dp" />
+        app:layout_constraintGuide_begin="405dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="810dp" />
+        app:layout_constraintGuide_begin="640dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="1050dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="1260dp" />
+        app:layout_constraintGuide_begin="875dp" />
 
 </android.support.constraint.ConstraintLayout>
