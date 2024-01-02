@@ -111,14 +111,16 @@ public class PhoneFragment extends Fragment {
             if (phoneViewModel != null) {
                 number = phoneViewModel.getCallNumber().getValue();
             }
-            String name = Global.findNameByNumber(number);
-            boolean isComing = false;
             //号码为空或未连接蓝牙时，不能拨号
             if (!CallUtil.getInstance().canCallNumber()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             } else if(number.equals("")) {
-                MainApplication.showToast(getString(R.string.str_no_number));
+                if(CallUtil.getInstance().getCallNumber().equals("")){
+                    MainApplication.showToast(getString(R.string.str_no_number));
+                }else{
+                    phoneViewModel.setCallNumber(CallUtil.getInstance().getCallNumber());
+                }
                 return;
             }
             bluetoothManager.callPhone(number, stub);

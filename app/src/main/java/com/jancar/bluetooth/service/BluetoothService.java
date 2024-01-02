@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothA2dpSink;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothHeadsetClient;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
@@ -81,7 +82,7 @@ public class BluetoothService extends Service {
         //filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         filter3.addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
         filter3.addAction(BluetoothA2dpSink.ACTION_CONNECTION_STATE_CHANGED);
-        filter3.addAction(BT_CONNECTION_STATE_CHANGED);
+        filter3.addAction(BluetoothHeadsetClient.ACTION_CONNECTION_STATE_CHANGED);
         registerReceiver(bluetoothConnectionReceiver, filter3);
     }
 

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothA2dpSink;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothHeadsetClient;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,7 +50,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceSet = new HashSet<>();
         }
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
-        boolean isHfpAction = BluetoothService.BT_CONNECTION_STATE_CHANGED.equals(action);
+        boolean isHfpAction = BluetoothHeadsetClient.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         boolean isA2dpAction = BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         boolean isA2dpSinkAction = BluetoothA2dpSink.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         if(isHfpAction|| isA2dpAction || isA2dpSinkAction){
