@@ -132,7 +132,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         });
         holder.itemView.setOnLongClickListener((view) -> {
             showOptionsDialog(device, view.getContext());
-            return false;
+            holder.itemView.getParent().requestDisallowInterceptTouchEvent(true);
+            return true;
         });
     }
 
