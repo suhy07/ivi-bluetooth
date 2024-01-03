@@ -27,6 +27,7 @@ import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
+import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,6 +51,7 @@ public class BluetoothService extends Service {
     private DeviceViewModel deviceViewModel;
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
+    private PhoneViewModel phoneViewModel;
 
     public class LocalBinder extends Binder {
         public BluetoothService getService() {
@@ -110,6 +112,11 @@ public class BluetoothService extends Service {
         this.musicViewModel = musicViewModel;
         bluetoothConnectionReceiver.setMusicViewModel(musicViewModel);
         bluetoothStateReceiver.setMusicViewModel(musicViewModel);
+    }
+
+    public void setPhoneViewModel(PhoneViewModel phoneViewModel) {
+        this.phoneViewModel = phoneViewModel;
+        bluetoothConnectionReceiver.setPhoneViewModel(phoneViewModel);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
