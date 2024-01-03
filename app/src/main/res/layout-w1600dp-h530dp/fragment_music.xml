@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:background="@drawable/ic_player"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -23,27 +23,29 @@
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:lines="4"
         android:textColor="@color/white"
         android:textSize="35sp"
         android:textStyle="bold"
-        android:lines="4"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline19" />
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_artist"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:lines="2"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:lines="2"
         app:layout_constraintBottom_toTopOf="@+id/guideline28"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline13" />
+        app:layout_constraintTop_toTopOf="@+id/guideline13"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/btn_prev"
