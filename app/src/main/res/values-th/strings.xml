@@ -40,5 +40,6 @@
     <string name="audio_in_phone">รับโทรศัพท์มือถือ</string>
     <string name="status_incoming">ในการโทร</string>
     <string name="status_outgoing">การโทรออก</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">การเชื่อมต่อ Bluetooth สำเร็จ</string>
+    <string name="str_unconnected">ไม่ได้เชื่อมต่อ Bluetooth</string>
 </resources>

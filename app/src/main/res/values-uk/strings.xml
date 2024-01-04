@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Отговаряне на мобилен телефон</string>
     <string name="status_incoming">В призива</string>
     <string name="status_outgoing">Набиране</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">З’єднання Bluetooth успішне</string>
+    <string name="str_unconnected">Bluetooth не підключено</string>
 </resources>

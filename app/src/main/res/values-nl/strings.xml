@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Mobiele telefoon beantwoorden</string>
     <string name="status_incoming">In het gesprek</string>
     <string name="status_outgoing">Kiezen</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth-verbinding is gelukt</string>
+    <string name="str_unconnected">Bluetooth is niet verbonden</string>
 </resources>

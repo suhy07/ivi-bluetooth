@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Anrufbeantwortung am Mobiltelefon</string>
     <string name="status_incoming">In der Telefonkonferenz</string>
     <string name="status_outgoing">Wählend</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth-Verbindung ist erfolgreich</string>
+    <string name="str_unconnected">Bluetooth ist nicht verbunden</string>
 </resources>

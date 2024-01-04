@@ -40,5 +40,6 @@
     <string name="audio_in_phone">מענה לטלפון נייד</string>
     <string name="status_incoming">בשיחה</string>
     <string name="status_outgoing">חיוג</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">חיבור בלוטות\' הצליח</string>
+    <string name="str_unconnected">בלוטוס לא מחובר</string>
 </resources>

@@ -40,5 +40,6 @@
     <string name="audio_in_phone">휴대전화 응답</string>
     <string name="status_incoming">통화 중</string>
     <string name="status_outgoing">전화 걸기</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">블루투스 연결 성공</string>
+    <string name="str_unconnected">블루투스가 연결되지 않았습니다</string>
 </resources>

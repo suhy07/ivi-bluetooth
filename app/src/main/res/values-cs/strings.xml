@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Příjem na mobilní telefon</string>
     <string name="status_incoming">V hovoru</string>
     <string name="status_outgoing">Vytáčení</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Připojení Bluetooth je úspěšné</string>
+    <string name="str_unconnected">Bluetooth není připojeno</string>
 </resources>

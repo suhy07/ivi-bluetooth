@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Cep telefonu yanıtlama</string>
     <string name="status_incoming">Görüşmede</string>
     <string name="status_outgoing">Arama</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth bağlantısı başarılı</string>
+    <string name="str_unconnected">Bluetooth bağlı değil</string>
 </resources>

@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Contestador de teléfono móvil</string>
     <string name="status_incoming">En la llamada</string>
     <string name="status_outgoing">Marcación</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">La conexión Bluetooth es exitosa</string>
+    <string name="str_unconnected">Bluetooth no está conectado</string>
 </resources>

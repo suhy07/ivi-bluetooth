@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Τηλεφωνητής κινητού τηλεφώνου</string>
     <string name="status_incoming">Στην κλήση</string>
     <string name="status_outgoing">Κλήσης</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Η σύνδεση Bluetooth είναι επιτυχής</string>
+    <string name="str_unconnected">Το Bluetooth δεν είναι συνδεδεμένο</string>
 </resources>

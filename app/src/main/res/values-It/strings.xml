@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Risposta telefonica da cellulare</string>
     <string name="status_incoming">Nel bando</string>
     <string name="status_outgoing">Composizione</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">La connessione Bluetooth è riuscita</string>
+    <string name="str_unconnected">Il Bluetooth non è connesso</string>
 </resources>

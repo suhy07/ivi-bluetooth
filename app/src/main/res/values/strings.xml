@@ -42,8 +42,7 @@
     <string name="str_contact_search">Contact Search</string>
     <string name="str_connect_on_failure_tips">Connection failed, please check if the device\'s Bluetooth
         is enabled or if the device needs to enable Bluetooth transmission</string>
-
-    <string name="bluetooth_connect_success" tools:ignore="MissingTranslation">Bluetooth connect success</string>
-    <string name="bluetooth_not_connect" tools:ignore="MissingTranslation">Bluetooth not success</string>
+    <string name="str_connected">Bluetooth connection successful</string>
+    <string name="str_unconnected">Bluetooth disconnected</string>
 
 </resources>

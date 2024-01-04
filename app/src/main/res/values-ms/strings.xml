@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Penjawab ponsel</string>
     <string name="status_incoming">Dalam panggilan</string>
     <string name="status_outgoing">Panggilan</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Sambungan Bluetooth berjaya</string>
+    <string name="str_unconnected">Bluetooth tidak bersambung</string>
 </resources>

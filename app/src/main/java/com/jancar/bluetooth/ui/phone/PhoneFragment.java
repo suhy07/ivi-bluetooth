@@ -52,9 +52,9 @@ public class PhoneFragment extends Fragment {
                 @Override
                 public void onChanged(Boolean aBoolean) {
                     if(aBoolean){
-                        callNum.setHint(R.string.bluetooth_connect_success);
+                        callNum.setHint(R.string.str_connected);
                     }else{
-                        callNum.setHint(R.string.bluetooth_not_connect);
+                        callNum.setHint(R.string.str_unconnected);
                     }
                 }
             });

@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Răspuns la telefonul mobil</string>
     <string name="status_incoming">În apel</string>
     <string name="status_outgoing">Apelare</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Conexiunea Bluetooth este reușită</string>
+    <string name="str_unconnected">Bluetooth nu este conectat</string>
 </resources>

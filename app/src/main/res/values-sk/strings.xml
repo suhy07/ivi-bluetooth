@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Odpovedanie na mobilný telefón</string>
     <string name="status_incoming">Vo výzve</string>
     <string name="status_outgoing">Vytáčanie</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth spojenie úspešné</string>
+    <string name="str_unconnected">Bluetooth nespojený</string>
 </resources>

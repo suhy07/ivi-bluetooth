@@ -40,5 +40,6 @@
     <string name="audio_in_phone">携帯電話の応対</string>
     <string name="status_incoming">通話中</string>
     <string name="status_outgoing">ダイヤル</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth接続に成功しました</string>
+    <string name="str_unconnected">Bluetoothが接続されていません</string>
 </resources>

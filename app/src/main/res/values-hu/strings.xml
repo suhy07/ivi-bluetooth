@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Mobiltelefon fogadása</string>
     <string name="status_incoming">A hívásban</string>
     <string name="status_outgoing">Tárcsázás</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">A Bluetooth-kapcsolat sikeres</string>
+    <string name="str_unconnected">A Bluetooth nincs csatlakoztatva</string>
 </resources>

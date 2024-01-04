@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Điện thoại di động trả lời</string>
     <string name="status_incoming">Trong cuộc gọi</string>
     <string name="status_outgoing">Gọi</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Kết nối Bluetooth thành công</string>
+    <string name="str_unconnected">Bluetooth không được kết nối</string>
 </resources>

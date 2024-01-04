@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Odbieranie telefonów komórkowych</string>
     <string name="status_incoming">W zaproszeniu do składania wniosków</string>
     <string name="status_outgoing">Wybierania numeru</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Połączenie Bluetooth powiodło się</string>
+    <string name="str_unconnected">Bluetooth nie jest podłączony</string>
 </resources>

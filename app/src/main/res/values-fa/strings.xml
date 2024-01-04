@@ -40,5 +40,6 @@
     <string name="audio_in_phone">پاسخ تلفن همراه</string>
     <string name="status_incoming">در تماس</string>
     <string name="status_outgoing">شماره گیری</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">اتصال بلوتوث موفقیت آمیز است</string>
+    <string name="str_unconnected">بلوتوث متصل نیست</string>
 </resources>

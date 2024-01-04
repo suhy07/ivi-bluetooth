@@ -40,5 +40,6 @@
     <string name="audio_in_phone">Ответ на звонок по мобильному телефону</string>
     <string name="status_incoming">В звонке</string>
     <string name="status_outgoing">Набор</string>
-    <!--2023-11-22 16:45 >> end-->
+    <string name="str_connected">Bluetooth-соединение успешно</string>
+    <string name="str_unconnected">Bluetooth не подключен</string>
 </resources>
