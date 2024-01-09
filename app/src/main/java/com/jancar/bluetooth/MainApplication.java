@@ -93,7 +93,16 @@ public class MainApplication extends Application {
 
     }
 
+    private static long lastShowTime = 0;
+
     public static void showToast(String val) {
+        long tempTime = System.currentTimeMillis();
+        long diff = tempTime - lastShowTime;
+        if(diff<2500){
+            return;
+        }
+        lastShowTime = tempTime;
+
         if (mToast == null) {
             mToast = Toast.makeText(getInstance(), val, Toast.LENGTH_SHORT);
         } else {
