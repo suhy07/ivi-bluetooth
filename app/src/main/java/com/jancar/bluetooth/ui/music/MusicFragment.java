@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.MediaManagerUtil;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
@@ -83,7 +84,10 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             });
         }
         playBtn.setOnClickListener(v -> {
-            if (Global.connStatus != Global.CONNECTED) {
+            if(CallUtil.isBluetoothSendStatus()){
+                return;
+            }
+            if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
@@ -96,7 +100,10 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             updateMusicName();
         });
         prevBtn.setOnClickListener(v -> {
-            if (Global.connStatus != Global.CONNECTED) {
+            if(CallUtil.isBluetoothSendStatus()){
+                return;
+            }
+            if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
@@ -104,7 +111,10 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             updateMusicName();
         });
         nextBtn.setOnClickListener(v -> {
-            if (Global.connStatus != Global.CONNECTED) {
+            if(CallUtil.isBluetoothSendStatus()){
+                return;
+            }
+            if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }

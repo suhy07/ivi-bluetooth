@@ -95,6 +95,13 @@ public class CallUtil {
         }
     }
 
+    public boolean canPlayBluetoothMusic(){
+        if(isBluetoothSendStatus()){
+            return false;
+        }
+        return a2dpSinkStatus == BluetoothProfile.STATE_CONNECTED;
+    }
+
     public boolean isDeviceConnected(BluetoothDevice device){
         if(!device.isConnected()){
             return false;
