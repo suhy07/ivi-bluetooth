@@ -7,9 +7,13 @@ import android.annotation.NonNull;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemProperties;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * @author suhy
@@ -45,14 +50,18 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
+    private RecyclerView recyclerView;
+    private BluetoothDevice nowDevice;
+    private DeviceViewHolder holder;
     private final static int UPDATE_LIST = 0;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
     public DeviceAdapter(Set<BluetoothDevice> deviceSet
-            , DeviceViewModel deviceViewModel) {
+            , DeviceViewModel deviceViewModel, RecyclerView recyclerView) {
         sortDeviceList(deviceSet);
         this.deviceList = new ArrayList<>(deviceSet);
         this.deviceViewModel = deviceViewModel;
+        this.recyclerView = recyclerView;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
     }
@@ -70,6 +79,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
+        this.holder = holder;
+        ViewCompat.setBackground(holder.itemView, createSelectableBackground(holder.itemView.getContext()));
         BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
         String deviceName = device.getName();
         String deviceAddress = device.getAddress();
@@ -97,10 +108,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTED;
         }
         holder.itemView.setOnClickListener( v -> {
+            nowDevice = device;
+            sortDeviceList(new HashSet<>(deviceList));
             if (CallUtil.getInstance().isDeviceConnected(device)) {
                 //已连接，只断开
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
-                reFreshDeviceSet(device);
+//                reFreshDeviceSet(device);
             } else {
                 //未连接
                 //已配对
@@ -110,11 +123,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 //未配对
                 } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                     resumeBluetooth();
-                    holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
-                    device.createBond();
+                    startPair(device);
                 } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
                     holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
                 }
+//                recyclerView.smoothScrollToPosition(0);
             }
         });
         holder.itemView.setOnLongClickListener((view) -> {
@@ -133,25 +146,35 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         final Set<BluetoothDevice> devices = new HashSet<>(deviceSet);
         new Thread(
                 ()->{
-                    List<BluetoothDevice> sortDeviceList = new ArrayList<>();
+                    List<BluetoothDevice> sortDeviceList, sortDeviceList1,
+                    sortDeviceList2, sortDeviceList3;
+                    sortDeviceList = new ArrayList<>();
+                    sortDeviceList1 = new ArrayList<>();
+                    sortDeviceList2 = new ArrayList<>();
+                    sortDeviceList3 = new ArrayList<>();
                     List<BluetoothDevice> tempList;
                     tempList = new ArrayList<>(devices);
+
                     for (BluetoothDevice device : devices) {
                         if (device.isConnected()) {
                             sortDeviceList.add(device);
                             tempList.remove(device);
-                        }
-                    }
-
-                    Set<BluetoothDevice> devices1 = new HashSet<>(tempList);
-                    for (BluetoothDevice device : devices1) {
-                        if (device.getBondState() == BluetoothDevice.BOND_BONDED
-                                || device.getBondState() == BluetoothDevice.BOND_BONDING) {
-                            sortDeviceList.add(device);
+                        } else if (CallUtil.getInstance().isDeviceConnecting(device)) {
+                            sortDeviceList1.add(device);
+                            tempList.remove(device);
+                        } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                            sortDeviceList2.add(device);
+                            tempList.remove(device);
+                        } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                            sortDeviceList3.add(device);
                             tempList.remove(device);
                         }
                     }
+                    sortDeviceList.addAll(sortDeviceList1);
+                    sortDeviceList.addAll(sortDeviceList2);
+                    sortDeviceList.addAll(sortDeviceList3);
                     sortDeviceList.addAll(tempList);
+                    mHandler.removeMessages(UPDATE_LIST);
                     Message msg = Message.obtain();
                     msg.what = UPDATE_LIST;
                     msg.obj = sortDeviceList;
@@ -173,6 +196,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             pairingStatus = itemView.findViewById(R.id.tv_device_pairing_status);
             connectStatus = itemView.findViewById(R.id.tv_device_connect_status);
         }
+    }
+
+
+    // 创建点击效果
+    private Drawable createSelectableBackground(Context context) {
+        int[] attrs = new int[]{R.attr.selectableItemBackground};
+        TypedArray typedArray = context.obtainStyledAttributes(attrs);
+        Drawable selectableBackground = typedArray.getDrawable(0);
+        typedArray.recycle();
+        return selectableBackground;
     }
 
     private void showOptionsDialog(BluetoothDevice device, Context context) {
@@ -203,7 +236,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             if (bondState == BluetoothDevice.BOND_BONDED){
                 device.removeBond();
             } else if (bondState == BluetoothDevice.BOND_NONE) {
-                device.createBond();
+                startPair(device);
             }
             dialog.dismiss();
         });
@@ -211,7 +244,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         connectButton.setOnClickListener(v -> {
             if (bondState == BluetoothDevice.BOND_NONE) {
                 resumeBluetooth();
-                device.createBond();
+                startPair(device);
             } else if (bondState == BluetoothDevice.BOND_BONDED) {
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
                 if(!device.isConnected()) {
@@ -241,21 +274,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
     };
 
-    private void reFreshDeviceSet(BluetoothDevice device) {
-        if (deviceViewModel != null) {
-            Set<BluetoothDevice> devices;
-            if (deviceViewModel.getDeviceSet() != null
-                    && deviceViewModel.getDeviceSet().getValue() != null) {
-                devices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-            } else {
-                devices = new HashSet<>();
-            }
-            devices.remove(device);
-            devices.add(device);
-            deviceViewModel.setDeviceSet(devices);
-        }
-    }
-
     private void startConnect(BluetoothDevice device) {
         if(!CallUtil.getInstance().isConnecting()) {
             Global.connStatus = Global.CONNECTING;
@@ -263,9 +281,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
     }
 
+    private void startPair(BluetoothDevice device) {
+        if (!CallUtil.getInstance().isPairing(deviceList)) {
+            device.createBond();
+            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
+        }
+    }
+
     private void resumeBluetooth(){
-        bluetoothAdapter.cancelDiscovery();
-        jancarBluetoothManager.stopContactOrHistoryLoad(null);
+//        bluetoothAdapter.cancelDiscovery();
+//        jancarBluetoothManager.stopContactOrHistoryLoad(null);
     }
 
     class mHandler extends Handler {
@@ -278,6 +303,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 case UPDATE_LIST:
                     List<BluetoothDevice> deviceSet = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceSet);
+                    if (nowDevice != null) {
+                        int index;
+                        try {
+                           index = deviceList.indexOf(nowDevice);
+                           recyclerView.smoothScrollToPosition(index);
+                        } catch (Exception e) {
+                            index = 0;
+                            recyclerView.smoothScrollToPosition(index);
+                        }
+                    }
                     notifyDataSetChanged();
                     break;
             }
@@ -286,11 +321,20 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
         @Override
         public void onSuccess(String s) {
+            Log.i(TAG, "onSuccess:" + s);
         }
 
         @Override
         public void onFailure(int i) {
-            MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+            Log.i(TAG,"onFailure");
+            if (!CallUtil.getInstance().isConnected()) {
+                Log.i(TAG, "tips");
+                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+            }
         }
     };
+
+    public void removeHandler() {
+        mHandler.removeCallbacksAndMessages(this);
+    }
 }

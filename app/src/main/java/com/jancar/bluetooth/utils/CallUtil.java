@@ -18,6 +18,8 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.utils.Logcat;
 
+import java.util.List;
+
 public class CallUtil {
 
     private static CallUtil mCallUtil = null;
@@ -336,5 +338,14 @@ public class CallUtil {
 
     public void setConnectingA2dpMac(String connectingA2dpMac) {
         this.connectingA2dpMac = connectingA2dpMac;
+    }
+
+    public boolean isPairing(List<BluetoothDevice> devices) {
+        for (BluetoothDevice device : devices) {
+            if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                return true;
+            }
+        }
+        return false;
     }
 }

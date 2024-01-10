@@ -4,7 +4,7 @@ package com.jancar.bluetooth.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
+import android.view.ViewGroup;
 
 import com.jancar.bluetooth.ui.address.AddressFragment;
 import com.jancar.bluetooth.ui.device.DeviceFragment;
@@ -14,7 +14,6 @@ import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
-import com.jancar.utils.Logcat;
 
 /**
  * @author suhy
@@ -68,5 +67,10 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         // 根据你的需求返回Fragment数量
         return 4;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        //super.destroyItem(container, position, object);
     }
 }

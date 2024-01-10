@@ -87,6 +87,7 @@ public class DeviceFragment extends Fragment {
                         if (device.isConnected()) {
                             Log.i(TAG, "监测到设备已连接");
                             Global.connStatus = Global.CONNECTED;
+                            break;
                         }
                     }
                     deviceAdapter.sortDeviceList(devices);
@@ -280,18 +281,21 @@ public class DeviceFragment extends Fragment {
             EventBus.getDefault().register(this);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
+        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel, recyclerView);
         recyclerView.setAdapter(deviceAdapter);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.i(TAG, "onDestroyView");
+        deviceAdapter.removeHandler();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -300,7 +304,7 @@ public class DeviceFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        checkConnect();
+//        checkConnect();
     }
 
     private void checkConnect(){

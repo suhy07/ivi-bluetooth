@@ -4,6 +4,7 @@ package com.jancar.bluetooth.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
@@ -54,4 +55,8 @@ public class AddressTabPagerAdapter extends FragmentPagerAdapter {
         return tabTitles[position];
     }
 
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        //super.destroyItem(container, position, object);
+    }
 }
