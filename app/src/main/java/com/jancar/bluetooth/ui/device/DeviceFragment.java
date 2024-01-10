@@ -57,7 +57,6 @@ public class DeviceFragment extends Fragment {
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
     private Set<BluetoothDevice> deviceSet = new HashSet<>();
-    private Map<BluetoothDevice, Integer> connMap = new HashMap<>();
     private BluetoothManager bluetoothManager;
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
@@ -66,6 +65,7 @@ public class DeviceFragment extends Fragment {
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
+    private boolean isFirstOpen = true;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,27 +82,16 @@ public class DeviceFragment extends Fragment {
             deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
                 if (devices != null) {
                     Log.d(TAG, "观察到devices列表变化");
-                    deviceAdapter.setDeviceSet(devices);
-                    connMap.clear();
                     Global.connStatus = Global.NOT_CONNECTED;
                     for (BluetoothDevice device : devices) {
                         if (device.isConnected()) {
                             Log.i(TAG, "监测到设备已连接");
                             Global.connStatus = Global.CONNECTED;
                         }
-                        connMap.put(device, device.isConnected() ?
-                                Global.CONNECTED : Global.NOT_CONNECTED);
                     }
-                    deviceViewModel.setConnMap(connMap);
-                    deviceAdapter.notifyDataSetChanged();
+                    deviceAdapter.sortDeviceList(devices);
                 }
             });
-            deviceViewModel.getConnMap().observe(getViewLifecycleOwner(), connMap -> {
-                Log.d(TAG, "观察到connMap变化");
-                deviceAdapter.setConnMap(connMap);
-                deviceAdapter.notifyDataSetChanged();
-            });
-//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             //获取已配对的设备
             if (deviceViewModel.getDeviceSet() != null
                     && deviceViewModel.getDeviceSet().getValue() != null) {
@@ -138,6 +127,7 @@ public class DeviceFragment extends Fragment {
                     nameTv.setEnabled(false);
                     scanPb.setVisibility(View.INVISIBLE);
                     bluetoothSwitch.setChecked(false);
+                    deviceAdapter.sortDeviceList(new HashSet<>());
                     Global.connStatus = Global.NOT_CONNECTED;
                 }
                 nameTv.setText(deviceViewModel.getBluetoothName().getValue());
@@ -237,7 +227,10 @@ public class DeviceFragment extends Fragment {
             return false;
         });
         if (bluetoothAdapter.isEnabled()) {
-            searchDevice();
+            if (isFirstOpen) {
+                isFirstOpen = false;
+                searchDevice();
+            }
         }
         return view;
     }
@@ -287,7 +280,7 @@ public class DeviceFragment extends Fragment {
             EventBus.getDefault().register(this);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceSet, connMap, deviceViewModel);
+        deviceAdapter = new DeviceAdapter(deviceSet, deviceViewModel);
         recyclerView.setAdapter(deviceAdapter);
     }
 
@@ -322,18 +315,14 @@ public class DeviceFragment extends Fragment {
         if (devices != null) {
             Log.d(TAG, "观察到devices列表变化");
             deviceAdapter.setDeviceSet(devices);
-            connMap.clear();
             Global.connStatus = Global.NOT_CONNECTED;
             for (BluetoothDevice device : devices) {
                 if (device.isConnected()) {
                     Log.i(TAG, "监测到设备已连接");
                     Global.connStatus = Global.CONNECTED;
                 }
-                connMap.put(device, device.isConnected() ?
-                        Global.CONNECTED : Global.NOT_CONNECTED);
             }
-            deviceViewModel.setConnMap(connMap);
-            deviceAdapter.notifyDataSetChanged();
+//            deviceAdapter.notifyDataSetChanged();
         }
     }
 

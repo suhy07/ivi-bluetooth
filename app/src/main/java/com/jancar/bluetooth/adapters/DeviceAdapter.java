@@ -4,15 +4,11 @@ import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
 import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
 
 import android.annotation.NonNull;
-import android.annotation.PluralsRes;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.os.SystemProperties;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,14 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.ui.device.DeviceFragment;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
@@ -36,7 +29,7 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothDevice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,29 +42,23 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private final static String TAG = "DeviceAdapter";
     private List<BluetoothDevice> deviceList;
-    private Map<BluetoothDevice, Integer> connMap;
     private DeviceViewModel deviceViewModel;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
-    private final static int CONNECT_DISCONNECT = 0;
-    private final static int CONNECT_TIMEOUT = 30000;
+    private final static int UPDATE_LIST = 0;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
-    public DeviceAdapter(Set<BluetoothDevice> deviceSet, Map<BluetoothDevice, Integer> connMap
+    public DeviceAdapter(Set<BluetoothDevice> deviceSet
             , DeviceViewModel deviceViewModel) {
-        this.deviceList = sortDeviceList(deviceSet);
+        sortDeviceList(deviceSet);
+        this.deviceList = new ArrayList<>(deviceSet);
         this.deviceViewModel = deviceViewModel;
-        this.connMap = connMap;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
     }
 
     public void setDeviceSet(Set<BluetoothDevice> devices) {
-        this.deviceList = sortDeviceList(devices);
-    }
-
-    public void setConnMap(Map<BluetoothDevice, Integer> connMap) {
-        this.connMap = connMap;
+        this.deviceList = new ArrayList<>(devices);
     }
 
     @NonNull
@@ -86,7 +73,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
         String deviceName = device.getName();
         String deviceAddress = device.getAddress();
-        int status = connMap.get(device);
         int devicePairStatus = device.getBondState();
         if(deviceName == null || deviceName.equals("")) {
             deviceName = MainApplication.getInstance().getString(R.string.str_unknown_device);
@@ -94,7 +80,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.deviceName.setText(deviceName);
         holder.deviceAddress.setText(deviceAddress);
         holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
-        holder.connectStatus.setText(getConnectStatus(status,device));
+        holder.connectStatus.setText(getConnectStatus(device));
         if(CallUtil.getInstance().isDeviceConnecting(device) || CallUtil.getInstance().isDeviceConnected(device) ||
                 devicePairStatus == BluetoothDevice.BOND_BONDING) {
             holder.deviceName.setTextColor(0xFF00C2C2);
@@ -143,32 +129,35 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         return deviceList.size();
     }
 
-    private List<BluetoothDevice> sortDeviceList(Set<BluetoothDevice> deviceSet) {
-        List<BluetoothDevice> sortDeviceList = new ArrayList<>();
-        List<BluetoothDevice> tempList;
-        if (deviceSet != null) {
-            tempList = new ArrayList<>(deviceSet);
-        } else {
-            tempList = new ArrayList<>();
-        }
-        if (deviceSet != null) {
-            for (BluetoothDevice device : deviceSet) {
-                if (device.isConnected()) {
-                    sortDeviceList.add(device);
-                    tempList.remove(device);
+    public void sortDeviceList(Set<BluetoothDevice> deviceSet) {
+        final Set<BluetoothDevice> devices = new HashSet<>(deviceSet);
+        new Thread(
+                ()->{
+                    List<BluetoothDevice> sortDeviceList = new ArrayList<>();
+                    List<BluetoothDevice> tempList;
+                    tempList = new ArrayList<>(devices);
+                    for (BluetoothDevice device : devices) {
+                        if (device.isConnected()) {
+                            sortDeviceList.add(device);
+                            tempList.remove(device);
+                        }
+                    }
+
+                    Set<BluetoothDevice> devices1 = new HashSet<>(tempList);
+                    for (BluetoothDevice device : devices1) {
+                        if (device.getBondState() == BluetoothDevice.BOND_BONDED
+                                || device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                            sortDeviceList.add(device);
+                            tempList.remove(device);
+                        }
+                    }
+                    sortDeviceList.addAll(tempList);
+                    Message msg = Message.obtain();
+                    msg.what = UPDATE_LIST;
+                    msg.obj = sortDeviceList;
+                    mHandler.sendMessage(msg);
                 }
-            }
-        }
-        deviceSet = new HashSet<>(tempList);
-        for (BluetoothDevice device : deviceSet) {
-            if (device.getBondState() == BluetoothDevice.BOND_BONDED
-            || device.getBondState() == BluetoothDevice.BOND_BONDING) {
-                sortDeviceList.add(device);
-                tempList.remove(device);
-            }
-        }
-        sortDeviceList.addAll(tempList);
-        return sortDeviceList;
+        ).start();
     }
 
     class DeviceViewHolder extends RecyclerView.ViewHolder {
@@ -270,16 +259,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private void startConnect(BluetoothDevice device) {
         if(!CallUtil.getInstance().isConnecting()) {
             Global.connStatus = Global.CONNECTING;
-            connMap.remove(device);
-            connMap.put(device, Global.CONNECTING);
-            if (deviceViewModel != null) {
-                deviceViewModel.setConnMap(connMap);
-            }
             jancarBluetoothManager.linkDevice(device.getAddress(), stub);
-            /*Message msg = Message.obtain();
-            msg.what = CONNECT_DISCONNECT ;
-            msg.obj = device;
-            mHandler.sendMessageDelayed(msg, CONNECT_TIMEOUT);*/  // 处理一直在连接中的问题
         }
     }
 
@@ -295,19 +275,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             super.handleMessage(msg);
             //执行的UI操作
             switch (msg.what) {
-                case CONNECT_DISCONNECT:
-                    if (Global.connStatus == Global.CONNECTING) {
-                        BluetoothDevice device = (BluetoothDevice) msg.obj;
-                        jancarBluetoothManager.unlinkDevice(unlinkStub);
-                        if (deviceViewModel.getConnMap() != null &&
-                                deviceViewModel.getConnMap().getValue() != null) {
-                            deviceViewModel.getConnMap().getValue().put(device, Global.NOT_CONNECTED);
-                        }
-                        Global.connStatus = Global.NOT_CONNECTED;
-                        Log.i(TAG, "Disconnect");
-                        notifyDataSetChanged();
-                        break;
-                    }
+                case UPDATE_LIST:
+                    List<BluetoothDevice> deviceSet = (List<BluetoothDevice>) msg.obj;
+                    deviceList = new ArrayList<>(deviceSet);
+                    notifyDataSetChanged();
+                    break;
             }
         }
     }
@@ -318,9 +290,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         @Override
         public void onFailure(int i) {
-            Log.i(TAG, "Connect Failure：" + i);
-            String value = SystemProperties.get("persist.atc.bt.a2dpsourcerole","");
-            Log.i(TAG, "a2dpsourcerole：" + value);
             MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
         }
     };

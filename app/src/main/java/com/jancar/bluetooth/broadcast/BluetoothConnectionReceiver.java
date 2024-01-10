@@ -60,7 +60,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         if(isHfpAction|| isA2dpAction || isA2dpSinkAction){
             int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1);
             BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            //Log.i("liyongde",device.getName()+" "+device.getAddress()+" "+state+" "+device.isConnected());
+            Log.i("liyongde",device.getName()+" "+device.getAddress()+" "+state+" "+device.isConnected());
             if(isHfpAction){
                 CallUtil.getInstance().setHfpStatus(state);
             }
