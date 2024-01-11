@@ -109,10 +109,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
         holder.itemView.setOnClickListener( v -> {
             nowDevice = device;
+            Log.i(TAG, "已点击");
             sortDeviceList(new HashSet<>(deviceList));
             if (CallUtil.getInstance().isDeviceConnected(device)) {
                 //已连接，只断开
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
+                Log.i(TAG, "点击断开中");
 //                reFreshDeviceSet(device);
             } else {
                 //未连接
