@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothScanReceiver";
     //每10条更新一次
-    private final static int REFRESH_COUNT = 10;
+    private final static int REFRESH_COUNT = 5;
     private static int count = 0;
     private DeviceViewModel deviceViewModel;
     private Set<BluetoothDevice> bluetoothDevices;
@@ -28,16 +29,23 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         switch (action) {
-            case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+//            case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+//                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
+//                        && deviceViewModel.getDeviceSet().getValue() != null) {
+//                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+//                } else {
+//                    bluetoothDevices = new HashSet<>();
+//                }
+//                break;
+            case BluetoothDevice.ACTION_FOUND:
                 if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
                         && deviceViewModel.getDeviceSet().getValue() != null) {
                     bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
                 } else {
                     bluetoothDevices = new HashSet<>();
                 }
-                break;
-            case BluetoothDevice.ACTION_FOUND:
-                if (deviceViewModel != null && device != null && bluetoothDevices != null) {
+                bluetoothDevices.addAll(BluetoothUtil.getBondedDevices());
+                if (deviceViewModel != null && device != null) {
                     bluetoothDevices.add(device);
                     count++;
                     if (count == REFRESH_COUNT) {

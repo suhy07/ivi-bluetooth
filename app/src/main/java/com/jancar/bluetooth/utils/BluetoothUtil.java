@@ -77,8 +77,7 @@ public class BluetoothUtil {
     }
 
     public static Set<BluetoothDevice> getBondedDevices() {
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        return pairedDevices;
+        return bluetoothAdapter.getBondedDevices();
     }
 
     public static String getPairingStatus(int bondState) {

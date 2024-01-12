@@ -37,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -94,13 +95,17 @@ public class DeviceFragment extends Fragment {
                 }
             });
             //获取已配对的设备
-            if (deviceViewModel.getDeviceSet() != null
-                    && deviceViewModel.getDeviceSet().getValue() != null) {
-                deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-            } else {
-                deviceSet = new HashSet<>();
-            }
-            deviceSet.addAll(BluetoothUtil.getBondedDevices());
+//            if (deviceViewModel.getDeviceSet() != null
+//                    && deviceViewModel.getDeviceSet().getValue() != null) {
+//                Log.i(TAG, "获取已配对的设备列表");
+//                deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+//            } else {
+//                Log.i(TAG, "未获取到设备列表, 新建设备列表");
+//                deviceSet = new HashSet<>();
+//            }
+            Set<BluetoothDevice> bondDevice = BluetoothUtil.getBondedDevices();
+            Log.i(TAG, Arrays.toString(bondDevice.toArray()));
+            deviceSet.addAll(bondDevice);
             deviceViewModel.setDeviceSet(deviceSet);
             deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
                 if (!bluetoothName.equals("")) {
@@ -237,6 +242,8 @@ public class DeviceFragment extends Fragment {
     }
 
     private void searchDevice() {
+        Log.i(TAG, "扫描设备");
+        bluetoothAdapter.cancelDiscovery();
         bluetoothAdapter.startDiscovery();
         scanPb.setVisibility(View.VISIBLE);
         new Thread(() -> {
