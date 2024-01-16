@@ -27,6 +27,7 @@ import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -148,22 +149,28 @@ public class CallLogFragment extends Fragment {
             addressViewModel.setCallLogList(new ArrayList<>());
             callLogPb.setVisibility(View.GONE);
         }
+        if (addressViewModel != null) {
+            List<Contact> contacts = addressViewModel.getContactList().getValue();
+            if (contacts != null && contacts.isEmpty()) {
+                searchCallLog();
+            }
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (addressViewModel != null) {
-                List<CallLog> callLogs = addressViewModel.getCallLogList().getValue();
-                if (callLogs != null && callLogs.isEmpty()) {
-                    searchCallLog();
-                }
-                if (!CallUtil.getInstance().canCallNumber()) {
-                    addressViewModel.setCallLogList(new ArrayList<>());
-                }
-            }
-        }
+//        if (isVisibleToUser) {
+//            if (addressViewModel != null) {
+//                List<CallLog> callLogs = addressViewModel.getCallLogList().getValue();
+//                if (callLogs != null && callLogs.isEmpty()) {
+//                    searchCallLog();
+//                }
+//                if (!CallUtil.getInstance().canCallNumber()) {
+//                    addressViewModel.setCallLogList(new ArrayList<>());
+//                }
+//            }
+//        }
     }
 
 }

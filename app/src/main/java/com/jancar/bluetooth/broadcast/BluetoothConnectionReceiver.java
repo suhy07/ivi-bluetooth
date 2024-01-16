@@ -27,6 +27,7 @@ import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -102,6 +103,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 //            bluetoothManager.stopContactOrHistoryLoad(null);
                     Global.setContactList(new ArrayList<>());
                     if (addressViewModel != null) {
+                        Log.i(TAG, "清空联系人和电话");
                         addressViewModel.setCallLogList(new ArrayList<>());
                         addressViewModel.setContactList(new ArrayList<>());
                     }

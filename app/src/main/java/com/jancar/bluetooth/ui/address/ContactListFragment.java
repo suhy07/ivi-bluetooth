@@ -34,6 +34,7 @@ import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,7 +51,6 @@ public class ContactListFragment extends Fragment {
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
     private View rootView;
-    private boolean isFirst = true;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -61,6 +61,21 @@ public class ContactListFragment extends Fragment {
         if (addressViewModel != null) {
             addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
                 Log.d(TAG, "观察到contact变化");
+                String filter = searchEt.getText().toString();
+                contacts = new ArrayList<>();
+                List<Contact> beforeFilter = Global.getContactList();
+                if("".equals(filter)) {
+                    contacts = Global.getContactList();
+                } else {
+                    if(beforeFilter != null) {
+                        for (Contact contact: beforeFilter) {
+                            if(contact.getName().contains(filter)
+                                    || contact.getNumber().contains(filter)) {
+                                contacts.add(contact);
+                            }
+                        }
+                    }
+                }
                 contactListAdapter.setContactList(contacts);
                 contactPb.setVisibility(View.GONE);
                 contactListAdapter.notifyDataSetChanged();
@@ -87,21 +102,7 @@ public class ContactListFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String filter = s.toString();
-                List<Contact> contacts = new ArrayList<>();
-                List<Contact> beforeFilter = Global.getContactList();
-                if(filter.equals("")) {
-                    contacts = Global.getContactList();
-                } else {
-                    if(beforeFilter != null) {
-                        for (Contact contact: beforeFilter) {
-                            if(contact.getName().contains(s) || contact.getNumber().contains(s)) {
-                                contacts.add(contact);
-                            }
-                        }
-                    }
-                }
-                addressViewModel.setContactList(contacts);
+                addressViewModel.setContactList(Global.getContactList());
             }
 
             @Override
@@ -172,9 +173,13 @@ public class ContactListFragment extends Fragment {
         if(!CallUtil.getInstance().canCallNumber()) {
             MainApplication.showToast(getString(R.string.str_not_connect_warn));
         } else {
+            Log.i(TAG, "CallUtil.getInstance().canCallNumber()");
             if (bluetoothManager != null) {
+                Log.i(TAG, "search contacts");
                 bluetoothManager.getPhoneContacts(stub);
                 contactPb.setVisibility(View.VISIBLE);
+            } else {
+                Log.i(TAG, "bluetoothManager is null");
             }
         }
     }
@@ -185,37 +190,33 @@ public class ContactListFragment extends Fragment {
         if (!CallUtil.getInstance().canCallNumber()) {
             addressViewModel.setCallLogList(new ArrayList<>());
             contactPb.setVisibility(View.GONE);
+            Global.setContactList(new ArrayList<>());
         }
-        if (isFirst) {
-            isFirst = false;
-            if (addressViewModel != null) {
-                List<Contact> contacts = addressViewModel.getContactList().getValue();
-                if (contacts != null && contacts.isEmpty()) {
-                    searchContact();
-                }
-                if (!CallUtil.getInstance().canCallNumber()) {
-                    addressViewModel.setContactList(new ArrayList<>());
-                    Global.setContactList(new ArrayList<>());
-                }
+        if (addressViewModel != null) {
+            List<Contact> contacts = addressViewModel.getContactList().getValue();
+            if (contacts != null && contacts.isEmpty()) {
+                searchContact();
             }
         }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        Log.i(TAG, "setUserVisibleHint");
+        Log.i(TAG, "setUserVisibleHint:" + isVisibleToUser);
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && ! isFirst) {
-            if (addressViewModel != null) {
-                List<Contact> contacts = addressViewModel.getContactList().getValue();
-                if (contacts != null && contacts.isEmpty()) {
-                   searchContact();
-                }
-                if (!CallUtil.getInstance().canCallNumber()) {
-                    addressViewModel.setContactList(new ArrayList<>());
-                    Global.setContactList(new ArrayList<>());
-                }
-            }
-        }
+//        if (isVisibleToUser) {
+//            if (addressViewModel != null) {
+//                Log.i(TAG, "addressViewModel is not null");
+//                List<Contact> contacts = addressViewModel.getContactList().getValue();
+//                if (contacts != null && contacts.isEmpty()) {
+//                    Log.i(TAG, "contacts != null && contacts.isEmpty()");
+//                    searchContact();
+//                }
+//                if (!CallUtil.getInstance().canCallNumber()) {
+//                    addressViewModel.setContactList(new ArrayList<>());
+//                    Global.setContactList(new ArrayList<>());
+//                }
+//            }
+//        }
     }
 }

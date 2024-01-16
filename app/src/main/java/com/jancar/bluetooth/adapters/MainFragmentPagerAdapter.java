@@ -4,6 +4,7 @@ package com.jancar.bluetooth.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.jancar.bluetooth.ui.address.AddressFragment;
@@ -15,10 +16,13 @@ import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 
+import java.util.List;
+
 /**
  * @author suhy
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+    private final static String TAG = "MainFragmentPagerAdapter";
     private DeviceViewModel deviceViewModel;
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
@@ -71,6 +75,9 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        //super.destroyItem(container, position, object);
+        if (position == 3) {
+            return;
+        }
+        super.destroyItem(container, position, object);
     }
 }

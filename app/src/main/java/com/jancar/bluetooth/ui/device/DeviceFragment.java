@@ -62,7 +62,7 @@ public class DeviceFragment extends Fragment {
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
     private final static int SWITCH_TIMEOUT = 2000;
-    private final static int SCAN_TIMEOUT = 12000;
+    private final static int SCAN_TIMEOUT = 15000;
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
@@ -82,11 +82,11 @@ public class DeviceFragment extends Fragment {
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceSet().observe(getViewLifecycleOwner(), devices -> {
                 if (devices != null) {
-                    Log.d(TAG, "观察到devices列表变化");
+//                    Log.d(TAG, "观察到devices列表变化");
                     Global.connStatus = Global.NOT_CONNECTED;
                     for (BluetoothDevice device : devices) {
                         if (device.isConnected()) {
-                            Log.i(TAG, "监测到设备已连接");
+//                            Log.i(TAG, "监测到设备已连接");
                             Global.connStatus = Global.CONNECTED;
                             break;
                         }
@@ -243,8 +243,10 @@ public class DeviceFragment extends Fragment {
 
     private void searchDevice() {
         Log.i(TAG, "扫描设备");
-        bluetoothAdapter.cancelDiscovery();
-        bluetoothAdapter.startDiscovery();
+//        bluetoothAdapter.cancelDiscovery();
+        Global.scanStatus = Global.SCANNING;
+        boolean flag = bluetoothAdapter.startDiscovery();
+        Log.i(TAG, "Discovery:" + flag);
         scanPb.setVisibility(View.VISIBLE);
         new Thread(() -> {
             Message msg = Message.obtain();
@@ -365,6 +367,9 @@ public class DeviceFragment extends Fragment {
                 case SCAN_WHAT:
                     bluetoothAdapter.cancelDiscovery();
                     scanPb.setVisibility(View.GONE);
+                    Global.scanStatus = Global.NOT_SCAN;
+                    break;
+                default:
                     break;
             }
         }
