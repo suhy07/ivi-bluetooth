@@ -41,7 +41,7 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
                 if (deviceViewModel.getDeviceSet() != null
                         && deviceViewModel.getDeviceSet().getValue() != null) {
                     bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-                    bluetoothDevices.remove(device);
+//                    bluetoothDevices.remove(device);
                 } else {
                     bluetoothDevices = new HashSet<>();
                 }
