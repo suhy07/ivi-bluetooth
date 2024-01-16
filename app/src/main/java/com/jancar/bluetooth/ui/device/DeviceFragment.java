@@ -203,7 +203,7 @@ public class DeviceFragment extends Fragment {
                 // 文本变化后的回调
                 // 获取当前文本长度
                 int textLength = editable.length();
-                int maxLength = 15;
+                int maxLength = 25;
                 if (textLength > maxLength) {
                     // 如果超过限制，截取前面的限制字符
                     editable.delete(maxLength, textLength);
