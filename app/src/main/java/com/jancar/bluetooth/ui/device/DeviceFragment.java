@@ -363,6 +363,7 @@ public class DeviceFragment extends Fragment {
                     bluetoothSwitch.setEnabled(true);
                     break;
                 case SCAN_WHAT:
+                    bluetoothAdapter.cancelDiscovery();
                     scanPb.setVisibility(View.GONE);
                     break;
             }
