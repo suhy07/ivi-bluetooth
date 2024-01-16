@@ -255,8 +255,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
             dialog.dismiss();
         });
-        dialog.show();
-        dialog.getWindow().setLayout(300, 200);
+        if (!(device.getBondState() == BluetoothDevice.BOND_NONE)) {
+            dialog.show();
+            dialog.getWindow().setLayout(300, 200);
+        }
     }
 
     @Override
@@ -306,16 +308,19 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     List<BluetoothDevice> deviceSet = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceSet);
                     if (nowDevice != null) {
-                        int index;
-                        try {
-                           index = deviceList.indexOf(nowDevice);
-                           recyclerView.smoothScrollToPosition(index);
-                        } catch (Exception e) {
-                            index = 0;
-                            recyclerView.smoothScrollToPosition(index);
-                        }
+                        final int index;
+                        index = deviceList.indexOf(nowDevice);
+                        recyclerView.post( ()->{
+                            try {
+                                recyclerView.smoothScrollToPosition(index);
+                            }catch (Exception e){
+                                recyclerView.smoothScrollToPosition(0);
+                            }}
+                        );
                     }
                     notifyDataSetChanged();
+                    break;
+                default:
                     break;
             }
         }
