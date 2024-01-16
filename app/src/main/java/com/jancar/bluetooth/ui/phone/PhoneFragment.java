@@ -84,6 +84,20 @@ public class PhoneFragment extends Fragment {
 
     }
 
+    private long lastClickTime;
+    private int lastClickId = -1;
+
+    private boolean isClickBusy(int id){
+        long tempTime = System.currentTimeMillis();
+        long diff = tempTime - lastClickTime;
+        if(lastClickId == id && diff<250){
+            return true;
+        }
+        lastClickId = id;
+        lastClickTime = tempTime;
+        return false;
+    }
+
     private void init() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -94,6 +108,9 @@ public class PhoneFragment extends Fragment {
         for(int i = 0; i < btnCount; i++) {
             int finalI = i;
             num[i].setOnClickListener(v -> {
+                if(isClickBusy(v.getId())){
+                    return;
+                }
                 setCallNum(finalI + "");
             });
         }
@@ -101,9 +118,22 @@ public class PhoneFragment extends Fragment {
             setCallNum("+");
             return true;
         });
-        numaBtn.setOnClickListener(v -> setCallNum("*"));
-        numbBtn.setOnClickListener(v -> setCallNum("#"));
+        numaBtn.setOnClickListener(v -> {
+            if(isClickBusy(v.getId())){
+                return;
+            }
+            setCallNum("*");
+        });
+        numbBtn.setOnClickListener(v -> {
+            if(isClickBusy(v.getId())){
+                return;
+            }
+            setCallNum("#");
+        });
         cancelBtn.setOnClickListener(v -> {
+            if(isClickBusy(v.getId())){
+                return;
+            }
             if (phoneViewModel != null) {
                 String s = phoneViewModel.getCallNumber().getValue();
                 int len = s.length();
@@ -140,11 +170,6 @@ public class PhoneFragment extends Fragment {
             }
             bluetoothManager.callPhone(number, stub);
             EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
-            /*Intent intent = new Intent(getActivity(), CallActivity.class);
-            intent.putExtra(Global.EXTRA_IS_COMING, isComing);
-            intent.putExtra(Global.EXTRA_NUMBER, number);
-            intent.putExtra(Global.EXTRA_NAME, name);
-            startActivity(intent);*/
         });
     }
 
