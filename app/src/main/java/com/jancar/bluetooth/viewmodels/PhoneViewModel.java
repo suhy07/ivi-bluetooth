@@ -38,7 +38,6 @@ public class PhoneViewModel extends ViewModel {
     }
 
     public void setCallNumber(String str) {
-        Log.i("liyongde","setCallNumber:"+str);
         this.callNumber.setValue(str);
     }
 
