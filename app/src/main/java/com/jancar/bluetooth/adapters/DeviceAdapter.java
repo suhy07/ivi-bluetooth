@@ -255,7 +255,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
             dialog.dismiss();
         });
-        if (!(device.getBondState() == BluetoothDevice.BOND_NONE)) {
+        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
             dialog.show();
             dialog.getWindow().setLayout(300, 200);
         }
