@@ -8,7 +8,9 @@ import android.util.Log;
 
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Set;
 public class BluetoothPairReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothPairReceiver";
     DeviceViewModel deviceViewModel;
-    Set<BluetoothDevice> bluetoothDevices;
+    List<BluetoothDevice> bluetoothDevices;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,24 +30,26 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
             int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
             if (deviceViewModel != null && bondState == BluetoothDevice.BOND_BONDED) {
                 Log.d(TAG, "配对完成");
-                if (deviceViewModel.getDeviceSet() != null
-                        && deviceViewModel.getDeviceSet().getValue() != null) {
-                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+                if (deviceViewModel.getDeviceList() != null
+                        && deviceViewModel.getDeviceList().getValue() != null) {
+                    bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
                 } else {
-                    bluetoothDevices = new HashSet<>();
+                    bluetoothDevices = new ArrayList<>();
                 }
-                bluetoothDevices.add(device);
-                deviceViewModel.setDeviceSet(bluetoothDevices);
+                bluetoothDevices.remove(device);
+                bluetoothDevices.add(0, device);
+                deviceViewModel.setDeviceList(bluetoothDevices);
             } else if (deviceViewModel != null && bondState == BluetoothDevice.BOND_NONE) {
                 Log.d(TAG, "取消配对");
-                if (deviceViewModel.getDeviceSet() != null
-                        && deviceViewModel.getDeviceSet().getValue() != null) {
-                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-//                    bluetoothDevices.remove(device);
+                if (deviceViewModel.getDeviceList() != null
+                        && deviceViewModel.getDeviceList().getValue() != null) {
+                    bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
+                    bluetoothDevices.remove(device);
+                    bluetoothDevices.add(device);
                 } else {
-                    bluetoothDevices = new HashSet<>();
+                    bluetoothDevices = new ArrayList<>();
                 }
-                deviceViewModel.setDeviceSet(bluetoothDevices);
+                deviceViewModel.setDeviceList(bluetoothDevices);
             }
         }
     }

@@ -37,7 +37,7 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_OFF:
                     // 蓝牙已关闭
                     if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceSet(new HashSet<>());
+                        deviceViewModel.setDeviceList(new ArrayList<>());
                         deviceViewModel.setOnOff(false);
                     }
                     Log.i(TAG, "蓝牙已关闭");
@@ -59,7 +59,7 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_ON:
                     CallUtil.getInstance().init();
                     if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceSet(BluetoothUtil.getBondedDevices());
+                        deviceViewModel.setDeviceList(new ArrayList<>(BluetoothUtil.getBondedDevices()));
                         deviceViewModel.setOnOff(true);
                     }
                     Log.i(TAG, "蓝牙已打开");

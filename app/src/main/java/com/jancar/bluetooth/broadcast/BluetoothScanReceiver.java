@@ -12,6 +12,7 @@ import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,10 +23,11 @@ import java.util.Set;
 public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothScanReceiver";
     //每10条更新一次
-    private final static int REFRESH_COUNT = 2;
+    private final static int REFRESH_COUNT = 5;
     private static int count = 0;
     private DeviceViewModel deviceViewModel;
-    private Set<BluetoothDevice> bluetoothDevices;
+    private List<BluetoothDevice> bluetoothDeviceList;
+    private boolean first = true;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -39,29 +41,31 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
         switch (action) {
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                 Log.i(TAG, "扫描开始");
-                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
-                        && deviceViewModel.getDeviceSet().getValue() != null) {
-                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+//                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
+//                        && deviceViewModel.getDeviceSet().getValue() != null) {
+//                    bluetoothDeviceList = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+//                } else {
+//                    bluetoothDevices = new HashSet<>();
+//                    bluetoothDevices.addAll(BluetoothUtil.getBondedDevices());
+//                }
+                if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
+                        && deviceViewModel.getDeviceList().getValue() != null) {
+                    bluetoothDeviceList = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
                 } else {
-                    bluetoothDevices = new HashSet<>();
-                    bluetoothDevices.addAll(BluetoothUtil.getBondedDevices());
+                    bluetoothDeviceList = new ArrayList<>();
+                    bluetoothDeviceList.addAll(BluetoothUtil.getBondedDevices());
                 }
+                first = true;
                 break;
             case BluetoothDevice.ACTION_FOUND:
                 Log.i(TAG, "发现设备");
-                if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
-                        && deviceViewModel.getDeviceSet().getValue() != null) {
-                    bluetoothDevices = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
-                } else {
-                    bluetoothDevices = new HashSet<>();
-                    bluetoothDevices.addAll(BluetoothUtil.getBondedDevices());
-                }
-                if (deviceViewModel != null && device != null) {
-                    bluetoothDevices.add(device);
+                if (deviceViewModel != null && device != null && bluetoothDeviceList != null &&
+                    !bluetoothDeviceList.contains(device)) {
+                    bluetoothDeviceList.add(device);
                     count++;
                     if (count == REFRESH_COUNT) {
                         count = 0;
-                        deviceViewModel.setDeviceSet(bluetoothDevices);
+                        deviceViewModel.setDeviceList(bluetoothDeviceList);
                     }
                 }
                 break;
@@ -70,8 +74,9 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
                 if (Global.scanStatus == Global.SCANNING) {
                     BluetoothAdapter.getDefaultAdapter().startDiscovery();
                 }
-                if(deviceViewModel != null) {
-                    deviceViewModel.setDeviceSet(bluetoothDevices);
+                if(deviceViewModel != null && first) {
+                    first = false;
+                    deviceViewModel.setDeviceList(bluetoothDeviceList);
                 }
                 break;
             default:

@@ -42,16 +42,16 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
 
-    private Set<BluetoothDevice> deviceSet;
+    private List<BluetoothDevice> deviceList;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.i("liyongde","onReceive:"+action);
-        if (deviceViewModel != null && deviceViewModel.getDeviceSet() != null
-        && deviceViewModel.getDeviceSet().getValue() != null) {
-            deviceSet = new HashSet<>(deviceViewModel.getDeviceSet().getValue());
+        if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
+        && deviceViewModel.getDeviceList().getValue() != null) {
+            deviceList = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
         } else {
-            deviceSet = new HashSet<>();
+            deviceList = new ArrayList<>();
         }
 
         bluetoothManager = MainApplication.getInstance().getBluetoothManager();
@@ -87,20 +87,19 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
                     // 蓝牙设备已断开连接
 
-                    deviceSet.remove(device);
+                    deviceList.remove(device);
 
                     BluetoothDevice newDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(device.getAddress());
 
-                    if(newDevice!=null){
-                        deviceSet.add(newDevice);
+                    if(newDevice!=null && !deviceList.contains(newDevice)){
+                        deviceList.add(0, newDevice);
                     }
 
                     if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceSet(deviceSet);
+                        deviceViewModel.setDeviceList(deviceList);
                     }
                     Log.d(TAG, "断开连接");
                     // 处理已断开连接的设备
-//            bluetoothManager.stopContactOrHistoryLoad(null);
                     Global.setContactList(new ArrayList<>());
                     if (addressViewModel != null) {
                         Log.i(TAG, "清空联系人和电话");
@@ -121,10 +120,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     if(isA2dpAction||isA2dpSinkAction){
                         CallUtil.getInstance().setConnectingA2dpMac(device.getAddress());
                     }
-                    deviceSet.remove(device);
-                    deviceSet.add(device);
+                    deviceList.remove(device);
+                    deviceList.add(0, device);
                     if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceSet(deviceSet);
+                        deviceViewModel.setDeviceList(deviceList);
                     }
                 }else if(state == BluetoothProfile.STATE_CONNECTED){
                     if(isHfpAction){
@@ -134,11 +133,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                         CallUtil.getInstance().setConnectingA2dpMac("");
                     }
                     // 蓝牙设备已连接
-                    //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    deviceSet.remove(device);
-                    deviceSet.add(device);
+                    deviceList.remove(device);
+                    deviceList.add(0, device);
                     if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceSet(deviceSet);
+                        deviceViewModel.setDeviceList(deviceList);
                     }
                     Log.d(TAG, "连接成功");
                     bluetoothManager.connect();
@@ -150,43 +148,6 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             }
 
         }
-
-        /*if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-            // 蓝牙设备已连接
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            deviceSet.remove(device);
-            deviceSet.add(device);
-            if (deviceViewModel != null) {
-                deviceViewModel.setDeviceSet(deviceSet);
-            }
-            Log.d(TAG, "连接成功");
-            bluetoothManager.connect();
-            bluetoothManager.openBluetoothModule(null);
-            // 处理已连接的设备
-            Global.connStatus = Global.CONNECTED;
-        } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-            // 蓝牙设备已断开连接
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            deviceSet.remove(device);
-            deviceSet.add(device);
-            if (deviceViewModel != null) {
-                deviceViewModel.setDeviceSet(deviceSet);
-            }
-            Log.d(TAG, "断开连接");
-            // 处理已断开连接的设备
-//            bluetoothManager.stopContactOrHistoryLoad(null);
-            Global.setContactList(new ArrayList<>());
-            if (addressViewModel != null) {
-                addressViewModel.setCallLogList(new ArrayList<>());
-                addressViewModel.setContactList(new ArrayList<>());
-            }
-            if (musicViewModel != null) {
-                musicViewModel.setMusicName("");
-                musicViewModel.setArtist("");
-                musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
-            }
-            Global.connStatus = Global.NOT_CONNECTED;
-        }*/
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {

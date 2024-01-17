@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.bluetooth.BluetoothDevice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,17 +20,15 @@ import java.util.Set;
 public class DeviceViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> onOff;
-    private MutableLiveData<Set<BluetoothDevice>> deviceSet;
+    private MutableLiveData<List<BluetoothDevice>> deviceList;
     private MutableLiveData<String> bluetoothName;
 
     public DeviceViewModel() {
         onOff = new MutableLiveData<>();
-        deviceSet = new MutableLiveData<>();
-        deviceSet.setValue(new HashSet<>());
+        deviceList = new MutableLiveData<>();
+        deviceList.setValue(new ArrayList<>());
         bluetoothName = new MutableLiveData<>();
     }
-
-
 
     public void setBluetoothName(String bluetoothName) {
         this.bluetoothName.setValue(bluetoothName);
@@ -39,12 +38,8 @@ public class DeviceViewModel extends ViewModel {
         this.onOff.setValue(onOff);
     }
 
-    public void setDeviceSet(Set<BluetoothDevice> devices) {
-        deviceSet.setValue(devices);
-    }
-
-    public void setDeviceSet(List<BluetoothDevice> devices) {
-        setDeviceSet(new HashSet<>(devices));
+    public void setDeviceList(List<BluetoothDevice> devices) {
+        deviceList.setValue(devices);
     }
 
     public LiveData<String> getBluetoothName() {
@@ -55,8 +50,7 @@ public class DeviceViewModel extends ViewModel {
         return onOff;
     }
 
-    public LiveData<Set<BluetoothDevice>> getDeviceSet() {
-        return deviceSet;
+    public MutableLiveData<List<BluetoothDevice>> getDeviceList() {
+        return deviceList;
     }
-
 }
