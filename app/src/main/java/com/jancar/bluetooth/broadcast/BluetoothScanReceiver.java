@@ -23,7 +23,7 @@ import java.util.Set;
 public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothScanReceiver";
     //每10条更新一次
-    private final static int REFRESH_COUNT = 5;
+    private final static int REFRESH_COUNT = 8;
     private static int count = 0;
     private DeviceViewModel deviceViewModel;
     private List<BluetoothDevice> bluetoothDeviceList;

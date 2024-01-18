@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -54,10 +55,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         this.recyclerView = recyclerView;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
-    }
-
-    public void setDeviceSet(Set<BluetoothDevice> devices) {
-        this.deviceList = new ArrayList<>(devices);
     }
 
     public void setDeviceList(List<BluetoothDevice> devices) {
@@ -171,11 +168,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     sortDeviceList.addAll(sortDeviceList2);
                     sortDeviceList.addAll(sortDeviceList3);
                     sortDeviceList.addAll(tempList);
-                    mHandler.postUpdateList(sortDeviceList);
+                    runOnUiThread(() -> {
+                        mHandler.postUpdateList(sortDeviceList);
+                    });
                 }
         ).start();
     }
 
+    private void runOnUiThread(Runnable action) {
+        new Handler(Looper.getMainLooper()).post(action);
+    }
     public static class DeviceViewHolder extends RecyclerView.ViewHolder {
         TextView deviceName;
         TextView deviceAddress;

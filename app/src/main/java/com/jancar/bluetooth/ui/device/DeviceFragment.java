@@ -64,7 +64,7 @@ public class DeviceFragment extends Fragment {
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
     private final static int SWITCH_TIMEOUT = 2000;
-    private final static int SCAN_TIMEOUT = 15000;
+    private final static int SCAN_TIMEOUT = 10000;
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
@@ -84,6 +84,7 @@ public class DeviceFragment extends Fragment {
         // 观察设备列表的变化
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {
+                deviceList = devices;
                 if (devices != null) {
                     Log.d(TAG, "观察到devices列表变化");
                     Global.connStatus = Global.NOT_CONNECTED;
@@ -95,7 +96,14 @@ public class DeviceFragment extends Fragment {
                         }
                     }
                     deviceAdapter.setDeviceList(devices);
-                    if (beforeSize != devices.size()) {
+                    int nowSize = devices.size();
+                    if (nowSize > beforeSize) {
+                        Log.d(TAG, "共计增加:" + (nowSize - beforeSize));
+                        for (int i = nowSize - beforeSize; i > 0 ; i--) {
+                            deviceAdapter.notifyItemInserted(nowSize - i);
+                            Log.d(TAG, "增加设备:" + i);
+                        }
+                    }else if (beforeSize != devices.size()) {
                         deviceAdapter.sortDeviceList(devices);
                     } else {
                         deviceAdapter.notifyDataSetChanged();
