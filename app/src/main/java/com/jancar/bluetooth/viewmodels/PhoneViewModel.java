@@ -33,7 +33,7 @@ public class PhoneViewModel extends ViewModel {
 
     }
 
-    public MutableLiveData<String> getCallNumber() {
+    /*public MutableLiveData<String> getCallNumber() {
         return callNumber;
     }
 
@@ -43,7 +43,7 @@ public class PhoneViewModel extends ViewModel {
 
     public MutableLiveData<String> getCallName() {
         return callName;
-    }
+    }*/
 
     public void setCallName(String str) {
         this.callName.setValue(str);

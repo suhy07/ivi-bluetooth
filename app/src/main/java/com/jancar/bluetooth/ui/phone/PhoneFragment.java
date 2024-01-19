@@ -40,6 +40,7 @@ public class PhoneFragment extends Fragment {
     private EditText callNum;
     private PhoneViewModel phoneViewModel;
     private BluetoothManager bluetoothManager;
+    private StringBuilder dialNumber = new StringBuilder();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class PhoneFragment extends Fragment {
         initView(rootView);
         init();
         if (phoneViewModel != null) {
-            phoneViewModel.getCallNumber().observe(this, s -> callNum.setText(s));
+            //phoneViewModel.getCallNumber().observe(this, s -> callNum.setText(s));
             phoneViewModel.getConnectStatus().observe(this, new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean aBoolean) {
@@ -87,7 +88,7 @@ public class PhoneFragment extends Fragment {
     private long lastClickTime;
     private int lastClickId = -1;
 
-    private boolean isClickBusy(int id){
+    /*private boolean isClickBusy(int id){
         long tempTime = System.currentTimeMillis();
         long diff = tempTime - lastClickTime;
         if(lastClickId == id && diff<250){
@@ -96,7 +97,7 @@ public class PhoneFragment extends Fragment {
         lastClickId = id;
         lastClickTime = tempTime;
         return false;
-    }
+    }*/
 
     private void init() {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -108,9 +109,6 @@ public class PhoneFragment extends Fragment {
         for(int i = 0; i < btnCount; i++) {
             int finalI = i;
             num[i].setOnClickListener(v -> {
-                if(isClickBusy(v.getId())){
-                    return;
-                }
                 setCallNum(finalI + "");
             });
         }
@@ -119,58 +117,61 @@ public class PhoneFragment extends Fragment {
             return true;
         });
         numaBtn.setOnClickListener(v -> {
-            if(isClickBusy(v.getId())){
-                return;
-            }
             setCallNum("*");
         });
         numbBtn.setOnClickListener(v -> {
-            if(isClickBusy(v.getId())){
-                return;
-            }
             setCallNum("#");
         });
         cancelBtn.setOnClickListener(v -> {
-            if(isClickBusy(v.getId())){
-                return;
-            }
-            if (phoneViewModel != null) {
-                String s = phoneViewModel.getCallNumber().getValue();
-                int len = s.length();
+
+            //if (phoneViewModel != null) {
+                //String s = phoneViewModel.getCallNumber().getValue();
+                int len = dialNumber.length();
                 if(len > 0) {
-                    phoneViewModel.setCallNumber(s.substring(0, len - 1));
+                    dialNumber.deleteCharAt(len-1);
+                    //phoneViewModel.setCallNumber(s.substring(0, len - 1));
+                    setNumberText();
                 }
-            }
+            //}
         });
         cancelBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (phoneViewModel != null) {
+                dialNumber.setLength(0);
+                /*if (phoneViewModel != null) {
                     phoneViewModel.setCallNumber("");
-                }
+                }*/
+                setNumberText();
                 return true;
             }
         });
         callBtn.setOnClickListener(v -> {
-            String number = "";
+            /*String number = "";
             if (phoneViewModel != null) {
                 number = phoneViewModel.getCallNumber().getValue();
-            }
+            }*/
             //号码为空或未连接蓝牙时，不能拨号
             if (!CallUtil.getInstance().canCallNumber()) {
                 MainApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
-            } else if(number.equals("")) {
+            } else if(dialNumber.length() == 0) {
                 if(CallUtil.getInstance().getCallNumber().equals("")){
                     MainApplication.showToast(getString(R.string.str_no_number));
                 }else{
-                    phoneViewModel.setCallNumber(CallUtil.getInstance().getCallNumber());
+                    dialNumber.setLength(0);
+                    dialNumber.append(CallUtil.getInstance().getCallNumber());
+                    //phoneViewModel.setCallNumber(CallUtil.getInstance().getCallNumber());
+                    setNumberText();
                 }
                 return;
             }
-            bluetoothManager.callPhone(number, stub);
-            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+            bluetoothManager.callPhone(dialNumber.toString(), stub);
+            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, dialNumber.toString(), false));
         });
+    }
+
+    private void setNumberText(){
+        callNum.setText(dialNumber.toString());
     }
 
 
@@ -178,28 +179,32 @@ public class PhoneFragment extends Fragment {
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
         if(event!=null && event.mStatus == IVIBluetooth.CallStatus.OUTGOING){
             String number = event.mPhoneNumber;
-            if (phoneViewModel != null) {
-                String tempValue = phoneViewModel.getCallNumber().getValue();
-                if(tempValue!=null && tempValue.equals(number)){
-                    phoneViewModel.setCallNumber("");
+            //if (phoneViewModel != null) {
+                //String tempValue = phoneViewModel.getCallNumber().getValue();
+                if(dialNumber.toString().equals(number)){
+                    dialNumber.setLength(0);
+                    setNumberText();
+                    //phoneViewModel.setCallNumber("");
                 }
 
-            }
+            //}
         }
     }
 
 
     private void setCallNum(String s) {
-        if (phoneViewModel != null) {
-            String callNum = phoneViewModel.getCallNumber().getValue();
-            int len = callNum.length();
+        //if (phoneViewModel != null) {
+           // String callNum = phoneViewModel.getCallNumber().getValue();
+            int len = dialNumber.length();
             int maxLen = 25;
             if (len >= maxLen) {
                 return;
             }
-            callNum += s;
-            phoneViewModel.setCallNumber(callNum);
-        }
+            dialNumber.append(s);
+            setNumberText();
+            //callNum += s;
+            //phoneViewModel.setCallNumber(callNum);
+        //}
     }
 
     private final IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
