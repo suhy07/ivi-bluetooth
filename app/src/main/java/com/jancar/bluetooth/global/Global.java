@@ -57,7 +57,7 @@ public class Global {
     }
 
     public static String findNameByNumber(String number) {
-        String name = MainApplication.getInstance().getString(R.string.str_unknown_call);
+        String name = number;
         if (contactList != null){
             for(Contact contact: contactList) {
                 if (contact.getNumber().equals(number)) {

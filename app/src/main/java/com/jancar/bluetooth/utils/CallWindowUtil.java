@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.global.Global;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 public class CallWindowUtil {
@@ -241,7 +242,9 @@ public class CallWindowUtil {
 
     public void changeViewByStatus(int status){
 
-        callNameText.setText(CallUtil.getInstance().getCallNumber());
+        String name = Global.findNameByNumber(CallUtil.getInstance().getCallNumber());
+
+        callNameText.setText(name);
 
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
@@ -406,7 +409,9 @@ public class CallWindowUtil {
 
     public void changeSmallViewByStatus(int status){
 
-        callNameText.setText(CallUtil.getInstance().getCallNumber());
+        String name = Global.findNameByNumber(CallUtil.getInstance().getCallNumber());
+
+        callNameText.setText(name);
 
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
