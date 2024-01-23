@@ -7,15 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author suhy
@@ -23,7 +20,7 @@ import java.util.Set;
 public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static String TAG = "BluetoothScanReceiver";
     //每10条更新一次
-    private final static int REFRESH_COUNT = 8;
+    private final static int REFRESH_COUNT = 3;
     private static int count = 0;
     private DeviceViewModel deviceViewModel;
     private List<BluetoothDevice> bluetoothDeviceList;

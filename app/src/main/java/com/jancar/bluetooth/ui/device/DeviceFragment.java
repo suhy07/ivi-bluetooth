@@ -39,10 +39,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -106,7 +103,7 @@ public class DeviceFragment extends Fragment {
                     }else if (beforeSize != devices.size()) {
                         deviceAdapter.sortDeviceList(devices);
                     } else {
-                        deviceAdapter.notifyDataSetChanged();
+                        deviceAdapter.sortDeviceListNoScroll(devices);
                     }
                     beforeSize = devices.size();
 //                    deviceAdapter.sortDeviceList(devices);

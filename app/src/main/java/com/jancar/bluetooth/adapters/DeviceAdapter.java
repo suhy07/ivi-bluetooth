@@ -45,6 +45,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private BluetoothDevice nowDevice;
     private DeviceViewHolder holder;
     private final static int UPDATE_LIST = 0;
+    private final static int UPDATE_LIST_NO_SCROLL = 1;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
     public DeviceAdapter(List<BluetoothDevice> deviceList
@@ -125,6 +126,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
         });
         holder.itemView.setOnLongClickListener((view) -> {
+            if (CallUtil.getInstance().isPairing(deviceList)) {
+                return true;
+            }
             showOptionsDialog(device, view.getContext());
             holder.itemView.getParent().requestDisallowInterceptTouchEvent(true);
             return true;
@@ -137,6 +141,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     }
 
     public void sortDeviceList(List<BluetoothDevice> deviceList) {
+        Log.i(TAG,  "调用排序");
         final List<BluetoothDevice> devices = new ArrayList<>(deviceList);
         new Thread(
                 ()->{
@@ -156,7 +161,47 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                         } else if (CallUtil.getInstance().isDeviceConnecting(device)) {
                             sortDeviceList1.add(device);
                             tempList.remove(device);
-                        } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                        }else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+                                sortDeviceList2.add(device);
+                                tempList.remove(device);
+                        } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                            sortDeviceList3.add(device);
+                            tempList.remove(device);
+                        }
+                    }
+                    sortDeviceList.addAll(sortDeviceList1);
+                    sortDeviceList.addAll(sortDeviceList2);
+                    sortDeviceList.addAll(sortDeviceList3);
+                    sortDeviceList.addAll(tempList);
+                    runOnUiThread(() -> {
+                        mHandler.postUpdateList(sortDeviceList);
+                    });
+                }
+        ).start();
+    }
+
+    public void sortDeviceListNoScroll(List<BluetoothDevice> deviceList) {
+        Log.i(TAG,  "调用排序");
+        final List<BluetoothDevice> devices = new ArrayList<>(deviceList);
+        new Thread(
+                ()->{
+                    List<BluetoothDevice> sortDeviceList, sortDeviceList1,
+                            sortDeviceList2, sortDeviceList3;
+                    sortDeviceList = new ArrayList<>();
+                    sortDeviceList1 = new ArrayList<>();
+                    sortDeviceList2 = new ArrayList<>();
+                    sortDeviceList3 = new ArrayList<>();
+                    List<BluetoothDevice> tempList;
+                    tempList = new ArrayList<>(devices);
+
+                    for (BluetoothDevice device : devices) {
+                        if (device.isConnected()) {
+                            sortDeviceList.add(device);
+                            tempList.remove(device);
+                        } else if (CallUtil.getInstance().isDeviceConnecting(device)) {
+                            sortDeviceList1.add(device);
+                            tempList.remove(device);
+                        }else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
                             sortDeviceList2.add(device);
                             tempList.remove(device);
                         } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -169,7 +214,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     sortDeviceList.addAll(sortDeviceList3);
                     sortDeviceList.addAll(tempList);
                     runOnUiThread(() -> {
-                        mHandler.postUpdateList(sortDeviceList);
+                        mHandler.postUpdateListNoScroll(sortDeviceList);
                     });
                 }
         ).start();
@@ -307,6 +352,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     }
                     notifyDataSetChanged();
                     break;
+                case UPDATE_LIST_NO_SCROLL:
+                    List<BluetoothDevice> deviceList2 = (List<BluetoothDevice>) msg.obj;
+                    deviceList = new ArrayList<>(deviceList2);
+                    notifyDataSetChanged();
+                    break;
                 default:
                     break;
             }
@@ -314,6 +364,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         public void postUpdateList(List<BluetoothDevice> deviceSet) {
             post(() -> {
                 Message msg = obtainMessage(UPDATE_LIST, deviceSet);
+                handleMessage(msg);
+            });
+        }
+        public void postUpdateListNoScroll(List<BluetoothDevice> deviceSet) {
+            post(() -> {
+                Message msg = obtainMessage(UPDATE_LIST_NO_SCROLL, deviceSet);
                 handleMessage(msg);
             });
         }

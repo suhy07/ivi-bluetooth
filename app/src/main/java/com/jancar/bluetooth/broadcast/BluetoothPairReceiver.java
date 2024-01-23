@@ -9,9 +9,7 @@ import android.util.Log;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author suhy
@@ -37,7 +35,7 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
                     bluetoothDevices = new ArrayList<>();
                 }
                 bluetoothDevices.remove(device);
-                bluetoothDevices.add(0, device);
+                bluetoothDevices.add(1, device);
                 deviceViewModel.setDeviceList(bluetoothDevices);
             } else if (deviceViewModel != null && bondState == BluetoothDevice.BOND_NONE) {
                 Log.d(TAG, "取消配对");
