@@ -4,9 +4,11 @@ import android.annotation.NonNull;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -37,6 +39,7 @@ import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
+import com.jancar.sdk.system.IVISystem;
 
 
 import java.util.HashSet;
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothService bluetoothService;
     private ServiceConnection serviceConnection;
     private TabLayout tabLayout;
+
+    public static final String ACTION_QUITE_APP = "com.jancar.bluetooth.action.quit_app_now";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             isFirst = false;
             viewPager.setCurrentItem(3);
         }
+        registerBroadcastReceiver();
     }
 
     @Override
@@ -210,7 +216,30 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         isFirst = true;
         unbindService(serviceConnection);
+        unregisterReceiver(mBroadcastReceiver);
     }
+
+    private void registerBroadcastReceiver(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_QUITE_APP);
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.i("MainActivity", "onReceive action:"+action);
+            if(ACTION_QUITE_APP.equals(action)){
+                if(MainActivity.this.isFinishing() || MainActivity.this.isDestroyed()){
+
+                }else{
+                    Log.i("MainActivity", "onReceive action:"+action+" try finish");
+                    MainActivity.this.finishAndRemoveTask();
+                }
+            }
+        }
+    };
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
