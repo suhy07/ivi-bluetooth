@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,7 +22,9 @@ import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.system.IVISystem;
+import com.jancar.sdk.system.SystemManager;
 import com.jancar.sdk.utils.ActivityUtils;
+import com.jancar.services.system.ISystemCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +39,7 @@ import java.util.List;
 public class MainApplication extends Application {
     private static MainApplication mInstance = null;
     private BluetoothManager bluetoothManager = null;
+    public SystemManager mSystemManager = null;
     private static Toast mToast;
     public static MainApplication getInstance() {
         if (mInstance == null){
@@ -83,7 +87,95 @@ public class MainApplication extends Application {
         CallUtil.getInstance();
         mCallWindowUtil = new CallWindowUtil(mInstance);
         registerBroadcastReceiver();
+        mSystemManager = new SystemManager(mInstance, ConnectListen_System);
     }
+
+    BaseManager.ConnectListener ConnectListen_System = new BaseManager.ConnectListener() {
+        @Override
+        public void onServiceConnected() {
+            Log.i("MainApplication", "SystemManager onServiceConnected");
+            mSystemManager.registerSystemCallback(mSystemCallback);
+        }
+
+        @Override
+        public void onServiceDisconnected() {
+            Log.i("MainApplication", "SystemManager onServiceDisconnected");
+            mSystemManager.unRegisterSystemCallback(mSystemCallback);
+        }
+    };
+
+    ISystemCallback.Stub mSystemCallback = new ISystemCallback.Stub() {
+        @Override
+        public void onOpenScreen(int from) throws RemoteException {
+
+        }
+
+        @Override
+        public void onCloseScreen(int from) throws RemoteException {
+
+        }
+
+        @Override
+        public void onScreenBrightnessChange(int id, int brightness) throws RemoteException {
+
+        }
+
+        @Override
+        public void onCurrentScreenBrightnessChange(int id, int brightness) throws RemoteException {
+
+        }
+
+        @Override
+        public void quitApp() throws RemoteException {
+            //finishActivity();
+            Log.i("MainApplication", "quitApp called");
+        }
+
+        @Override
+        public void startNavigationApp() throws RemoteException {
+
+        }
+
+        @Override
+        public void onMediaAppChanged(String packageName, boolean isOpen) throws RemoteException {
+
+        }
+
+        @Override
+        public void gotoSleep() throws RemoteException {
+
+        }
+
+        @Override
+        public void wakeUp() throws RemoteException {
+
+        }
+
+        @Override
+        public void onFloatBarVisibility(int visibility) throws RemoteException {
+
+        }
+
+        @Override
+        public void onTboxChange(boolean isOpen) throws RemoteException {
+
+        }
+
+        @Override
+        public void onScreenProtection(boolean isEnterScreenProtection) throws RemoteException {
+
+        }
+
+        @Override
+        public void onTelPhoneStatusChange(int status, String phoneNumber, String phoneName) throws RemoteException {
+
+        }
+
+        @Override
+        public void onTouchEventPos(int x, int y) throws RemoteException {
+
+        }
+    };
 
     private void startService(){
 
