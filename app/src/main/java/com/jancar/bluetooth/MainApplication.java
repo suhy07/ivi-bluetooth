@@ -2,6 +2,7 @@ package com.jancar.bluetooth;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.service.BluetoothService;
@@ -211,6 +213,7 @@ public class MainApplication extends Application {
         if(event.mStatus == IVIBluetooth.CallStatus.INCOMING||
                 event.mStatus == IVIBluetooth.CallStatus.OUTGOING||event.mStatus == IVIBluetooth.CallStatus.TALKING) {
 
+
             CallUtil.getInstance().setCallNumber(event.mPhoneNumber);
             CallUtil.getInstance().setCallName(event.mContactName);
             CallUtil.getInstance().setCallStatus(event.mStatus);
@@ -224,7 +227,13 @@ public class MainApplication extends Application {
                 }
 
             }else if(mCallWindowUtil.isShowSmallCallWindow()){
-                mCallWindowUtil.changeSmallViewByStatus(event.mStatus);
+                if(isBackCar){
+                    mCallWindowUtil.changeSmallViewByStatus(event.mStatus);
+                }else{
+                    mCallWindowUtil.hideSmallCallWindow();
+                    mCallWindowUtil.showCallWindow();
+                }
+
             }else{
                 if(isBackCar){
                     mCallWindowUtil.showSmallCallWindow();

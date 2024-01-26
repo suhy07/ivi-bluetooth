@@ -1,11 +1,16 @@
 package com.jancar.bluetooth.utils;
 
+import android.app.Instrumentation;
+import android.app.KeyguardManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,12 +21,16 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
+import com.jancar.sdk.utils.Logcat;
 
 public class CallWindowUtil {
 
     private Context mContext = null;
     private WindowManager mWindowManager = null;
     private Handler mHandler = null;
+
+    private KeyguardManager mKeyguardManager ;
+    private PowerManager mPowerManager;
 
     public boolean isBackCar() {
         return isBackCar;
@@ -37,6 +46,8 @@ public class CallWindowUtil {
         this.mContext = mContext;
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mHandler = new Handler();
+        mKeyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
+        mPowerManager =  (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
     }
 
     private boolean isShowCallWindow = false;
@@ -136,7 +147,7 @@ public class CallWindowUtil {
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         mLayoutParams.format = PixelFormat.RGBA_8888;
-        mLayoutParams.flags =  WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        mLayoutParams.flags =  WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
         mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         mLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
@@ -146,9 +157,29 @@ public class CallWindowUtil {
         changeViewByStatus(CallUtil.getInstance().getCallStatus());
         changeVoiceStatus();
 
-        //showNavi(callWindowView);
+
+        sendKeycodeEvent(KeyEvent.KEYCODE_F1);
 
     }
+
+    private static void sendKeycodeEvent(final int KEYCODE) {
+        Logcat.d("KEYCODE " + KEYCODE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instrumentation inst = new Instrumentation();
+                    inst.sendKeyDownUpSync(KEYCODE);
+                } catch (SecurityException e) {
+                    Logcat.d("catch SecurityException");
+                } catch (ActivityNotFoundException e) {
+                    Logcat.d("catch ActivityNotFoundException");
+                }
+            }
+        }).start();
+    }
+
+
 
     private void showNavi(View view){
         View decorView = view.getRootView();
@@ -395,7 +426,7 @@ public class CallWindowUtil {
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         mLayoutParams.format = PixelFormat.RGBA_8888;
-        mLayoutParams.flags =  WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        mLayoutParams.flags =  WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
         mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         mLayoutParams.height = 85;
