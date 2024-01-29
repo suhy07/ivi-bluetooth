@@ -99,7 +99,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTED;
         }
         holder.itemView.setOnClickListener( v -> {
-            if (CallUtil.getInstance().isPairing(deviceList)) {
+            if (CallUtil.getInstance().isPairing(deviceList) ||
+            CallUtil.getInstance().isConnecting()) {
                 return;
             }
             nowDevice = device;
@@ -126,7 +127,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
         });
         holder.itemView.setOnLongClickListener((view) -> {
-            if (CallUtil.getInstance().isPairing(deviceList)) {
+            if (CallUtil.getInstance().isPairing(deviceList) ||
+                    CallUtil.getInstance().isConnecting()) {
                 return true;
             }
             showOptionsDialog(device, view.getContext());
