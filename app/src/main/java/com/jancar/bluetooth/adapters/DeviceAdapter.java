@@ -321,7 +321,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         if (!CallUtil.getInstance().isPairing(deviceList)) {
             device.createBond();
 //            mHandler.postUpdateList(deviceList);
-            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
+//            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
         }
     }
 
