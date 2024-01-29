@@ -61,7 +61,7 @@ public class CallUtil {
         a2dpSinkStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP_SINK);
         hfpStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.HEADSET_CLIENT);
 
-        Log.i("liyongde","init a2dpStatus:"+a2dpStatus+" hfpStatus:"+hfpStatus+" a2dpSinkStatus:"+a2dpSinkStatus);
+        Logcat.d("init a2dpStatus:"+a2dpStatus+" hfpStatus:"+hfpStatus+" a2dpSinkStatus:"+a2dpSinkStatus);
 
     }
 
@@ -109,16 +109,30 @@ public class CallUtil {
             return false;
         }
 
-        if(mBluetoothHeadsetClient!=null && mBluetoothHeadsetClient.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED){
-            return true;
-        }
-        if(isBluetoothSendStatus()){
-            if(mBluetoothA2dp!=null && mBluetoothA2dp.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED){
+        boolean isConnected;
+
+        if(mBluetoothHeadsetClient!=null){
+            isConnected = mBluetoothHeadsetClient.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED;
+            Logcat.d(device.getName()+" "+device.getAddress()+" hfp:"+isConnected);
+            if(isConnected){
                 return true;
             }
+        }
+        if(isBluetoothSendStatus()){
+            if(mBluetoothA2dp!=null){
+                isConnected = mBluetoothA2dp.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED;
+                Logcat.d(device.getName()+" "+device.getAddress()+" a2dp:"+isConnected);
+                if(isConnected){
+                    return true;
+                }
+            }
         }else{
-            if(mBluetoothA2dpSink!=null && mBluetoothA2dpSink.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED){
-                return true;
+            if(mBluetoothA2dpSink!=null){
+                isConnected = mBluetoothA2dpSink.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED;
+                Logcat.d(device.getName()+" "+device.getAddress()+" a2dpSink:"+isConnected);
+                if(isConnected){
+                    return true;
+                }
             }
         }
         return false;
@@ -300,7 +314,7 @@ public class CallUtil {
     private BluetoothProfile.ServiceListener mServiceListener = new BluetoothProfile.ServiceListener() {
         @Override
         public void onServiceConnected(int profile, BluetoothProfile proxy) {
-            Log.i("liyongde","onServiceConnected:"+profile);
+            Logcat.i("profile:"+profile);
             if(profile == BluetoothProfile.A2DP){
                  mBluetoothA2dp = (BluetoothA2dp)proxy;
             }else if(profile == BluetoothProfile.HEADSET_CLIENT){
@@ -313,7 +327,7 @@ public class CallUtil {
 
         @Override
         public void onServiceDisconnected(int profile) {
-            Log.i("liyongde","onServiceDisconnected:"+profile);
+            Logcat.i("profile:"+profile);
             if(profile == BluetoothProfile.A2DP){
                 mBluetoothA2dp = null;
             }else if(profile == BluetoothProfile.HEADSET_CLIENT){
