@@ -28,6 +28,7 @@ import android.widget.Switch;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
+import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
@@ -61,7 +62,7 @@ public class DeviceFragment extends Fragment {
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
     private final static int SWITCH_TIMEOUT = 2000;
-    private final static int SCAN_TIMEOUT = 10000;
+    private final static int SCAN_TIMEOUT = 15000;
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
@@ -84,15 +85,19 @@ public class DeviceFragment extends Fragment {
                 deviceList = devices;
                 if (devices != null) {
                     Log.d(TAG, "观察到devices列表变化");
-                    Global.connStatus = Global.NOT_CONNECTED;
+                    /*Global.connStatus = Global.NOT_CONNECTED;
                     for (BluetoothDevice device : devices) {
                         if (device.isConnected()) {
-//                            Log.i(TAG, "监测到设备已连接");
+                            Log.i(TAG, "监测到设备已连接");
                             Global.connStatus = Global.CONNECTED;
                             break;
                         }
-                    }
+                    }*/
                     deviceAdapter.setDeviceList(devices);
+                    if(BluetoothConnectionReceiver.needFresh){
+                        BluetoothConnectionReceiver.needFresh = false;
+                        deviceAdapter.notifyDataSetChanged();
+                    }
                     int nowSize = devices.size();
                     if (nowSize > beforeSize) {
                         Log.d(TAG, "共计增加:" + (nowSize - beforeSize));
@@ -253,15 +258,24 @@ public class DeviceFragment extends Fragment {
     private void searchDevice() {
         Log.i(TAG, "扫描设备");
 //        bluetoothAdapter.cancelDiscovery();
+        if(bluetoothAdapter.isDiscovering()){
+            return;
+        }
         Global.scanStatus = Global.SCANNING;
         scanPb.setVisibility(View.VISIBLE);
-        new Thread(() -> {
+
+
+        bluetoothAdapter.startDiscovery();
+        mHandler.removeMessages(SCAN_WHAT);
+        mHandler.sendEmptyMessageDelayed(SCAN_WHAT,SCAN_TIMEOUT);
+        /*new Thread(() -> {
             boolean flag = bluetoothAdapter.startDiscovery();
+
             Log.i(TAG, "Discovery:" + flag);
             Message msg = Message.obtain();
             msg.what = SCAN_WHAT;
             mHandler.sendMessageDelayed(msg, SCAN_TIMEOUT);
-        }).start();
+        }).start();*/
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -282,6 +296,10 @@ public class DeviceFragment extends Fragment {
             nameTv.setEnabled(false);
             scanPb.setVisibility(View.INVISIBLE);
             bluetoothSwitch.setChecked(false);
+            if(bluetoothAdapter.isDiscovering()){
+                bluetoothAdapter.cancelDiscovery();
+            }
+            mHandler.removeMessages(SCAN_WHAT);
         }
     }
 
@@ -323,6 +341,15 @@ public class DeviceFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(bluetoothSwitch.isChecked()){
+            deviceAdapter.notifyDataSetChanged();
+        }
+
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {

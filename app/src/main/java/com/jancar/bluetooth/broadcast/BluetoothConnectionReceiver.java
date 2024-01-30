@@ -41,12 +41,14 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private AddressViewModel addressViewModel;
     private MusicViewModel musicViewModel;
     private PhoneViewModel phoneViewModel;
+    public static boolean needFresh = false;
 
     private List<BluetoothDevice> deviceList;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.i("liyongde","onReceive:"+action);
+        needFresh = true;
         if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
         && deviceViewModel.getDeviceList().getValue() != null) {
             deviceList = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
@@ -148,6 +150,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             }
 
         }
+
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
