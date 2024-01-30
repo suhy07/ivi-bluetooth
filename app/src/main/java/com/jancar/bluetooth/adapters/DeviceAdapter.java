@@ -26,6 +26,7 @@ import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
+import com.jancar.sdk.utils.JsonLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -266,7 +267,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         //处理配对
         pairButton.setOnClickListener(v -> {
+            Log.i(TAG, "处理配对");
             if (bondState == BluetoothDevice.BOND_BONDED){
+                Log.i(TAG, "取消配对");
                 device.removeBond();
             }
             else if (bondState == BluetoothDevice.BOND_NONE) {
@@ -276,10 +279,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         });
         //处理连接
         connectButton.setOnClickListener(v -> {
+            Log.i(TAG, "处理连接");
             if (bondState == BluetoothDevice.BOND_NONE) {
                 resumeBluetooth();
                 startPair(device);
             } else if (bondState == BluetoothDevice.BOND_BONDED) {
+                Log.i(TAG, "断开上一次的连接");
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
                 if(!device.isConnected()) {
                     startConnect(device);
@@ -312,6 +317,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private void startConnect(BluetoothDevice device) {
         if(!CallUtil.getInstance().isConnecting()) {
+            Log.i(TAG, "开始连接");
             Global.connStatus = Global.CONNECTING;
             jancarBluetoothManager.linkDevice(device.getAddress(), stub);
         }
@@ -319,6 +325,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     private void startPair(BluetoothDevice device) {
         if (!CallUtil.getInstance().isPairing(deviceList)) {
+            Log.i(TAG, "开始配对");
             device.createBond();
 //            mHandler.postUpdateList(deviceList);
 //            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
