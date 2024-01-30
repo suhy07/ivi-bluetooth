@@ -23,18 +23,18 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
     private final static int REFRESH_COUNT = 3;
     private static int count = 0;
     private DeviceViewModel deviceViewModel;
-    private List<BluetoothDevice> bluetoothDeviceList;
+    private List<BluetoothDevice> bluetoothDeviceList =  new ArrayList<>();
     private boolean first = true;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        if(device != null) {
+        /*if(device != null) {
             Log.i(TAG, device.toString());
         } else {
             Log.i(TAG, "null");
-        }
+        }*/
         switch (action) {
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                 Log.i(TAG, "扫描开始");
@@ -45,17 +45,20 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
 //                    bluetoothDevices = new HashSet<>();
 //                    bluetoothDevices.addAll(BluetoothUtil.getBondedDevices());
 //                }
-                if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
+                /*if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
                         && deviceViewModel.getDeviceList().getValue() != null) {
                     bluetoothDeviceList = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
-                } else {
-                    bluetoothDeviceList = new ArrayList<>();
+                } else {*/
+                    //bluetoothDeviceList = new ArrayList<>();
+                    bluetoothDeviceList.clear();
                     bluetoothDeviceList.addAll(BluetoothUtil.getBondedDevices());
-                }
+                //}
                 first = true;
                 break;
             case BluetoothDevice.ACTION_FOUND:
-                Log.i(TAG, "发现设备");
+                if(device != null){
+                    Log.i(TAG, "发现设备:"+device.getName()+" "+device.getAddress());
+                }
                 if (deviceViewModel != null && device != null && bluetoothDeviceList != null &&
                     !bluetoothDeviceList.contains(device)) {
                     bluetoothDeviceList.add(device);
@@ -68,9 +71,9 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
                 break;
             case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                 Log.i(TAG, "扫描结束");
-                if (Global.scanStatus == Global.SCANNING) {
+                /*if (Global.scanStatus == Global.SCANNING) {
                     BluetoothAdapter.getDefaultAdapter().startDiscovery();
-                }
+                }*/
                 if(deviceViewModel != null && first) {
                     first = false;
                     deviceViewModel.setDeviceList(bluetoothDeviceList);
