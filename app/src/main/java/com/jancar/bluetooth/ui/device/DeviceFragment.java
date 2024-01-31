@@ -31,6 +31,7 @@ import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
 import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.ui.MyLinearLayoutManager;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
@@ -143,17 +144,18 @@ public class DeviceFragment extends Fragment {
             deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
             deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
                 if (onOff) {
-                    boolean res = bluetoothAdapter.enable();
+                    /*boolean res = bluetoothAdapter.enable();
                     if (res) {
                         bluetoothSwitch.setChecked(true);
-                    }
+                    }*/
+                    bluetoothSwitch.setChecked(true);
                     recyclerView.setVisibility(View.VISIBLE);
                     deviceAdapter.sortDeviceList(deviceList);
                 } else {
-                    boolean res = bluetoothAdapter.disable();
+                    /*boolean res = bluetoothAdapter.disable();
                     if (res) {
                         bluetoothSwitch.setChecked(false);
-                    }
+                    }*/
                     recyclerView.setVisibility(View.GONE);
                     renameBtn.setEnabled(false);
                     renameBtn.setText(getText(R.string.bluetooth_rename));
@@ -171,19 +173,23 @@ public class DeviceFragment extends Fragment {
 
         }
         bluetoothSwitch.setOnClickListener( v -> {
-            // 判断是否开关，之后switch的开关跟EventBus走
-            boolean b = !bluetoothAdapter.isEnabled();
-            // 阻止开关
+            bluetoothSwitch.setEnabled(false);
+            if(bluetoothAdapter.isEnabled()){
+                bluetoothAdapter.disable();
+            }else{
+                bluetoothAdapter.enable();
+            }
+            /*boolean b = !bluetoothAdapter.isEnabled();
             bluetoothSwitch.setChecked(!b);
             if (deviceViewModel != null) {
                 deviceViewModel.setOnOff(b);
-                bluetoothSwitch.setEnabled(false);;
+                bluetoothSwitch.setEnabled(false);
                 new Thread(()-> {
                     Message msg = Message.obtain();
                     msg.what = SWITCH_WHAT;
                     mHandler.sendMessageDelayed(msg, SWITCH_TIMEOUT);
                 }).start();
-            }
+            }*/
         });
         renameBtn.setOnClickListener(v -> {
             if (!bluetoothAdapter.isEnabled()) {
@@ -296,11 +302,12 @@ public class DeviceFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPowerStatusChanged(IVIBluetooth.EventPowerState event) {
         int state = bluetoothAdapter.getState();
-        Log.i(TAG, "state:" + state);
+        Log.i(TAG, "onEventPowerStatusChanged state:" + state);
         if (state == BluetoothAdapter.STATE_ON) {
             renameBtn.setEnabled(true);
             renameBtn.setText(getText(R.string.bluetooth_rename));
             scanBtn.setEnabled(true);
+            bluetoothSwitch.setEnabled(true);
             bluetoothSwitch.setChecked(true);
             searchDevice();
         } else if (state == BluetoothAdapter.STATE_OFF){
@@ -310,11 +317,14 @@ public class DeviceFragment extends Fragment {
             scanBtn.setEnabled(false);
             nameTv.setEnabled(false);
             scanPb.setVisibility(View.INVISIBLE);
+            bluetoothSwitch.setEnabled(true);
             bluetoothSwitch.setChecked(false);
             if(bluetoothAdapter.isDiscovering()){
                 bluetoothAdapter.cancelDiscovery();
             }
             mHandler.removeMessages(SCAN_WHAT);
+        }else if (state == BluetoothAdapter.STATE_TURNING_ON || state == BluetoothAdapter.STATE_TURNING_OFF){
+            bluetoothSwitch.setEnabled(false);
         }
     }
 
@@ -331,7 +341,7 @@ public class DeviceFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new MyLinearLayoutManager(getContext()));
         deviceAdapter = new DeviceAdapter(deviceList, deviceViewModel, recyclerView);
         recyclerView.setAdapter(deviceAdapter);
         recyclerView.setItemViewCacheSize(20);
