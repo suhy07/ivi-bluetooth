@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.device;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -120,6 +121,19 @@ public class DeviceFragment extends Fragment {
             deviceList.addAll(bondDevice);
             deviceViewModel.setDeviceList(deviceList);
             deviceAdapter.sortDeviceList(deviceList);
+            deviceAdapter.setmStartPairOrConnectCallback(new DeviceAdapter.StartPairOrConnectCallback() {
+                @Override
+                public void startPairOrConnect() {
+                    if(bluetoothAdapter!=null){
+                        if(bluetoothAdapter.isDiscovering()){
+                            bluetoothAdapter.cancelDiscovery();
+                        }
+                        scanPb.setVisibility(View.INVISIBLE);
+                        mHandler.removeMessages(SCAN_WHAT);
+                    }
+
+                }
+            });
             deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
                 if (!bluetoothName.equals("")) {
                     nameTv.setText(bluetoothName);
@@ -154,6 +168,7 @@ public class DeviceFragment extends Fragment {
             });
             deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
             bluetoothSwitch.setChecked(bluetoothAdapter.isEnabled());
+
         }
         bluetoothSwitch.setOnClickListener( v -> {
             // 判断是否开关，之后switch的开关跟EventBus走
@@ -387,4 +402,7 @@ public class DeviceFragment extends Fragment {
             }
         }
     }
+
+
+
 }

@@ -49,6 +49,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private final static int UPDATE_LIST_NO_SCROLL = 1;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
 
+    private StartPairOrConnectCallback mStartPairOrConnectCallback;
+
     public DeviceAdapter(List<BluetoothDevice> deviceList
             , DeviceViewModel deviceViewModel, RecyclerView recyclerView) {
         sortDeviceList(deviceList);
@@ -61,6 +63,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     public void setDeviceList(List<BluetoothDevice> devices) {
         this.deviceList = new ArrayList<>(devices);
+    }
+
+
+    public void setmStartPairOrConnectCallback(StartPairOrConnectCallback mStartPairOrConnectCallback) {
+        this.mStartPairOrConnectCallback = mStartPairOrConnectCallback;
     }
 
     @NonNull
@@ -253,8 +260,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         Button connectButton = dialogView.findViewById(R.id.btn_connect);
         Button pairButton = dialogView.findViewById(R.id.btn_pair);
         int bondState = device.getBondState();
-        boolean isConnected = device.isConnected();
-        if (isConnected) {
+        //boolean isConnected = device.isConnected();
+        if (CallUtil.getInstance().isDeviceConnected(device)) {
             connectButton.setText(context.getString(R.string.disconnect));
         } else {
             connectButton.setText(context.getString(R.string.connect));
@@ -286,7 +293,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             } else if (bondState == BluetoothDevice.BOND_BONDED) {
                 Log.i(TAG, "断开上一次的连接");
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
-                if(!device.isConnected()) {
+                if(!CallUtil.getInstance().isDeviceConnected(device)){
                     startConnect(device);
                 }
             }
@@ -319,6 +326,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         if(!CallUtil.getInstance().isConnecting()) {
             Log.i(TAG, "开始连接");
             Global.connStatus = Global.CONNECTING;
+            if(mStartPairOrConnectCallback!=null){
+                mStartPairOrConnectCallback.startPairOrConnect();
+            }
             jancarBluetoothManager.linkDevice(device.getAddress(), stub);
         }
     }
@@ -326,6 +336,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private void startPair(BluetoothDevice device) {
         if (!CallUtil.getInstance().isPairing(deviceList)) {
             Log.i(TAG, "开始配对");
+            if(mStartPairOrConnectCallback!=null){
+                mStartPairOrConnectCallback.startPairOrConnect();
+            }
             device.createBond();
 //            mHandler.postUpdateList(deviceList);
 //            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
@@ -401,5 +414,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     public void removeHandler() {
         mHandler.removeCallbacksAndMessages(this);
+    }
+
+    public interface StartPairOrConnectCallback{
+        void startPairOrConnect();
     }
 }
