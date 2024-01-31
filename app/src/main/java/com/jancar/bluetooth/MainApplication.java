@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class MainApplication extends Application {
     private static MainApplication mInstance = null;
     private BluetoothManager bluetoothManager = null;
     public SystemManager mSystemManager = null;
+    private Handler mHandler;
     private static Toast mToast;
     public static MainApplication getInstance() {
         if (mInstance == null){
@@ -80,6 +82,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mHandler = new Handler();
         mInstance = this;
         BluetoothUtil.setContext(this);
         getBluetoothManager();
@@ -227,12 +230,8 @@ public class MainApplication extends Application {
                 }
 
             }else if(mCallWindowUtil.isShowSmallCallWindow()){
-                if(isBackCar){
-                    mCallWindowUtil.changeSmallViewByStatus(event.mStatus);
-                }else{
-                    mCallWindowUtil.hideSmallCallWindow();
-                    mCallWindowUtil.showCallWindow();
-                }
+
+                 mCallWindowUtil.changeSmallViewByStatus(event.mStatus);
 
             }else{
                 if(isBackCar){
@@ -281,15 +280,34 @@ public class MainApplication extends Application {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.i("MainApplication", "onReceive action:"+action);
+            mHandler.removeCallbacks(hideCallWindowRunnable);
             if(IVISystem.ACTION_BACKCAR_FINISH.equals(action)){
                 isBackCar = false;
                 mCallWindowUtil.setBackCar(false);
                 if(isAutoConnected() && isInAutoScreen()){
                     mCallWindowUtil.hideSmallCallWindow();
+                }else{
+                    if(mCallWindowUtil.isShowSmallCallWindow()){
+                        mCallWindowUtil.hideSmallCallWindow();
+                        mCallWindowUtil.showCallWindow();
+                    }
                 }
             }else if(IVISystem.ACTION_BACKCAR_STARTED.equals(action)){
                 isBackCar = true;
                 mCallWindowUtil.setBackCar(true);
+                /*if(mCallWindowUtil.isShowCallWindow()){
+                    mCallWindowUtil.hideCallWindow();
+                    mCallWindowUtil.showSmallCallWindow();
+                }*/
+                mHandler.postDelayed(hideCallWindowRunnable,1000);
+            }
+        }
+    };
+
+    private Runnable hideCallWindowRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if(isBackCar){
                 if(mCallWindowUtil.isShowCallWindow()){
                     mCallWindowUtil.hideCallWindow();
                     mCallWindowUtil.showSmallCallWindow();
