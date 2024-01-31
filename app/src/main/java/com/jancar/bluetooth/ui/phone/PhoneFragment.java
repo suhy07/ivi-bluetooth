@@ -166,7 +166,7 @@ public class PhoneFragment extends Fragment {
                 return;
             }
             bluetoothManager.callPhone(dialNumber.toString(), stub);
-            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, dialNumber.toString(), false));
+            //EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, dialNumber.toString(), false));
         });
     }
 

@@ -68,7 +68,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         holder.itemView.setOnClickListener(v -> {
             String number = callLog.getCallNumber();
             CallUtil.getInstance().callPhone(number);
-            EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+            //EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
         });
     }
 

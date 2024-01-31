@@ -46,7 +46,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             public void onClick(View v) {
                 String number = contact.getNumber();
                 CallUtil.getInstance().callPhone(number);
-                EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
+                //EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, number, false));
             }
         });
     }
