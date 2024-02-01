@@ -150,6 +150,7 @@ public class ContactListFragment extends Fragment {
                 addressViewModel.setContactList(contacts);
             }
             Global.setContactList(contacts);
+            CallUtil.getInstance().setContactList(contacts);
             contactPb.setVisibility(View.GONE);
         }
 

@@ -13,11 +13,13 @@ import android.os.SystemProperties;
 import android.util.Log;
 
 import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.model.Contact;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.utils.Logcat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CallUtil {
@@ -39,6 +41,8 @@ public class CallUtil {
     private BluetoothA2dp mBluetoothA2dp;
     private BluetoothA2dpSink mBluetoothA2dpSink;
 
+    private List<Contact> mContactList = new ArrayList<Contact>();
+
 
     private CallUtil() {
 
@@ -54,6 +58,9 @@ public class CallUtil {
         connectingHfpMac = "";
         connectingA2dpMac = "";
 
+        mCallNumber = "";
+        mContactList.clear();
+
         if(bluetoothAdapter == null){
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         }
@@ -61,7 +68,7 @@ public class CallUtil {
         a2dpSinkStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP_SINK);
         hfpStatus = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.HEADSET_CLIENT);
 
-        Logcat.d("init a2dpStatus:"+a2dpStatus+" hfpStatus:"+hfpStatus+" a2dpSinkStatus:"+a2dpSinkStatus);
+        Logcat.d("a2dpStatus:"+a2dpStatus+" hfpStatus:"+hfpStatus+" a2dpSinkStatus:"+a2dpSinkStatus);
 
     }
 
@@ -172,9 +179,9 @@ public class CallUtil {
         return mCallUtil;
     }
 
-    private String callNumber = "";
+    private String mCallNumber = "";
 
-    private String callName = "";
+    private String mCallName = "";
 
     private int callStatus = IVIBluetooth.CallStatus.HANGUP;
 
@@ -185,19 +192,30 @@ public class CallUtil {
     private  boolean isVoiceInCar = true;
 
     public String getCallNumber() {
-        return callNumber;
+        return mCallNumber;
     }
 
     public void setCallNumber(String callNumber) {
-        this.callNumber = callNumber;
+
+        if(callNumber.equals(mCallNumber)){
+
+        }else{
+            mCallNumber = callNumber;
+            needFindName = true;
+        }
+        if(needFindName){
+            mCallName = findNameByNumber(mCallNumber);
+            needFindName = false;
+        }
+
     }
 
     public String getCallName() {
-        return callName;
+        return mCallName;
     }
 
     public void setCallName(String callName) {
-        this.callName = callName;
+        this.mCallName = callName;
     }
 
     public int getCallStatus() {
@@ -361,5 +379,26 @@ public class CallUtil {
             }
         }
         return false;
+    }
+
+    public void setContactList(List<Contact> list){
+        mContactList.clear();
+        if(list!=null){
+            mContactList.addAll(list);
+        }
+        needFindName = true;
+    }
+
+    private boolean needFindName = true;
+
+    public  String findNameByNumber(String number) {
+
+            for(Contact contact: mContactList) {
+                if (contact.getNumber().equals(number)) {
+                    return contact.getName();
+                }
+            }
+
+        return number;
     }
 }

@@ -218,7 +218,7 @@ public class MainApplication extends Application {
 
 
             CallUtil.getInstance().setCallNumber(event.mPhoneNumber);
-            CallUtil.getInstance().setCallName(event.mContactName);
+            //CallUtil.getInstance().setCallName(event.mContactName);
             CallUtil.getInstance().setCallStatus(event.mStatus);
 
             if(mCallWindowUtil.isShowCallWindow()){

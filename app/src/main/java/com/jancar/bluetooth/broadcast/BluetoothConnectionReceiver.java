@@ -82,6 +82,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                 if(state == BluetoothProfile.STATE_DISCONNECTED){
                     if(isHfpAction){
                         CallUtil.getInstance().setConnectingHfpMac("");
+                        CallUtil.getInstance().setContactList(null);
                     }
                     if(isA2dpAction||isA2dpSinkAction){
                         CallUtil.getInstance().setConnectingA2dpMac("");

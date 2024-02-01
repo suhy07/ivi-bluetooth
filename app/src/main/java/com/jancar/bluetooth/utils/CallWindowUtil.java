@@ -273,9 +273,9 @@ public class CallWindowUtil {
 
     public void changeViewByStatus(int status){
 
-        String name = Global.findNameByNumber(CallUtil.getInstance().getCallNumber());
+        //String name = Global.findNameByNumber(CallUtil.getInstance().getCallNumber());
 
-        callNameText.setText(name);
+        callNameText.setText(CallUtil.getInstance().getCallName());
 
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
@@ -440,9 +440,7 @@ public class CallWindowUtil {
 
     public void changeSmallViewByStatus(int status){
 
-        String name = Global.findNameByNumber(CallUtil.getInstance().getCallNumber());
-
-        callNameText.setText(name);
+        callNameText.setText(CallUtil.getInstance().getCallName());
 
         switch(status){
             case IVIBluetooth.CallStatus.INCOMING:
