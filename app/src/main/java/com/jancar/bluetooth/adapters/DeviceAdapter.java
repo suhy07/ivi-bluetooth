@@ -123,8 +123,14 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 //未连接
                 //已配对
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED){
-                    jancarBluetoothManager.unlinkDevice(unlinkStub);
-                    startConnect(device);
+                    if(CallUtil.getInstance().isConnected()){
+                        jancarBluetoothManager.unlinkDevice(unlinkStub);
+                        waitConnectMac = device.getAddress();
+                        mHandler.removeCallbacks(connectRunnable);
+                        mHandler.postDelayed(connectRunnable,500);
+                    }else{
+                        startConnect(device);
+                    }
                 //未配对
                 } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                     resumeBluetooth();
@@ -333,6 +339,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
     }
 
+    private String waitConnectMac = "";
+
+    private Runnable connectRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if(mStartPairOrConnectCallback!=null){
+                mStartPairOrConnectCallback.startPairOrConnect();
+            }
+            if(waitConnectMac!=null && !waitConnectMac.equals("")){
+                jancarBluetoothManager.linkDevice(waitConnectMac, stub);
+            }
+
+        }
+    };
+
     private void startPair(BluetoothDevice device) {
         if (!CallUtil.getInstance().isPairing(deviceList)) {
             Log.i(TAG, "开始配对");
@@ -404,7 +425,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
         @Override
         public void onFailure(int i) {
-            Log.i(TAG,"onFailure");
+            Log.i(TAG,"onFailure:"+i);
             if (!CallUtil.getInstance().isConnected()) {
                 Log.i(TAG, "tips");
                 MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));

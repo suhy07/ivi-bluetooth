@@ -16,16 +16,18 @@
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    <Switch
-        android:id="@+id/switch_bluetooth"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:switchMinWidth="50dp"
+    <ImageView
+        android:id="@+id/switchImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:src="@drawable/switch_img_selector"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"

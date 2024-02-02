@@ -23,6 +23,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 
@@ -52,7 +54,7 @@ public class DeviceFragment extends Fragment {
 
     private final static String TAG = "DeviceFragment";
     private RecyclerView recyclerView;
-    private Switch bluetoothSwitch;
+    //private Switch bluetoothSwitch;
     private Button renameBtn, scanBtn;
     private ProgressBar scanPb;
     private EditText nameTv;
@@ -70,6 +72,9 @@ public class DeviceFragment extends Fragment {
     private final mHandler mHandler = new mHandler();
     private boolean isFirstOpen = true;
     private int beforeSize = -1;
+    private ImageView switchImg;
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,12 +148,13 @@ public class DeviceFragment extends Fragment {
             });
             deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
             deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
+                switchImg.setSelected(onOff);
                 if (onOff) {
                     /*boolean res = bluetoothAdapter.enable();
                     if (res) {
                         bluetoothSwitch.setChecked(true);
                     }*/
-                    bluetoothSwitch.setChecked(true);
+                    //bluetoothSwitch.setChecked(true);
                     recyclerView.setVisibility(View.VISIBLE);
                     deviceAdapter.sortDeviceList(deviceList);
                 } else {
@@ -162,18 +168,18 @@ public class DeviceFragment extends Fragment {
                     scanBtn.setEnabled(false);
                     nameTv.setEnabled(false);
                     scanPb.setVisibility(View.INVISIBLE);
-                    bluetoothSwitch.setChecked(false);
+                    //bluetoothSwitch.setChecked(false);
                     deviceAdapter.sortDeviceList(new ArrayList<>());
                     Global.connStatus = Global.NOT_CONNECTED;
                 }
                 nameTv.setText(deviceViewModel.getBluetoothName().getValue());
             });
             deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
-            bluetoothSwitch.setChecked(bluetoothAdapter.isEnabled());
+            switchImg.setSelected(bluetoothAdapter.isEnabled());
 
         }
-        bluetoothSwitch.setOnClickListener( v -> {
-            bluetoothSwitch.setEnabled(false);
+        switchImg.setOnClickListener( v -> {
+            switchImg.setEnabled(false);
             if(bluetoothAdapter.isEnabled()){
                 bluetoothAdapter.disable();
             }else{
@@ -191,6 +197,7 @@ public class DeviceFragment extends Fragment {
                 }).start();
             }*/
         });
+
         renameBtn.setOnClickListener(v -> {
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
@@ -307,8 +314,8 @@ public class DeviceFragment extends Fragment {
             renameBtn.setEnabled(true);
             renameBtn.setText(getText(R.string.bluetooth_rename));
             scanBtn.setEnabled(true);
-            bluetoothSwitch.setEnabled(true);
-            bluetoothSwitch.setChecked(true);
+            switchImg.setEnabled(true);
+            switchImg.setSelected(true);
             searchDevice();
         } else if (state == BluetoothAdapter.STATE_OFF){
             deviceViewModel.setDeviceList(new ArrayList<>());
@@ -317,24 +324,25 @@ public class DeviceFragment extends Fragment {
             scanBtn.setEnabled(false);
             nameTv.setEnabled(false);
             scanPb.setVisibility(View.INVISIBLE);
-            bluetoothSwitch.setEnabled(true);
-            bluetoothSwitch.setChecked(false);
+            switchImg.setEnabled(true);
+            switchImg.setSelected(false);
             if(bluetoothAdapter.isDiscovering()){
                 bluetoothAdapter.cancelDiscovery();
             }
             mHandler.removeMessages(SCAN_WHAT);
         }else if (state == BluetoothAdapter.STATE_TURNING_ON || state == BluetoothAdapter.STATE_TURNING_OFF){
-            bluetoothSwitch.setEnabled(false);
+            switchImg.setEnabled(false);
         }
     }
 
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.rv_bluetooth_devices);
-        bluetoothSwitch = view.findViewById(R.id.switch_bluetooth);
+        //bluetoothSwitch = view.findViewById(R.id.switch_bluetooth);
         renameBtn = view.findViewById(R.id.btn_bluetooth_name);
         scanBtn = view.findViewById(R.id.btn_bluetooth_scan);
         nameTv = view.findViewById(R.id.tv_bluetooth_name);
         scanPb = view.findViewById(R.id.pb_scan);
+        switchImg = view.findViewById(R.id.switchImg);
     }
 
     private void init() {
@@ -371,7 +379,7 @@ public class DeviceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(bluetoothSwitch.isChecked()){
+        if(switchImg.isSelected()){
             deviceAdapter.notifyDataSetChanged();
         }
 
@@ -400,7 +408,7 @@ public class DeviceFragment extends Fragment {
             //执行的UI操作
             switch (msg.what) {
                 case SWITCH_WHAT:
-                    bluetoothSwitch.setEnabled(true);
+                    //bluetoothSwitch.setEnabled(true);
                     break;
                 case SCAN_WHAT:
                     bluetoothAdapter.cancelDiscovery();
