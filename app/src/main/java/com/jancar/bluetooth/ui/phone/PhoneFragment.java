@@ -152,6 +152,7 @@ public class PhoneFragment extends Fragment {
             }
         });
         callBtn.setOnClickListener(v -> {
+            Log.i("Phone","callBtn click:"+canDial);
             /*String number = "";
             if (phoneViewModel != null) {
                 number = phoneViewModel.getCallNumber().getValue();
@@ -172,10 +173,10 @@ public class PhoneFragment extends Fragment {
                 return;
             }
             if(canDial){
-                bluetoothManager.callPhone(dialNumber.toString(), stub);
-                mHandler.removeCallbacks(setRunnable);
                 canDial = false;
-                mHandler.postDelayed(setRunnable,5000);
+                mHandler.removeCallbacks(setRunnable);
+                bluetoothManager.callPhone(dialNumber.toString(), stub);
+                mHandler.postDelayed(setRunnable,20000);
             }
 
             //EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, dialNumber.toString(), false));
@@ -196,10 +197,12 @@ public class PhoneFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
-        canDial = true;
-        if(event!=null && event.mStatus == IVIBluetooth.CallStatus.OUTGOING){
-            String number = event.mPhoneNumber;
-            //if (phoneViewModel != null) {
+        if(event!=null){
+            if(event.mStatus == IVIBluetooth.CallStatus.HANGUP){
+                canDial = true;
+            }else  if(event.mStatus == IVIBluetooth.CallStatus.OUTGOING){
+                String number = event.mPhoneNumber;
+                //if (phoneViewModel != null) {
                 //String tempValue = phoneViewModel.getCallNumber().getValue();
                 if(dialNumber.toString().equals(number)){
                     dialNumber.setLength(0);
@@ -207,8 +210,12 @@ public class PhoneFragment extends Fragment {
                     //phoneViewModel.setCallNumber("");
                 }
 
-            //}
+                //}
+            }
+
         }
+
+
     }
 
 
