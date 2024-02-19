@@ -4,6 +4,7 @@ import android.annotation.NonNull;
 import android.arch.lifecycle.Observer;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -42,6 +43,10 @@ public class PhoneFragment extends Fragment {
     private BluetoothManager bluetoothManager;
     private StringBuilder dialNumber = new StringBuilder();
 
+    private boolean canDial = true;
+
+    private Handler mHandler = null;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_phone, container, false);
@@ -52,6 +57,7 @@ public class PhoneFragment extends Fragment {
             phoneViewModel.getConnectStatus().observe(this, new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean aBoolean) {
+                    canDial = true;
                     if(aBoolean){
                         callNum.setHint(R.string.str_connected);
                     }else{
@@ -82,7 +88,7 @@ public class PhoneFragment extends Fragment {
         cancelBtn = rootView.findViewById(R.id.btn_cancel);
         callNum = rootView.findViewById(R.id.tv_phone_number);
 
-
+        mHandler = new Handler();
     }
 
     private long lastClickTime;
@@ -165,10 +171,23 @@ public class PhoneFragment extends Fragment {
                 }
                 return;
             }
-            bluetoothManager.callPhone(dialNumber.toString(), stub);
+            if(canDial){
+                bluetoothManager.callPhone(dialNumber.toString(), stub);
+                mHandler.removeCallbacks(setRunnable);
+                canDial = false;
+                mHandler.postDelayed(setRunnable,5000);
+            }
+
             //EventBus.getDefault().post(new IVIBluetooth.CallStatus(IVIBluetooth.CallStatus.OUTGOING, dialNumber.toString(), false));
         });
     }
+
+    private Runnable setRunnable = new Runnable() {
+        @Override
+        public void run() {
+            canDial = true;
+        }
+    };
 
     private void setNumberText(){
         callNum.setText(dialNumber.toString());
@@ -177,6 +196,7 @@ public class PhoneFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventPhoneStatus(IVIBluetooth.CallStatus event) {
+        canDial = true;
         if(event!=null && event.mStatus == IVIBluetooth.CallStatus.OUTGOING){
             String number = event.mPhoneNumber;
             //if (phoneViewModel != null) {
