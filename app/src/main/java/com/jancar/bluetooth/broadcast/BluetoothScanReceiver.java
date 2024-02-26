@@ -50,8 +50,11 @@ public class BluetoothScanReceiver extends BroadcastReceiver {
                     bluetoothDeviceList = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
                 } else {*/
                     //bluetoothDeviceList = new ArrayList<>();
-                    bluetoothDeviceList.clear();
-                    bluetoothDeviceList.addAll(BluetoothUtil.getBondedDevices());
+                if (deviceViewModel != null && deviceViewModel.getDeviceList() != null
+                        && deviceViewModel.getDeviceList().getValue() != null) {
+                    bluetoothDeviceList = deviceViewModel.getDeviceList().getValue();
+                }
+//                    bluetoothDeviceList.addAll(BluetoothUtil.getBondedDevices());
                 //}
                 first = true;
                 break;
