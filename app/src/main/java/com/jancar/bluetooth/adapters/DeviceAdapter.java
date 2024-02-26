@@ -113,7 +113,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             }
             nowDevice = device;
             Log.i(TAG, "已点击");
-            sortDeviceList(new ArrayList<>(deviceList));
             if (CallUtil.getInstance().isDeviceConnected(device)) {
                 //已连接，只断开
                 jancarBluetoothManager.unlinkDevice(unlinkStub);
@@ -139,6 +138,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
                 }
             }
+            sortDeviceList(new ArrayList<>(deviceList));
         });
         holder.itemView.setOnLongClickListener((view) -> {
             if (CallUtil.getInstance().isPairing(deviceList) ||
@@ -379,7 +379,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             //执行的UI操作
             switch (msg.what) {
                 case UPDATE_LIST:
-                    Log.i(TAG, "更新并移动列表");
                     List<BluetoothDevice> deviceList1 = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceList1);
                     if (nowDevice != null) {
@@ -388,6 +387,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                         recyclerView.post( ()->{
                             try {
                                 recyclerView.smoothScrollToPosition(index);
+                                Log.i(TAG, "更新并移动列表：" + index);
                             }catch (Exception e){
                                 recyclerView.smoothScrollToPosition(0);
                             }}
