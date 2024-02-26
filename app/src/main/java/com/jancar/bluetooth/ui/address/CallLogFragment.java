@@ -1,7 +1,6 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,19 +14,16 @@ import android.widget.ProgressBar;
 import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.CallLogAdapter;
-import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
-import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,10 +38,12 @@ public class CallLogFragment extends Fragment {
     private ProgressBar callLogPb;
     private AddressViewModel addressViewModel;
     private BluetoothManager bluetoothManager;
+    private boolean isSearching = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
+        Log.i(TAG, "onCreateView");
         initView(rootView);
         init();
         if (addressViewModel != null) {
@@ -75,26 +73,33 @@ public class CallLogFragment extends Fragment {
     }
 
     public IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+       List<CallLog> callLogs = new ArrayList<>();
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
-            List<CallLog> callLogs = new ArrayList<>();
+            callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
                 callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber, book.type));
+                Log.i(TAG, "name:" + book.name + " time:" +  TimeUtil.formatAccurateTime(book.callTime) +
+                            " name:" + book.phoneNumber + " type:" + book.type);
             }
-            if (addressViewModel != null) {
-                addressViewModel.setCallLogList(callLogs);
-            }
-            callLogPb.setVisibility(View.GONE);
+//            callLogPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onFailure(int i) {
             callLogPb.setVisibility(View.GONE);
+            Log.i(TAG, "onFailure");
+            isSearching = false;
         }
 
         @Override
         public void onSuccess(String s) {
+            if (addressViewModel != null) {
+                addressViewModel.setCallLogList(callLogs);
+            }
             callLogPb.setVisibility(View.GONE);
+            Log.i(TAG, "onSuccess");
+            isSearching = false;
         }
     };
 
@@ -129,11 +134,16 @@ public class CallLogFragment extends Fragment {
     }
 
     private void searchCallLog() {
+        if (isSearching) {
+            return;
+        }
+        Log.i(TAG, "searchCallLog");
         if (!CallUtil.getInstance().canCallNumber()) {
             MainApplication.showToast(getString(R.string.str_not_connect_warn));
         }
         else {
             if (bluetoothManager != null) {
+                isSearching = true;
                 bluetoothManager.getPhoneContacts(stub1);
                 bluetoothManager.getAllCallRecord(stub);
                 callLogPb.setVisibility(View.VISIBLE);
@@ -145,6 +155,8 @@ public class CallLogFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume");
+        isSearching = false;
         if (!CallUtil.getInstance().canCallNumber()) {
             addressViewModel.setCallLogList(new ArrayList<>());
             callLogPb.setVisibility(View.GONE);
@@ -155,6 +167,18 @@ public class CallLogFragment extends Fragment {
                 searchCallLog();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause");
     }
 
     @Override
