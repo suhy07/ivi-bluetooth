@@ -360,6 +360,7 @@ public class DeviceFragment extends Fragment {
         super.onDestroyView();
         Log.i(TAG, "onDestroyView");
         deviceAdapter.removeHandler();
+        bluetoothAdapter.cancelDiscovery();
     }
 
     @Override
@@ -420,7 +421,4 @@ public class DeviceFragment extends Fragment {
             }
         }
     }
-
-
-
 }
