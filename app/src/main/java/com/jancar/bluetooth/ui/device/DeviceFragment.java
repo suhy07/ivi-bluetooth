@@ -141,7 +141,7 @@ public class DeviceFragment extends Fragment {
                 }
             });
             deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
-                if (!bluetoothName.equals("")) {
+                if (!"".equals(bluetoothName)) {
                     nameTv.setText(bluetoothName);
                     bluetoothAdapter.setName(bluetoothName);
                 }
