@@ -1,5 +1,9 @@
 package com.jancar.bluetooth.model;
 
+import android.support.annotation.NonNull;
+
+import com.jancar.bluetooth.utils.TimeUtil;
+
 /**
  * @author suhy
  */
@@ -49,5 +53,10 @@ public class CallLog {
         this.callType = callType;
     }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return "name:" + this.callName + " time:" +  this.callTime +
+                " name:" + this.callNumber + " type:" + this.callType;
+    }
 }

@@ -79,10 +79,7 @@ public class CallLogFragment extends Fragment {
             callLogs = new ArrayList<>();
             for (BluetoothVCardBook book: list) {
                 callLogs.add(new CallLog(book.name, TimeUtil.formatAccurateTime(book.callTime), book.phoneNumber, book.type));
-                Log.i(TAG, "name:" + book.name + " time:" +  TimeUtil.formatAccurateTime(book.callTime) +
-                            " name:" + book.phoneNumber + " type:" + book.type);
             }
-//            callLogPb.setVisibility(View.GONE);
         }
 
         @Override
@@ -94,11 +91,13 @@ public class CallLogFragment extends Fragment {
 
         @Override
         public void onSuccess(String s) {
+            Log.i(TAG, "onSuccess");
             if (addressViewModel != null) {
+                Log.i(TAG, "addressViewModel.setCallLogList(callLogs)");
                 addressViewModel.setCallLogList(callLogs);
+                Log.i(TAG, callLogs.toString());
             }
             callLogPb.setVisibility(View.GONE);
-            Log.i(TAG, "onSuccess");
             isSearching = false;
         }
     };
@@ -144,7 +143,7 @@ public class CallLogFragment extends Fragment {
         else {
             if (bluetoothManager != null) {
                 isSearching = true;
-                bluetoothManager.getPhoneContacts(stub1);
+//                bluetoothManager.getPhoneContacts(stub1);
                 bluetoothManager.getAllCallRecord(stub);
                 callLogPb.setVisibility(View.VISIBLE);
             }

@@ -65,6 +65,8 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
                     }
                     Log.i(TAG, "蓝牙已打开");
                     break;
+                default:
+                    break;
             }
         }
     }

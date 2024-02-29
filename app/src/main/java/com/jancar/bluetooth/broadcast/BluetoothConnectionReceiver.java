@@ -142,6 +142,17 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                         deviceViewModel.setDeviceList(deviceList);
                     }
                     Log.d(TAG, "连接成功");
+                    Global.setContactList(new ArrayList<>());
+                    if (addressViewModel != null) {
+                        Log.i(TAG, "清空联系人和电话");
+                        addressViewModel.setCallLogList(new ArrayList<>());
+                        addressViewModel.setContactList(new ArrayList<>());
+                    }
+                    if (musicViewModel != null) {
+                        musicViewModel.setMusicName("");
+                        musicViewModel.setArtist("");
+                        musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+                    }
                     bluetoothManager.connect();
                     bluetoothManager.openBluetoothModule(null);
                     // 处理已连接的设备
