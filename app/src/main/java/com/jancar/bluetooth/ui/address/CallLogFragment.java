@@ -97,7 +97,7 @@ public class CallLogFragment extends Fragment {
                 addressViewModel.setCallLogList(callLogs);
                 Log.i(TAG, callLogs.toString());
             }
-            callLogPb.setVisibility(View.GONE);
+//            callLogPb.setVisibility(View.GONE);
             isSearching = false;
         }
     };

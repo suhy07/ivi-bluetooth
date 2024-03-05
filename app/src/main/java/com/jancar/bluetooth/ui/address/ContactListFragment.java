@@ -139,29 +139,29 @@ public class ContactListFragment extends Fragment {
     }
 
     public IBluetoothVCardCallback.Stub stub = new IBluetoothVCardCallback.Stub() {
+        List<Contact> contacts = new ArrayList<>();
         @Override
         public void onProgress(List<BluetoothVCardBook> list) {
-            List<Contact> contacts = new ArrayList<>();
+            contacts = new ArrayList<>();
             for (BluetoothVCardBook vCardBook: list) {
                 Contact contact = new Contact(vCardBook.name, vCardBook.phoneNumber);
                 contacts.add(contact);
             }
-            if (addressViewModel != null) {
-                addressViewModel.setContactList(contacts);
-            }
-            Global.setContactList(contacts);
-            CallUtil.getInstance().setContactList(contacts);
-            contactPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onFailure(int i) {
             contactPb.setVisibility(View.GONE);
+            Log.i(TAG, "onFailure");
         }
 
         @Override
         public void onSuccess(String s) {
-            contactPb.setVisibility(View.GONE);
+            if (addressViewModel != null) {
+                addressViewModel.setContactList(contacts);
+            }
+            Global.setContactList(contacts);
+            CallUtil.getInstance().setContactList(contacts);
         }
     };
 
