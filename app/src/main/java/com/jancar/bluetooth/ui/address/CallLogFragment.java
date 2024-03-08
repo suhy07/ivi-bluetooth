@@ -1,6 +1,7 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,11 +42,17 @@ public class CallLogFragment extends Fragment {
     private boolean isSearching = false;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
+        init();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
         Log.i(TAG, "onCreateView");
         initView(rootView);
-        init();
         if (addressViewModel != null) {
             addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
                 Log.d(TAG, "观察到calllog变化");

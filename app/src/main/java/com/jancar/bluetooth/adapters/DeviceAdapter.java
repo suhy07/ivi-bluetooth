@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemProperties;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,6 +108,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             Global.connStatus = Global.CONNECTED;
         }
         holder.itemView.setOnClickListener( v -> {
+            if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
+                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_block_connection_tips));
+                return;
+            }
             if (CallUtil.getInstance().isPairing(deviceList) ||
             CallUtil.getInstance().isConnecting()) {
                 return;
@@ -141,6 +146,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             sortDeviceList(new ArrayList<>(deviceList));
         });
         holder.itemView.setOnLongClickListener((view) -> {
+            if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
+                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_block_connection_tips));
+                return true;
+            }
             if (CallUtil.getInstance().isPairing(deviceList) ||
                     CallUtil.getInstance().isConnecting()) {
                 return true;
@@ -427,8 +436,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         public void onFailure(int i) {
             Log.i(TAG,"onFailure:"+i);
             if (!CallUtil.getInstance().isConnected()) {
-                Log.i(TAG, "tips");
-                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+                Log.i(TAG, "tips" + MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+//                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
             }
         }
     };
@@ -439,5 +448,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     public interface StartPairOrConnectCallback{
         void startPairOrConnect();
+    }
+
+    public static boolean isBtTransmitMode() {
+        return "enable".equals(SystemProperties.get("persist.atc.bt.a2dpsourcerole", "disable"));
     }
 }

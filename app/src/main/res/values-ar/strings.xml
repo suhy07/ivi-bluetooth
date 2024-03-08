@@ -42,4 +42,5 @@
     <string name="status_outgoing">الطلب</string>
     <string name="str_connected">اتصال Bluetooth ناجح</string>
     <string name="str_unconnected">البلوتوث غير متصل</string>
+    <string name="str_block_connection_tips">حاليا في بلوتوث إطلاق الدولة ، لا يمكن توصيل الهاتف</string>
 </resources>

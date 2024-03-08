@@ -42,4 +42,6 @@
     <string name="status_outgoing">Wählend</string>
     <string name="str_connected">Bluetooth-Verbindung ist erfolgreich</string>
     <string name="str_unconnected">Bluetooth ist nicht verbunden</string>
+    <string name="str_block_connection_tips">Derzeit im Bluetooth-Verbindungsstatus, keine Verbindung
+        zum Telefon möglich</string>
 </resources>

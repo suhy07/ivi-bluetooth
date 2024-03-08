@@ -42,4 +42,5 @@
     <string name="status_outgoing">Κλήσης</string>
     <string name="str_connected">Η σύνδεση Bluetooth είναι επιτυχής</string>
     <string name="str_unconnected">Το Bluetooth δεν είναι συνδεδεμένο</string>
+    <string name="str_block_connection_tips">Επί του παρόντος σε κατάσταση σύνδεσης Αδυναμία σύνδεσης στο τηλέφωνο</string>
 </resources>

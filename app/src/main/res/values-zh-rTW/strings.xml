@@ -43,4 +43,5 @@
     <string name="str_connect_on_failure_tips">連接失敗，請目標檢查設備藍牙是否開啟，或設備是否需要打開藍牙發射</string>
     <string name="str_connected">藍牙連接成功</string>
     <string name="str_unconnected">藍牙未連接</string>
+    <string name="str_block_connection_tips">目前處於藍牙連接狀態，不能連接手機</string>
 </resources>

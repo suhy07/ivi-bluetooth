@@ -42,4 +42,5 @@
     <string name="status_outgoing">Vytáčení</string>
     <string name="str_connected">Připojení Bluetooth je úspěšné</string>
     <string name="str_unconnected">Bluetooth není připojeno</string>
+    <string name="str_block_connection_tips">Aktuálně v režimu přenosu Bluetooth, nelze se připojit k telefonu</string>
 </resources>

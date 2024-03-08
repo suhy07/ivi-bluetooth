@@ -44,5 +44,5 @@
         is enabled or if the device needs to enable Bluetooth transmission</string>
     <string name="str_connected">Bluetooth connection successful</string>
     <string name="str_unconnected">Bluetooth disconnected</string>
-
+    <string name="str_block_connection_tips">Currently in Bluetooth transmission mode, unable to connect to phone</string>
 </resources>
