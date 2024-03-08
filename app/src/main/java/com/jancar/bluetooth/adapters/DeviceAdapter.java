@@ -391,15 +391,18 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     List<BluetoothDevice> deviceList1 = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceList1);
                     if (nowDevice != null) {
-                        final int index;
-                        index = deviceList.indexOf(nowDevice);
+//                        final int index;
+//                        index = deviceList.indexOf(nowDevice);
                         recyclerView.post( ()->{
-                            try {
-                                recyclerView.smoothScrollToPosition(index);
-                                Log.i(TAG, "更新并移动列表：" + index);
-                            }catch (Exception e){
-                                recyclerView.smoothScrollToPosition(0);
-                            }}
+                            recyclerView.smoothScrollToPosition(0);
+                            Log.i(TAG, "更新并移动列表");
+//                            try {
+//                                recyclerView.smoothScrollToPosition(index);
+//                                Log.i(TAG, "更新并移动列表：" + index);
+//                            }catch (Exception e){
+//                                recyclerView.smoothScrollToPosition(0);
+//                            }
+                        }
                         );
                     }
                     notifyDataSetChanged();
