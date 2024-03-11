@@ -45,7 +45,6 @@ public class CallLogFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
-        init();
     }
 
     @Override
@@ -53,6 +52,7 @@ public class CallLogFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_call_log, container, false);
         Log.i(TAG, "onCreateView");
         initView(rootView);
+        init();
         if (addressViewModel != null) {
             addressViewModel.getCallLogList().observe(getViewLifecycleOwner(), callLogs -> {
                 Log.d(TAG, "观察到calllog变化");
