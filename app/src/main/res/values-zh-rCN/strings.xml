@@ -43,5 +43,5 @@
     <string name="str_connect_on_failure_tips">连接失败，请目标检查设备蓝牙是否开启，或设备是否需要打开蓝牙发射</string>
     <string name="str_connected">蓝牙连接成功</string>
     <string name="str_unconnected">蓝牙未连接</string>
-    <string name="str_block_connection_tips">目前处于蓝牙连接状态，不能连接手机</string>
+    <string name="str_block_connection_tips">当前处于蓝牙发射模式，无法连接到手机</string>
 </resources>
