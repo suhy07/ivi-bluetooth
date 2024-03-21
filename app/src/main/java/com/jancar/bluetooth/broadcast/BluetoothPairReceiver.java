@@ -28,32 +28,40 @@ public class BluetoothPairReceiver extends BroadcastReceiver {
             int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
             if (deviceViewModel != null && bondState == BluetoothDevice.BOND_BONDED) {
                 Log.d(TAG, "配对完成");
-                if (deviceViewModel.getDeviceList() != null
-                        && deviceViewModel.getDeviceList().getValue() != null) {
-                    bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
-                } else {
-                    bluetoothDevices = new ArrayList<>();
-                }
-                bluetoothDevices.remove(device);
-                bluetoothDevices.add(1, device);
-                deviceViewModel.setDeviceList(bluetoothDevices);
+//                updateList(device);
             } else if (deviceViewModel != null && bondState == BluetoothDevice.BOND_NONE) {
                 Log.d(TAG, "取消配对");
-                if (deviceViewModel.getDeviceList() != null
-                        && deviceViewModel.getDeviceList().getValue() != null) {
-                    bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
-                    bluetoothDevices.remove(device);
-                    bluetoothDevices.add(device);
-                } else {
-                    bluetoothDevices = new ArrayList<>();
-                }
-                deviceViewModel.setDeviceList(bluetoothDevices);
+//                removeDevice(device);
             }
         }
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel){
         this.deviceViewModel = deviceViewModel;
+    }
+
+    private void updateList(BluetoothDevice device){
+        if (deviceViewModel.getDeviceList() != null
+                && deviceViewModel.getDeviceList().getValue() != null) {
+            bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
+        } else {
+            bluetoothDevices = new ArrayList<>();
+        }
+        bluetoothDevices.remove(device);
+        bluetoothDevices.add(0, device);
+        deviceViewModel.setDeviceList(bluetoothDevices);
+    }
+
+    private void removeDevice(BluetoothDevice device) {
+        if (deviceViewModel.getDeviceList() != null
+                && deviceViewModel.getDeviceList().getValue() != null) {
+            bluetoothDevices = new ArrayList<>(deviceViewModel.getDeviceList().getValue());
+            bluetoothDevices.remove(device);
+            bluetoothDevices.add(device);
+        } else {
+            bluetoothDevices = new ArrayList<>();
+        }
+        deviceViewModel.setDeviceList(bluetoothDevices);
     }
 }
 

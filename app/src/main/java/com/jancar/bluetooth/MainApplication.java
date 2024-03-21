@@ -2,18 +2,14 @@ package com.jancar.bluetooth;
 
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.service.BluetoothService;
@@ -27,7 +23,6 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.system.IVISystem;
 import com.jancar.sdk.system.SystemManager;
-import com.jancar.sdk.utils.ActivityUtils;
 import com.jancar.services.system.ISystemCallback;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,6 +30,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -46,6 +45,7 @@ public class MainApplication extends Application {
     public SystemManager mSystemManager = null;
     private Handler mHandler;
     private static Toast mToast;
+    public ExecutorService executor;
     public static MainApplication getInstance() {
         if (mInstance == null){
             synchronized (MainApplication.class) {
@@ -87,6 +87,11 @@ public class MainApplication extends Application {
         BluetoothUtil.setContext(this);
         getBluetoothManager();
         bluetoothManager.connect();
+        executor = new ThreadPoolExecutor(2, // 核心线程数
+                5, // 最大线程数
+                10, // 线程空闲时间
+                TimeUnit.SECONDS, // 时间单位
+                new ArrayBlockingQueue<>(10));  // 任务队列
         EventBus.getDefault().register(this);
 
         startService();

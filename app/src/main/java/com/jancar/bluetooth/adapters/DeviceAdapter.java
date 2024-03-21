@@ -24,14 +24,20 @@ import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.utils.JsonLauncher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author suhy
@@ -44,17 +50,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothManager jancarBluetoothManager;
     private RecyclerView recyclerView;
-    private BluetoothDevice nowDevice;
     private DeviceViewHolder holder;
     private final static int UPDATE_LIST = 0;
-    private final static int UPDATE_LIST_NO_SCROLL = 1;
+    private final static int MOVE_LIST = 1;
     private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
+    CyclicBarrier cyclicBarrier;
 
     private StartPairOrConnectCallback mStartPairOrConnectCallback;
 
     public DeviceAdapter(List<BluetoothDevice> deviceList
             , DeviceViewModel deviceViewModel, RecyclerView recyclerView) {
-        sortDeviceList(deviceList);
+        this.cyclicBarrier = new CyclicBarrier(2);
         this.deviceList = new ArrayList<>(deviceList);
         this.deviceViewModel = deviceViewModel;
         this.recyclerView = recyclerView;
@@ -116,7 +122,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             CallUtil.getInstance().isConnecting()) {
                 return;
             }
-            nowDevice = device;
             Log.i(TAG, "已点击");
             if (CallUtil.getInstance().isDeviceConnected(device)) {
                 //已连接，只断开
@@ -137,13 +142,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     }
                 //未配对
                 } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
-                    resumeBluetooth();
                     startPair(device);
                 } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
                     holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
                 }
             }
-            sortDeviceList(new ArrayList<>(deviceList));
         });
         holder.itemView.setOnLongClickListener((view) -> {
             if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
@@ -165,10 +168,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         return deviceList.size();
     }
 
+
     public void sortDeviceList(List<BluetoothDevice> deviceList) {
         Log.i(TAG,  "调用排序");
         final List<BluetoothDevice> devices = new ArrayList<>(deviceList);
-        new Thread(
+        MainApplication.getInstance().executor.execute(
                 ()->{
                     List<BluetoothDevice> sortDeviceList, sortDeviceList1,
                     sortDeviceList2, sortDeviceList3;
@@ -198,51 +202,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     sortDeviceList.addAll(sortDeviceList2);
                     sortDeviceList.addAll(sortDeviceList3);
                     sortDeviceList.addAll(tempList);
-                    runOnUiThread(() -> {
-                        mHandler.postUpdateList(sortDeviceList);
-                    });
+                    Log.i(TAG, "tempList:" + Arrays.toString(new List[]{tempList}));
+                    Log.i(TAG, "sortDeviceList:" + Arrays.toString(new List[]{sortDeviceList}));
+                    mHandler.postUpdateList(sortDeviceList);
                 }
-        ).start();
-    }
-
-    public void sortDeviceListNoScroll(List<BluetoothDevice> deviceList) {
-        Log.i(TAG,  "调用排序");
-        final List<BluetoothDevice> devices = new ArrayList<>(deviceList);
-        new Thread(
-                ()->{
-                    List<BluetoothDevice> sortDeviceList, sortDeviceList1,
-                            sortDeviceList2, sortDeviceList3;
-                    sortDeviceList = new ArrayList<>();
-                    sortDeviceList1 = new ArrayList<>();
-                    sortDeviceList2 = new ArrayList<>();
-                    sortDeviceList3 = new ArrayList<>();
-                    List<BluetoothDevice> tempList;
-                    tempList = new ArrayList<>(devices);
-
-                    for (BluetoothDevice device : devices) {
-                        if (device.isConnected()) {
-                            sortDeviceList.add(device);
-                            tempList.remove(device);
-                        } else if (CallUtil.getInstance().isDeviceConnecting(device)) {
-                            sortDeviceList1.add(device);
-                            tempList.remove(device);
-                        }else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
-                            sortDeviceList2.add(device);
-                            tempList.remove(device);
-                        } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                            sortDeviceList3.add(device);
-                            tempList.remove(device);
-                        }
-                    }
-                    sortDeviceList.addAll(sortDeviceList1);
-                    sortDeviceList.addAll(sortDeviceList2);
-                    sortDeviceList.addAll(sortDeviceList3);
-                    sortDeviceList.addAll(tempList);
-                    runOnUiThread(() -> {
-                        mHandler.postUpdateListNoScroll(sortDeviceList);
-                    });
-                }
-        ).start();
+        );
     }
 
     private void runOnUiThread(Runnable action) {
@@ -303,7 +267,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         connectButton.setOnClickListener(v -> {
             Log.i(TAG, "处理连接");
             if (bondState == BluetoothDevice.BOND_NONE) {
-                resumeBluetooth();
                 startPair(device);
             } else if (bondState == BluetoothDevice.BOND_BONDED) {
                 Log.i(TAG, "断开上一次的连接");
@@ -370,14 +333,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 mStartPairOrConnectCallback.startPairOrConnect();
             }
             device.createBond();
-//            mHandler.postUpdateList(deviceList);
-//            holder.pairingStatus.setText(getPairingStatus(BluetoothDevice.BOND_BONDING));
         }
     }
 
-    private void resumeBluetooth(){
-//        bluetoothAdapter.cancelDiscovery();
-//        jancarBluetoothManager.stopContactOrHistoryLoad(null);
+    public void moveListToDevice(BluetoothDevice device) {
+        MainApplication.getInstance().executor.execute(()->{
+            try {
+                cyclicBarrier.await();
+            } catch (BrokenBarrierException | InterruptedException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            int index = deviceList.indexOf(device);
+            if (index != -1) {
+                runOnUiThread(()-> recyclerView.smoothScrollToPosition(index));
+            }
+        });
     }
 
     class mHandler extends Handler {
@@ -388,29 +358,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             //执行的UI操作
             switch (msg.what) {
                 case UPDATE_LIST:
+                    Log.d(TAG, "UPDATE_LIST");
                     List<BluetoothDevice> deviceList1 = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceList1);
-                    if (nowDevice != null) {
-//                        final int index;
-//                        index = deviceList.indexOf(nowDevice);
-                        recyclerView.post( ()->{
-                            recyclerView.smoothScrollToPosition(0);
-                            Log.i(TAG, "更新并移动列表");
-//                            try {
-//                                recyclerView.smoothScrollToPosition(index);
-//                                Log.i(TAG, "更新并移动列表：" + index);
-//                            }catch (Exception e){
-//                                recyclerView.smoothScrollToPosition(0);
-//                            }
+                    notifyDataSetChanged();
+                    MainApplication.getInstance().executor.execute(()->{
+                        try {
+                            cyclicBarrier.await(1000, TimeUnit.SECONDS);
+                        } catch (BrokenBarrierException | InterruptedException | TimeoutException e) {
+                            Log.e(TAG, e.getMessage());
                         }
-                        );
-                    }
-                    notifyDataSetChanged();
-                    break;
-                case UPDATE_LIST_NO_SCROLL:
-                    List<BluetoothDevice> deviceList2 = (List<BluetoothDevice>) msg.obj;
-                    deviceList = new ArrayList<>(deviceList2);
-                    notifyDataSetChanged();
+                    });
                     break;
                 default:
                     break;
@@ -419,12 +377,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         public void postUpdateList(List<BluetoothDevice> deviceSet) {
             post(() -> {
                 Message msg = obtainMessage(UPDATE_LIST, deviceSet);
-                handleMessage(msg);
-            });
-        }
-        public void postUpdateListNoScroll(List<BluetoothDevice> deviceSet) {
-            post(() -> {
-                Message msg = obtainMessage(UPDATE_LIST_NO_SCROLL, deviceSet);
                 handleMessage(msg);
             });
         }
