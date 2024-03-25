@@ -67,7 +67,7 @@ public class DeviceFragment extends Fragment {
     private BluetoothManager bluetoothManager;
     private com.jancar.sdk.bluetooth.BluetoothManager jancarBluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
-    private final static int SCAN_TIMEOUT = 15000;
+    private final static int SCAN_TIMEOUT = 10000;
     private final static int SWITCH_WHAT = 0;
     private final static int SCAN_WHAT = 1;
     private final mHandler mHandler = new mHandler();
