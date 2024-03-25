@@ -430,7 +430,16 @@ public class DeviceFragment extends Fragment {
                     updateList(device);
                 } else if (bondState == BluetoothDevice.BOND_NONE) {
                     Log.d(TAG, "取消配对");
-                    updateList(device);
+                    if (deviceViewModel.getDeviceList() != null
+                            && deviceViewModel.getDeviceList().getValue() != null) {
+                        deviceList = deviceViewModel.getDeviceList().getValue();
+                    }
+                    deviceList.remove(device);
+                    deviceList.add(device);
+                    if (deviceViewModel != null) {
+                        deviceViewModel.setDeviceList(deviceList);
+                    }
+                    deviceAdapter.moveListToDevice(device);
                 } else if (bondState == BluetoothDevice.BOND_BONDING) {
                     updateList(device);
                 }

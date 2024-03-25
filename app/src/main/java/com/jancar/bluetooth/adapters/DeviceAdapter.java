@@ -332,6 +332,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             if(mStartPairOrConnectCallback!=null){
                 mStartPairOrConnectCallback.startPairOrConnect();
             }
+            Log.i(TAG, "断开上一次的连接");
+            jancarBluetoothManager.unlinkDevice(unlinkStub);
             device.createBond();
         }
     }
