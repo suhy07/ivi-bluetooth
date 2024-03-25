@@ -38,6 +38,7 @@ import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.ui.MyLinearLayoutManager;
 import com.jancar.bluetooth.utils.BluetoothUtil;
+import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -60,7 +61,6 @@ public class DeviceFragment extends Fragment {
     private Button renameBtn, scanBtn;
     private ProgressBar scanPb;
     private EditText nameTv;
-    private int timeout = 12000;
     private DeviceAdapter deviceAdapter;
     private DeviceViewModel deviceViewModel;
     private List<BluetoothDevice> deviceList = new ArrayList<>();
@@ -88,6 +88,10 @@ public class DeviceFragment extends Fragment {
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
+        if (CallUtil.getInstance().isConnected()) {
+            jancarBluetoothManager.playBtMusic(null);
+            jancarBluetoothManager.pauseBtMusic(null);
+        }
         // 观察设备列表的变化
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {

@@ -153,6 +153,9 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                         musicViewModel.setArtist("");
                         musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
                     }
+                    // 主动连接音乐
+                    bluetoothManager.playAndPause(null);
+                    bluetoothManager.playAndPause(null);
                     bluetoothManager.connect();
                     bluetoothManager.openBluetoothModule(null);
                     // 处理已连接的设备
