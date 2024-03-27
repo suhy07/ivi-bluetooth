@@ -88,10 +88,10 @@ public class DeviceFragment extends Fragment {
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
-        if (CallUtil.getInstance().isConnected()) {
-            jancarBluetoothManager.playBtMusic(null);
-            jancarBluetoothManager.pauseBtMusic(null);
-        }
+//        if (CallUtil.getInstance().isConnected()) {
+//            jancarBluetoothManager.playBtMusic(null);
+//            jancarBluetoothManager.pauseBtMusic(null);
+//        }
         // 观察设备列表的变化
         if (deviceViewModel != null) {
             deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {
