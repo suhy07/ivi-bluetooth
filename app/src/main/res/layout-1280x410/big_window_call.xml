@@ -61,7 +61,7 @@
             android:text="@string/str_answer"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:background="@drawable/shape_accept_bg"
+            android:background="@drawable/shape_accept_bg_bak"
             android:layout_marginRight="100dp"
             android:gravity="center"
             />
@@ -72,7 +72,7 @@
             android:text="@string/str_hang_up"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:background="@drawable/shape_hangup_small_bg"
+            android:background="@drawable/shape_hangup_small_bg_bak"
             android:gravity="center"
             />
     </LinearLayout>

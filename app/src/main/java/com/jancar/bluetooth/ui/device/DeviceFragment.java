@@ -104,7 +104,7 @@ public class DeviceFragment extends Fragment {
                         deviceAdapter.notifyDataSetChanged();
                     }
                     int nowSize = devices.size();
-                    if (nowSize > beforeSize) {
+                    if (nowSize > beforeSize) {//
                         Log.d(TAG, "共计增加:" + (nowSize - beforeSize));
                         for (int i = nowSize - beforeSize; i > 0 ; i--) {
                             deviceAdapter.notifyItemInserted(nowSize - i);
