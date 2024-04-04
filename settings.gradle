@@ -1,5 +1,5 @@
 rootProject.name = "MyBluetooth"
-include ':app'
+include ':app', ':mvvmhabit'
 
 //include ':base'
 //project(":base").projectDir = new File("../../base")
