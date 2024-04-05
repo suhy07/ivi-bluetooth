@@ -165,7 +165,7 @@ public final class CustomActivityOnCrash {
                                         if (config.getEventListener() != null) {
                                             config.getEventListener().onLaunchErrorActivity();
                                         }
-                                        application.startActivity(intent);
+//                                        application.startActivity(intent);
                                     } else if (config.getBackgroundMode() == CaocConfig.BACKGROUND_MODE_CRASH) {
                                         if (oldHandler != null) {
                                             oldHandler.uncaughtException(thread, throwable);
@@ -525,7 +525,7 @@ public final class CustomActivityOnCrash {
         Class<? extends Activity> resolvedActivityClass;
 
         //If action is defined, use that
-        resolvedActivityClass = getRestartActivityClassWithIntentFilter(context);
+         resolvedActivityClass = getRestartActivityClassWithIntentFilter(context);
 
         //Else, get the default launcher activity
         if (resolvedActivityClass == null) {
