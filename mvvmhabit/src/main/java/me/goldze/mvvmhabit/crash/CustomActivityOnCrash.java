@@ -46,6 +46,8 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import me.goldze.mvvmhabit.BuildConfig;
+
 
 public final class CustomActivityOnCrash {
 
@@ -165,7 +167,9 @@ public final class CustomActivityOnCrash {
                                         if (config.getEventListener() != null) {
                                             config.getEventListener().onLaunchErrorActivity();
                                         }
-//                                        application.startActivity(intent);
+                                        if (BuildConfig.DEBUG) {
+                                            application.startActivity(intent);
+                                        }
                                     } else if (config.getBackgroundMode() == CaocConfig.BACKGROUND_MODE_CRASH) {
                                         if (oldHandler != null) {
                                             oldHandler.uncaughtException(thread, throwable);
