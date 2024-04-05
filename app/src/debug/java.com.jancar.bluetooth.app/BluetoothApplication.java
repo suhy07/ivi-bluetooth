@@ -1,7 +1,6 @@
-package com.jancar.bluetooth;
+package com.jancar.bluetooth.app;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +11,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jancar.bluetooth.BuildConfig;
+import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.ui.CallActivity;
 import com.jancar.bluetooth.ui.MainActivity;
@@ -24,6 +25,7 @@ import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.system.IVISystem;
 import com.jancar.sdk.system.SystemManager;
 import com.jancar.services.system.ISystemCallback;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,22 +37,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import me.goldze.mvvmhabit.base.BaseApplication;
+import me.goldze.mvvmhabit.crash.CaocConfig;
+import me.goldze.mvvmhabit.utils.KLog;
+
 
 /**
  * @author suhy
  */
-public class MainApplication extends Application {
-    private static MainApplication mInstance = null;
+public class BluetoothApplication extends BaseApplication {
+    private static BluetoothApplication mInstance = null;
     private BluetoothManager bluetoothManager = null;
     public SystemManager mSystemManager = null;
     private Handler mHandler;
     private static Toast mToast;
     public ExecutorService executor;
-    public static MainApplication getInstance() {
+    public static BluetoothApplication getInstance() {
         if (mInstance == null){
-            synchronized (MainApplication.class) {
+            synchronized (BluetoothApplication.class) {
                 if (mInstance == null) {
-                    mInstance = new MainApplication();
+                    mInstance = new BluetoothApplication();
                 }
             }
         }
@@ -99,6 +105,29 @@ public class MainApplication extends Application {
         mCallWindowUtil = new CallWindowUtil(mInstance);
         registerBroadcastReceiver();
         mSystemManager = new SystemManager(mInstance, ConnectListen_System);
+        //是否开启打印日志
+        KLog.init(BuildConfig.DEBUG);
+        //初始化全局异常崩溃
+        initCrash();
+        //内存泄漏检测
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
+    }
+
+    private void initCrash() {
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
+                .enabled(true) //是否启动全局异常捕获
+                .showErrorDetails(true) //是否显示错误详细信息
+                .showRestartButton(true) //是否显示重启按钮
+                .trackActivities(true) //是否跟踪Activity
+                .minTimeBetweenCrashesMs(2000) //崩溃的间隔时间(毫秒)
+                .errorDrawable(R.mipmap.ic_launcher) //错误图标
+                .restartActivity(MainActivity.class) //重新启动后的activity
+//                .errorActivity(YourCustomErrorActivity.class) //崩溃后的错误activity
+//                .eventListener(new YourCustomEventListener()) //崩溃后的错误监听
+                .apply();
     }
 
     BaseManager.ConnectListener ConnectListen_System = new BaseManager.ConnectListener() {

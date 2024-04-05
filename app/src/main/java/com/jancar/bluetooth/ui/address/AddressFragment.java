@@ -1,11 +1,9 @@
 package com.jancar.bluetooth.ui.address;
 
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import android.os.RemoteException;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -14,19 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
-import com.jancar.bluetooth.model.Contact;
-import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
-import com.jancar.btservice.bluetooth.BluetoothVCardBook;
-import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
-import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
-import com.jancar.sdk.bluetooth.BluetoothManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author suhy

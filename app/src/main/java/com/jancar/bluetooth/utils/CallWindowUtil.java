@@ -17,9 +17,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.global.Global;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 import com.jancar.sdk.utils.Logcat;
 
@@ -89,7 +88,7 @@ public class CallWindowUtil {
             return;
         }
 
-        MainApplication.getInstance().startCallActivity();
+        BluetoothApplication.getInstance().startCallActivity();
 
         isShowCallWindow = true;
         LayoutInflater  layoutInflater = LayoutInflater.from(mContext);

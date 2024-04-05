@@ -1,7 +1,5 @@
 package com.jancar.bluetooth.global;
 
-import com.jancar.bluetooth.MainApplication;
-import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.Contact;
 
 import java.util.List;

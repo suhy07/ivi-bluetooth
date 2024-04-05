@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
-import com.jancar.sdk.bluetooth.IVIBluetooth;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -44,14 +41,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.CallLogV
         String name = callLog.getCallName();
         String type = callLog.getCallType();
         if(name.equals("")) {
-            name = MainApplication.getInstance().getString(R.string.str_unknown_call);
+            name = BluetoothApplication.getInstance().getString(R.string.str_unknown_call);
         }
         if(type.equals(BluetoothVCardBook.DIAL_TYPE)){
-            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_out));
+            holder.callTypeIv.setImageDrawable(BluetoothApplication.getInstance().getDrawable(R.drawable.ic_call_log_out));
         } else if (type.equals(BluetoothVCardBook.MISS_TYPE)){
-            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_miss));
+            holder.callTypeIv.setImageDrawable(BluetoothApplication.getInstance().getDrawable(R.drawable.ic_call_log_miss));
         } else {
-            holder.callTypeIv.setImageDrawable(MainApplication.getInstance().getDrawable(R.drawable.ic_call_log_in));
+            holder.callTypeIv.setImageDrawable(BluetoothApplication.getInstance().getDrawable(R.drawable.ic_call_log_in));
         }
         if (type.equals(BluetoothVCardBook.MISS_TYPE)) {
             holder.callName.setTextColor(0xFFEB5546);

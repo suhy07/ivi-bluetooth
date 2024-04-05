@@ -1,9 +1,7 @@
 package com.jancar.bluetooth.ui.address;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -21,21 +18,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
-import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -136,7 +130,7 @@ public class ContactListFragment extends Fragment {
         contactListAdapter = new ContactAdapter(addressViewModel.getContactList().getValue());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(contactListAdapter);
-        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
     }
 
     private void initView(View rootView) {
@@ -180,7 +174,7 @@ public class ContactListFragment extends Fragment {
     private void searchContact() {
         Log.i(TAG, "search");
         if(!CallUtil.getInstance().canCallNumber()) {
-            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
         } else {
             Log.i(TAG, "CallUtil.getInstance().canCallNumber()");
             if (bluetoothManager != null) {

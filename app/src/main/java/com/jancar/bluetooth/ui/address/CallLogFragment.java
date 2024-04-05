@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.CallLogAdapter;
 import com.jancar.bluetooth.model.CallLog;
@@ -73,7 +73,7 @@ public class CallLogFragment extends Fragment {
         callLogPb = rootView.findViewById(R.id.pb_call_log);
     }
     private void init(){
-        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         callLogAdapter = new CallLogAdapter(addressViewModel.getCallLogList().getValue());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(callLogAdapter);
@@ -145,7 +145,7 @@ public class CallLogFragment extends Fragment {
         }
         Log.i(TAG, "searchCallLog");
         if (!CallUtil.getInstance().canCallNumber()) {
-            MainApplication.showToast(getString(R.string.str_not_connect_warn));
+            BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
         }
         else {
             if (bluetoothManager != null) {

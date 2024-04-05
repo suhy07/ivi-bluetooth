@@ -4,15 +4,13 @@ import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothA2dpSink;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothHeadsetClient;
 import android.bluetooth.BluetoothProfile;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.os.SystemProperties;
-import android.util.Log;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
@@ -48,9 +46,9 @@ public class CallUtil {
 
         mHandler = new Handler();
         init();
-        bluetoothAdapter.getProfileProxy(MainApplication.getInstance(), mServiceListener,BluetoothProfile.A2DP);
-        bluetoothAdapter.getProfileProxy(MainApplication.getInstance(), mServiceListener,BluetoothProfile.A2DP_SINK);
-        bluetoothAdapter.getProfileProxy(MainApplication.getInstance(), mServiceListener,BluetoothProfile.HEADSET_CLIENT);
+        bluetoothAdapter.getProfileProxy(BluetoothApplication.getInstance(), mServiceListener,BluetoothProfile.A2DP);
+        bluetoothAdapter.getProfileProxy(BluetoothApplication.getInstance(), mServiceListener,BluetoothProfile.A2DP_SINK);
+        bluetoothAdapter.getProfileProxy(BluetoothApplication.getInstance(), mServiceListener,BluetoothProfile.HEADSET_CLIENT);
     }
 
     public void init(){
@@ -243,28 +241,28 @@ public class CallUtil {
     }
 
     public void listenPhone() {
-        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        BluetoothManager bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
             bluetoothManager.listenPhone(bluetoothExecCallback);
         }
     }
 
     public void hangupPhone() {
-        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        BluetoothManager bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
             bluetoothManager.hangPhone(bluetoothExecCallback);
         }
     }
 
     public void callPhone(String number){
-        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        BluetoothManager bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
             bluetoothManager.callPhone(number,bluetoothExecCallback);
         }
     }
 
     public void switchVoice() {
-        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        BluetoothManager bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
             bluetoothManager.transferCall(bluetoothExecCallback);
         }
@@ -272,7 +270,7 @@ public class CallUtil {
 
     public void requestDTMF(int code) {
 
-        BluetoothManager bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        BluetoothManager bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         if(bluetoothManager!=null){
             bluetoothManager.requestDTMF(code, bluetoothExecCallback);
         }

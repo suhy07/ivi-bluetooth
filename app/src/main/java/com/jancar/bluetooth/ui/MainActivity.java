@@ -1,6 +1,5 @@
 package com.jancar.bluetooth.ui;
 
-import android.annotation.NonNull;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProvider;
 import android.bluetooth.BluetoothDevice;
@@ -10,36 +9,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jancar.bluetooth.MainApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.MainFragmentPagerAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.service.BluetoothService;
-import com.jancar.bluetooth.ui.address.AddressFragment;
-import com.jancar.bluetooth.ui.device.DeviceFragment;
-import com.jancar.bluetooth.ui.music.MusicFragment;
-import com.jancar.bluetooth.ui.phone.PhoneFragment;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.bluetooth.viewmodels.MainViewModel;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
-import com.jancar.sdk.system.IVISystem;
 
 
 import java.util.HashSet;

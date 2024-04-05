@@ -31,14 +31,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
 import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.ui.MyLinearLayoutManager;
 import com.jancar.bluetooth.utils.BluetoothUtil;
-import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
@@ -86,7 +85,7 @@ public class DeviceFragment extends Fragment {
         init();
 
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
-        jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        jancarBluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         bluetoothAdapter = bluetoothManager.getAdapter();
 //        if (CallUtil.getInstance().isConnected()) {
 //            jancarBluetoothManager.playBtMusic(null);

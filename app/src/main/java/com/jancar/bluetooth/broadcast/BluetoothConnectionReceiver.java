@@ -3,7 +3,6 @@ package com.jancar.bluetooth.broadcast;
 import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothA2dpSink;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothHeadsetClient;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
@@ -13,9 +12,8 @@ import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.AddressViewModel;
@@ -26,7 +24,6 @@ import com.jancar.sdk.bluetooth.BluetoothManager;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +53,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
             deviceList = new ArrayList<>();
         }
 
-        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
         boolean isHfpAction = BluetoothHeadsetClient.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         boolean isA2dpAction = BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED.equals(action);
         boolean isA2dpSinkAction = BluetoothA2dpSink.ACTION_CONNECTION_STATE_CHANGED.equals(action);

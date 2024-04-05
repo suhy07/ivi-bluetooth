@@ -1,10 +1,8 @@
 package com.jancar.bluetooth.utils;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.util.Log;
 
-import com.jancar.bluetooth.MainApplication;
 import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.media.IVIMedia;
 import com.jancar.sdk.media.MediaManager;

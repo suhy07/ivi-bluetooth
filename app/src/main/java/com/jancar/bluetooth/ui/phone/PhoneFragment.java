@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.viewmodels.PhoneViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
@@ -109,7 +107,7 @@ public class PhoneFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
 //        phoneViewModel = new ViewModelProvider(this,
 //                new ViewModelProvider.NewInstanceFactory()).get(PhoneViewModel.class);
         for(int i = 0; i < btnCount; i++) {
@@ -159,11 +157,11 @@ public class PhoneFragment extends Fragment {
             }*/
             //号码为空或未连接蓝牙时，不能拨号
             if (!CallUtil.getInstance().canCallNumber()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             } else if(dialNumber.length() == 0) {
                 if(CallUtil.getInstance().getCallNumber().equals("")){
-                    MainApplication.showToast(getString(R.string.str_no_number));
+                    BluetoothApplication.showToast(getString(R.string.str_no_number));
                 }else{
                     dialNumber.setLength(0);
                     dialNumber.append(CallUtil.getInstance().getCallNumber());

@@ -20,20 +20,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.utils.TimeUtil;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
-import com.jancar.sdk.utils.JsonLauncher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +62,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         this.deviceViewModel = deviceViewModel;
         this.recyclerView = recyclerView;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        jancarBluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        jancarBluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
     }
 
     public void setDeviceList(List<BluetoothDevice> devices) {
@@ -92,7 +89,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         String deviceAddress = device.getAddress();
         int devicePairStatus = device.getBondState();
         if(deviceName == null || "".equals(deviceName)) {
-            deviceName = MainApplication.getInstance().getString(R.string.str_unknown_device);
+            deviceName = BluetoothApplication.getInstance().getString(R.string.str_unknown_device);
         }
         holder.deviceName.setText(deviceName);
         holder.deviceAddress.setText(deviceAddress);
@@ -115,7 +112,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
         holder.itemView.setOnClickListener( v -> {
             if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
-                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_block_connection_tips));
+                BluetoothApplication.showToast(BluetoothApplication.getInstance().getString(R.string.str_block_connection_tips));
                 return;
             }
             if (CallUtil.getInstance().isPairing(deviceList) ||
@@ -150,7 +147,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         });
         holder.itemView.setOnLongClickListener((view) -> {
             if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
-                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_block_connection_tips));
+                BluetoothApplication.showToast(BluetoothApplication.getInstance().getString(R.string.str_block_connection_tips));
                 return true;
             }
             if (CallUtil.getInstance().isPairing(deviceList) ||
@@ -172,7 +169,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     public void sortDeviceList(List<BluetoothDevice> deviceList) {
         Log.i(TAG,  "调用排序");
         final List<BluetoothDevice> devices = new ArrayList<>(deviceList);
-        MainApplication.getInstance().executor.execute(
+        BluetoothApplication.getInstance().executor.execute(
                 ()->{
                     List<BluetoothDevice> sortDeviceList, sortDeviceList1,
                     sortDeviceList2, sortDeviceList3;
@@ -339,7 +336,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     }
 
     public void moveListToDevice(BluetoothDevice device) {
-        MainApplication.getInstance().executor.execute(()->{
+        BluetoothApplication.getInstance().executor.execute(()->{
             try {
                 cyclicBarrier.await();
             } catch (BrokenBarrierException | InterruptedException e) {
@@ -364,7 +361,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                     List<BluetoothDevice> deviceList1 = (List<BluetoothDevice>) msg.obj;
                     deviceList = new ArrayList<>(deviceList1);
                     notifyDataSetChanged();
-                    MainApplication.getInstance().executor.execute(()->{
+                    BluetoothApplication.getInstance().executor.execute(()->{
                         try {
                             cyclicBarrier.await(1000, TimeUnit.SECONDS);
                         } catch (BrokenBarrierException | InterruptedException | TimeoutException e) {
@@ -393,7 +390,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         public void onFailure(int i) {
             Log.i(TAG,"onFailure:"+i);
             if (!CallUtil.getInstance().isConnected()) {
-                Log.i(TAG, "tips" + MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+                Log.i(TAG, "tips" + BluetoothApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
 //                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
             }
         }

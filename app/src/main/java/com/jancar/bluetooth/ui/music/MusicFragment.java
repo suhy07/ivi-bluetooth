@@ -4,13 +4,10 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.media.AudioAttributes;
-import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -21,11 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.jancar.bluetooth.MainApplication;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.utils.MediaManagerUtil;
 import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.BaseManager;
@@ -88,7 +83,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
                 return;
             }
             if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
             if(status != IVIBluetooth.BluetoothA2DPStatus.STREAMING){
@@ -104,7 +99,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
                 return;
             }
             if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
             bluetoothManager.prevBtMusic(iBluetoothExecCallback);
@@ -115,7 +110,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
                 return;
             }
             if (!CallUtil.getInstance().canPlayBluetoothMusic()) {
-                MainApplication.showToast(getString(R.string.str_not_connect_warn));
+                BluetoothApplication.showToast(getString(R.string.str_not_connect_warn));
                 return;
             }
             bluetoothManager.nextBtMusic(stub);
@@ -178,7 +173,7 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
 
 //        musicViewModel = new ViewModelProvider(this,
 //                new ViewModelProvider.NewInstanceFactory()).get(MusicViewModel.class);
-        bluetoothManager = MainApplication.getInstance().getBluetoothManager();
+        bluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
 
         audioManager = (AudioManager) requireContext().getSystemService(Context.AUDIO_SERVICE);
 
