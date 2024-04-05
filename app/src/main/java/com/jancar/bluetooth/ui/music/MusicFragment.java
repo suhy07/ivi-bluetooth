@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.viewmodels.MusicViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.BaseManager;
 import com.jancar.sdk.bluetooth.BluetoothManager;

@@ -10,7 +10,7 @@ import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.ui.address.CallLogFragment;
 import com.jancar.bluetooth.ui.address.ContactListFragment;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
+import com.jancar.bluetooth.ui.address.AddressViewModel;
 
 
 /**

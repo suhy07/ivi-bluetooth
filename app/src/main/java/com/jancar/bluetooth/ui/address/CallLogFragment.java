@@ -19,7 +19,6 @@ import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.TimeUtil;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;

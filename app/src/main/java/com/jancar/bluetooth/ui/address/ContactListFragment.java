@@ -24,7 +24,6 @@ import com.jancar.bluetooth.adapters.ContactAdapter;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.model.Contact;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
 import com.jancar.btservice.bluetooth.BluetoothVCardBook;
 import com.jancar.btservice.bluetooth.IBluetoothVCardCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;

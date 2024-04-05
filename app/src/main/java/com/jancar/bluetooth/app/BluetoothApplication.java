@@ -12,10 +12,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jancar.bluetooth.BuildConfig;
-import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.service.BluetoothService;
 import com.jancar.bluetooth.ui.CallActivity;
-import com.jancar.bluetooth.ui.MainActivity;
+import com.jancar.bluetooth.ui.main.MainActivity;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.utils.CallWindowUtil;
@@ -37,7 +36,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import me.goldze.mvvmhabit.base.BaseApplication;
-import me.goldze.mvvmhabit.crash.CaocConfig;
 import me.goldze.mvvmhabit.utils.KLog;
 
 
@@ -147,7 +145,7 @@ public class BluetoothApplication extends BaseApplication {
         public void quitApp() throws RemoteException {
             //finishActivity();
             Log.i("MainApplication", "quitApp called");
-            mInstance.sendBroadcast(new Intent(MainActivity.ACTION_QUITE_APP));
+//            mInstance.sendBroadcast(new Intent(MainActivity.ACTION_QUITE_APP));
         }
 
         @Override

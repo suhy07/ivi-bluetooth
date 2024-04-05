@@ -6,18 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.bluetooth.BluetoothAdapter;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
+import com.jancar.bluetooth.ui.address.AddressViewModel;
 import com.jancar.bluetooth.viewmodels.DeviceViewModel;
-import com.jancar.bluetooth.viewmodels.MusicViewModel;
+import com.jancar.bluetooth.ui.music.MusicViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * @author suhy

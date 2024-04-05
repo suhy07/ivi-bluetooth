@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
-import com.jancar.bluetooth.viewmodels.AddressViewModel;
 
 /**
  * @author suhy
