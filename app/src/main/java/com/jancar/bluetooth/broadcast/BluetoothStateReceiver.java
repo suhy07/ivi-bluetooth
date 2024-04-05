@@ -11,7 +11,7 @@ import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.bluetooth.ui.address.AddressViewModel;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.ui.device.DeviceViewModel;
 import com.jancar.bluetooth.ui.music.MusicViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 

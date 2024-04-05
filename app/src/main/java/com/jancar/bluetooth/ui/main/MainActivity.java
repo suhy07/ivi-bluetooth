@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import com.jancar.bluetooth.BR;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.databinding.ActivityMainBinding;
+import com.jancar.bluetooth.ui.main.vp.MainGroupFragment;
 
 import me.goldze.mvvmhabit.base.BaseActivity;
 
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         ((ViewPager)(binding.viewPager)).addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
         //给ViewPager设置adapter
         binding.setAdapter(new MainBindingAdapter());
+        startContainerActivity(MainGroupFragment.class.getCanonicalName());
     }
 
     @Override

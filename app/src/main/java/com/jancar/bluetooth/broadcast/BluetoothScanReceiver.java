@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.jancar.bluetooth.global.Global;
-import com.jancar.bluetooth.utils.BluetoothUtil;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.ui.device.DeviceViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

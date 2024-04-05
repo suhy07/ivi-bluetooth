@@ -1,31 +1,28 @@
 package com.jancar.bluetooth.ui.address;
 
 
-import android.annotation.NonNull;
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.jancar.bluetooth.model.CallLog;
 import com.jancar.bluetooth.model.Contact;
 
-import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.goldze.mvvmhabit.base.BaseViewModel;
-import me.goldze.mvvmhabit.base.ItemViewModel;
 
 /**
  * @author suhy
  */
-public class AddressViewModel extends ItemViewModel<BaseViewModel> {
+public class AddressViewModel extends BaseViewModel {
     private MutableLiveData<List<Contact>> contactList;
     private MutableLiveData<List<CallLog>> callLogList;
     private MutableLiveData<Integer> selectedPage;
 
-    public AddressViewModel(@NonNull BaseViewModel viewModel) {
-        super(viewModel);
+    public AddressViewModel(Application application) {
+        super(application);
         this.contactList = new MutableLiveData<>();
         this.callLogList = new MutableLiveData<>();
         this.selectedPage = new MutableLiveData<>();

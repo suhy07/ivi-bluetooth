@@ -24,7 +24,7 @@ import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.utils.CallUtil;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.ui.device.DeviceViewModel;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
 

@@ -24,9 +24,9 @@ import com.jancar.bluetooth.broadcast.BluetoothScanReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothPairReceiver;
 import com.jancar.bluetooth.broadcast.BluetoothStateReceiver;
 import com.jancar.bluetooth.ui.address.AddressViewModel;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
+import com.jancar.bluetooth.ui.device.DeviceViewModel;
 import com.jancar.bluetooth.ui.music.MusicViewModel;
-import com.jancar.bluetooth.viewmodels.PhoneViewModel;
+import com.jancar.bluetooth.ui.phone.PhoneViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;

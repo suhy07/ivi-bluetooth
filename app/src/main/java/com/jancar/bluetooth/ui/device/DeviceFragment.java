@@ -16,6 +16,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.jancar.bluetooth.BR;
 import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.DeviceAdapter;
@@ -38,7 +40,6 @@ import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.ui.MyLinearLayoutManager;
 import com.jancar.bluetooth.utils.BluetoothUtil;
-import com.jancar.bluetooth.viewmodels.DeviceViewModel;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,10 +51,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import me.goldze.mvvmhabit.base.BaseFragment;
+
 /**
  * @author suhy
  */
-public class DeviceFragment extends Fragment {
+public class DeviceFragment extends BaseFragment {
 
     private final static String TAG = "DeviceFragment";
     private RecyclerView recyclerView;
@@ -339,6 +342,16 @@ public class DeviceFragment extends Fragment {
             getActivity().unregisterReceiver(pairReceiver);
             getActivity().unregisterReceiver(connectReceiver);
         }
+    }
+
+    @Override
+    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return R.layout.fragment_device1;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.viewModel;
     }
 
     @Override

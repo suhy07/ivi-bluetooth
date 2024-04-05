@@ -1,29 +1,27 @@
-package com.jancar.bluetooth.viewmodels;
+package com.jancar.bluetooth.ui.device;
 
-;
-
+import android.annotation.NonNull;
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.bluetooth.BluetoothDevice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**
  * @author suhy
  */
-public class DeviceViewModel extends ViewModel {
+public class DeviceViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> onOff;
     private MutableLiveData<List<BluetoothDevice>> deviceList;
     private MutableLiveData<String> bluetoothName;
 
-    public DeviceViewModel() {
+    public DeviceViewModel(@NonNull Application application) {
+        super(application);
         onOff = new MutableLiveData<>();
         deviceList = new MutableLiveData<>();
         deviceList.setValue(new ArrayList<>());

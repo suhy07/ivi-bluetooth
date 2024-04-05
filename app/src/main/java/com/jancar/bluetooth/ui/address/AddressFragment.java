@@ -4,6 +4,7 @@ package com.jancar.bluetooth.ui.address;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,13 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jancar.bluetooth.BR;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
+
+import me.goldze.mvvmhabit.base.BaseFragment;
 
 /**
  * @author suhy
  */
-public class AddressFragment extends Fragment {
+public class AddressFragment extends BaseFragment {
 
     private final static String TAG = AddressFragment.class.getName();
     private AddressViewModel addressViewModel;
@@ -33,6 +37,16 @@ public class AddressFragment extends Fragment {
         init();
 
         return root;
+    }
+
+    @Override
+    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return R.layout.fragment_address1;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.viewModel;
     }
 
     private void initView(View root) {
