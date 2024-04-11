@@ -368,7 +368,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                         try {
                             cyclicBarrier.await(1000, TimeUnit.SECONDS);
                         } catch (BrokenBarrierException | InterruptedException | TimeoutException e) {
-                            Log.e(TAG, e.getMessage());
+                            if (e.getMessage() != null) {
+                                Log.e(TAG, e.getMessage());
+                            }
                         }
                     });
                     break;
