@@ -2,24 +2,22 @@ package com.jancar.bluetooth.ui.music;
 
 
 import android.annotation.NonNull;
+import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.jancar.bluetooth.ui.main.MainItemViewModel;
-import com.jancar.bluetooth.ui.main.MainViewModel;
-
-import me.goldze.mvvmhabit.base.ItemViewModel;
+import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**
  * @author suhy
  */
-public class MusicViewModel extends MainItemViewModel {
+public class MusicViewModel extends BaseViewModel {
 
     private final MutableLiveData<String> musicName;
     private final MutableLiveData<String> artist;
     private final MutableLiveData<Integer> a2dpStatus;
 
-    public MusicViewModel(@NonNull MainViewModel mainViewModel) {
-        super(mainViewModel);
+    public MusicViewModel(@NonNull Application application) {
+        super(application);
         musicName = new MutableLiveData<>();
         musicName.setValue("");
         artist = new MutableLiveData<>();

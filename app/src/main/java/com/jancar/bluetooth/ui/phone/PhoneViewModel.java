@@ -2,18 +2,15 @@ package com.jancar.bluetooth.ui.phone;
 
 
 import android.annotation.NonNull;
-import android.arch.lifecycle.LiveData;
+import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
-import com.jancar.bluetooth.ui.main.MainItemViewModel;
-import com.jancar.bluetooth.ui.main.MainViewModel;
+import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**
  * @author suhy
  */
-public class PhoneViewModel extends MainItemViewModel {
+public class PhoneViewModel extends BaseViewModel {
 
     private final MutableLiveData<String> callNumber;
     private final MutableLiveData<String> callName;
@@ -28,8 +25,8 @@ public class PhoneViewModel extends MainItemViewModel {
 
     private  MutableLiveData<Boolean> connectStatus;
 
-    public PhoneViewModel(@NonNull MainViewModel mainViewModel) {
-        super(mainViewModel);
+    public PhoneViewModel(@NonNull Application application) {
+        super(application);
         this.connectStatus = new MutableLiveData<>();
         this.callNumber = new MutableLiveData<>();
         this.callNumber.setValue("");

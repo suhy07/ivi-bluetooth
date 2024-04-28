@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">Bluetooth</string>
-    <string name="str_title_device">Gestion des appareils</string>
+    <string name="title_device">Gestion des appareils</string>
     <string name="title_phone">Téléphone Bluetooth</string>
     <string name="title_music">Musique Bluetooth</string>
     <string name="title_address">annuaire téléphonique</string>

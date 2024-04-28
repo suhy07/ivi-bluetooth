@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -32,10 +33,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import me.goldze.mvvmhabit.base.BaseFragment;
+import me.goldze.mvvmhabit.base.BaseViewModel;
+import me.tatarka.bindingcollectionadapter2.BR;
+
 /**
  * @author suhy
  */
-public class MusicFragment extends Fragment implements AudioManager.OnAudioFocusChangeListener {
+public class MusicFragment extends BaseFragment implements AudioManager.OnAudioFocusChangeListener {
 
     private final static String TAG = "MusicFragment" ;
     private TextView musicNameTv, artistTv;
@@ -56,7 +61,8 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView");
-        rootView = inflater.inflate(R.layout.fragment_music, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        rootView = binding.getRoot();
         initView(rootView);
         init();
 
@@ -116,6 +122,21 @@ public class MusicFragment extends Fragment implements AudioManager.OnAudioFocus
             updateMusicName();
         });
         return rootView;
+    }
+
+    @Override
+    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return R.layout.fragment_music;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.viewModel;
+    }
+
+    @Override
+    public MusicViewModel initViewModel() {
+        return new MusicViewModel(BluetoothApplication.getInstance());
     }
 
     private void updateMusicName() {

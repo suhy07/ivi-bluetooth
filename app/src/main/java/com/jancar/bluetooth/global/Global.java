@@ -75,4 +75,12 @@ public class Global {
         return contactList;
     }
 
+    //用于Messager回调
+
+    public static class Tokens {
+        // aa: TOKEN bb: ViewModel Name cc: Method / Object
+        public static final String TOKEN_DEVICEVIEWMODEL_ADDDEVICE = "token_deviceviewmodel_adddevice";
+
+    }
+
 }

@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">บลูทูธ</string>
-    <string name="str_title_device">การจัดการอุปกรณ์</string>
+    <string name="title_device">การจัดการอุปกรณ์</string>
     <string name="title_phone">โทรศัพท์บลูทู ธ</string>
     <string name="title_music">เพลงบลูทูธ</string>
     <string name="title_address">สมุดโทรศัพท์</string>

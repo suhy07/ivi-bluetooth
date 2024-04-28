@@ -1,6 +1,5 @@
 package com.jancar.bluetooth.ui.device;
 
-import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothA2dpSink;
 import android.bluetooth.BluetoothAdapter;
@@ -17,15 +16,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,13 +28,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.jancar.bluetooth.BR;
-import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
-import com.jancar.bluetooth.adapters.DeviceAdapter;
-import com.jancar.bluetooth.broadcast.BluetoothConnectionReceiver;
+import com.jancar.bluetooth.app.BluetoothApplication;
+import com.jancar.bluetooth.databinding.FragmentDeviceBinding;
 import com.jancar.bluetooth.global.Global;
 import com.jancar.bluetooth.ui.MyLinearLayoutManager;
-import com.jancar.bluetooth.utils.BluetoothUtil;
 import com.jancar.sdk.bluetooth.IVIBluetooth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,16 +40,15 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
+import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
 
 /**
  * @author suhy
  */
-public class DeviceFragment extends BaseFragment {
+public class DeviceFragment extends BaseFragment<FragmentDeviceBinding, DeviceViewModel> {
 
     private final static String TAG = "DeviceFragment";
     private RecyclerView recyclerView;
@@ -79,13 +71,22 @@ public class DeviceFragment extends BaseFragment {
     private BluetoothPairReceiver pairReceiver;
     private BluetoothConnectionReceiver_ connectReceiver;
 
-    @SuppressLint("ClickableViewAccessibility")
+
+    @Override
+    public void initData() {
+        super.initData();
+        //给RecyclerView添加Adpter，请使用自定义的Adapter继承BindingRecyclerViewAdapter，重写onBindBinding方法，里面有你要的Item对应的binding对象。
+        // Adapter属于View层的东西, 不建议定义到ViewModel中绑定，以免内存泄漏
+        binding.setAdapter(new DeviceAdapter());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView");
-        View view = inflater.inflate(R.layout.fragment_device, container, false);
-        initView(view);
-        init();
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = binding.getRoot();
+//        initView(view);
+//        init();
 
         bluetoothManager = getActivity().getSystemService(BluetoothManager.class);
         jancarBluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
@@ -95,165 +96,165 @@ public class DeviceFragment extends BaseFragment {
 //            jancarBluetoothManager.pauseBtMusic(null);
 //        }
         // 观察设备列表的变化
-        if (deviceViewModel != null) {
-            deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {
-                deviceList = devices;
-                if (devices != null) {
-                    Log.d(TAG, "观察到devices列表变化");
-                    deviceAdapter.setDeviceList(devices);
-                    if(BluetoothConnectionReceiver.needFresh){
-                        BluetoothConnectionReceiver.needFresh = false;
-                        deviceAdapter.notifyDataSetChanged();
-                    }
-                    int nowSize = devices.size();
-                    if (nowSize > beforeSize) {//
-                        Log.d(TAG, "共计增加:" + (nowSize - beforeSize));
-                        for (int i = nowSize - beforeSize; i > 0 ; i--) {
-                            deviceAdapter.notifyItemInserted(nowSize - i);
-                            Log.d(TAG, "增加设备:" + i);
-                        }
-                    } else {
-                        deviceAdapter.sortDeviceList(deviceList);
-                    }
-                    beforeSize = devices.size();
-                }
-            });
-            // 获取已配对的设备
-            Set<BluetoothDevice> bondDevice = BluetoothUtil.getBondedDevices();
-            Log.i(TAG, "已配对的设备：" + Arrays.toString(bondDevice.toArray()));
-            deviceList.addAll(bondDevice);
-            deviceAdapter.sortDeviceList(deviceList);
-            deviceViewModel.setDeviceList(deviceList);
-            deviceAdapter.setmStartPairOrConnectCallback(new DeviceAdapter.StartPairOrConnectCallback() {
-                @Override
-                public void startPairOrConnect() {
-                    if(bluetoothAdapter!=null){
-                        if(bluetoothAdapter.isDiscovering()){
-                            bluetoothAdapter.cancelDiscovery();
-                        }
-                        scanPb.setVisibility(View.INVISIBLE);
-                        mHandler.removeMessages(SCAN_WHAT);
-                    }
-
-                }
-            });
-            deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
-                if (!"".equals(bluetoothName)) {
-                    nameTv.setText(bluetoothName);
-                    bluetoothAdapter.setName(bluetoothName);
-                }
-            });
-            deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
-            deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
-                switchImg.setSelected(onOff);
-                if (onOff) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    recyclerView.setVisibility(View.GONE);
-                    renameBtn.setEnabled(false);
-                    renameBtn.setText(getText(R.string.bluetooth_rename));
-                    scanBtn.setEnabled(false);
-                    nameTv.setEnabled(false);
-                    scanPb.setVisibility(View.INVISIBLE);
-                    Global.connStatus = Global.NOT_CONNECTED;
-                }
-                nameTv.setText(deviceViewModel.getBluetoothName().getValue());
-            });
-            deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
-            switchImg.setSelected(bluetoothAdapter.isEnabled());
-
-        }
-        switchImg.setOnClickListener( v -> {
-            switchImg.setEnabled(false);
-            if(bluetoothAdapter.isEnabled()){
-                bluetoothAdapter.disable();
-            }else{
-                bluetoothAdapter.enable();
-            }
-        });
-
-        renameBtn.setOnClickListener(v -> {
-            if (!bluetoothAdapter.isEnabled()) {
-                bluetoothAdapter.enable();
-            }
-            Log.i(TAG, nameTv.isEnabled() + "");
-            if (nameTv.isEnabled()) {
-                renameBtn.setText(getText(R.string.bluetooth_rename));
-                nameTv.setEnabled(false);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
-                if (deviceViewModel != null) {
-                    if ("".equals(nameTv.getText().toString().trim())) {
-                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
-                    } else {
-                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
-                    }
-                }
-            } else {
-                renameBtn.setText(getText(R.string.str_finish));
-                nameTv.setEnabled(true);
-                nameTv.requestFocus();
-                nameTv.setSelection(nameTv.getText().length());
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
-        scanBtn.setOnClickListener(v -> {
-            searchDevice();
-            hideKeyboard(v);
-        });
-        nameTv.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        nameTv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // 文本变化前的回调
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // 文本变化中的回调
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // 文本变化后的回调
-                // 获取当前文本长度
-                int textLength = editable.length();
-                int maxLength = 21;
-                if (textLength > maxLength) {
-                    // 如果超过限制，截取前面的限制字符
-                    editable.delete(maxLength, textLength);
-                }
-            }
-        });
-        nameTv.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                renameBtn.setText(getText(R.string.bluetooth_rename));
-                nameTv.setEnabled(false);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
-                if (deviceViewModel != null) {
-                    if ("".equals(nameTv.getText().toString().trim())) {
-                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
-                    } else {
-                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
-                    }
-                }
-                return true;
-            }
-            return false;
-        });
-        view.setOnClickListener(this::hideKeyboard);
-        view.setOnTouchListener((v, event) -> {
-            hideKeyboard(v);
-            return false;
-        });
-        if (bluetoothAdapter.isEnabled()) {
-            if (isFirstOpen) {
-                isFirstOpen = false;
-                searchDevice();
-            }
-        }
+//        if (deviceViewModel != null) {
+//            deviceViewModel.getDeviceList().observe(getViewLifecycleOwner(), devices -> {
+//                deviceList = devices;
+//                if (devices != null) {
+//                    Log.d(TAG, "观察到devices列表变化");
+//                    deviceAdapter.setDeviceList(devices);
+//                    if(BluetoothConnectionReceiver.needFresh){
+//                        BluetoothConnectionReceiver.needFresh = false;
+//                        deviceAdapter.notifyDataSetChanged();
+//                    }
+//                    int nowSize = devices.size();
+//                    if (nowSize > beforeSize) {//
+//                        Log.d(TAG, "共计增加:" + (nowSize - beforeSize));
+//                        for (int i = nowSize - beforeSize; i > 0 ; i--) {
+//                            deviceAdapter.notifyItemInserted(nowSize - i);
+//                            Log.d(TAG, "增加设备:" + i);
+//                        }
+//                    } else {
+//                        deviceAdapter.sortDeviceList(deviceList);
+//                    }
+//                    beforeSize = devices.size();
+//                }
+//            });
+//            // 获取已配对的设备
+//            Set<BluetoothDevice> bondDevice = BluetoothUtil.getBondedDevices();
+//            Log.i(TAG, "已配对的设备：" + Arrays.toString(bondDevice.toArray()));
+//            deviceList.addAll(bondDevice);
+//            deviceAdapter.sortDeviceList(deviceList);
+//            deviceViewModel.setDeviceList(deviceList);
+//            deviceAdapter.setmStartPairOrConnectCallback(new DeviceAdapter.StartPairOrConnectCallback() {
+//                @Override
+//                public void startPairOrConnect() {
+//                    if(bluetoothAdapter!=null){
+//                        if(bluetoothAdapter.isDiscovering()){
+//                            bluetoothAdapter.cancelDiscovery();
+//                        }
+//                        scanPb.setVisibility(View.INVISIBLE);
+//                        mHandler.removeMessages(SCAN_WHAT);
+//                    }
+//
+//                }
+//            });
+//            deviceViewModel.getBluetoothName().observe(getViewLifecycleOwner(), bluetoothName -> {
+//                if (!"".equals(bluetoothName)) {
+//                    nameTv.setText(bluetoothName);
+//                    bluetoothAdapter.setName(bluetoothName);
+//                }
+//            });
+//            deviceViewModel.setBluetoothName(bluetoothAdapter.getName());
+//            deviceViewModel.getOnOff().observe(getViewLifecycleOwner(), onOff -> {
+//                switchImg.setSelected(onOff);
+//                if (onOff) {
+//                    recyclerView.setVisibility(View.VISIBLE);
+//                } else {
+//                    recyclerView.setVisibility(View.GONE);
+//                    renameBtn.setEnabled(false);
+//                    renameBtn.setText(getText(R.string.bluetooth_rename));
+//                    scanBtn.setEnabled(false);
+//                    nameTv.setEnabled(false);
+//                    scanPb.setVisibility(View.INVISIBLE);
+//                    Global.connStatus = Global.NOT_CONNECTED;
+//                }
+//                nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+//            });
+//            deviceViewModel.setOnOff(bluetoothAdapter.isEnabled());
+//            switchImg.setSelected(bluetoothAdapter.isEnabled());
+//
+//        }
+//        switchImg.setOnClickListener( v -> {
+//            switchImg.setEnabled(false);
+//            if(bluetoothAdapter.isEnabled()){
+//                bluetoothAdapter.disable();
+//            }else{
+//                bluetoothAdapter.enable();
+//            }
+//        });
+//
+//        renameBtn.setOnClickListener(v -> {
+//            if (!bluetoothAdapter.isEnabled()) {
+//                bluetoothAdapter.enable();
+//            }
+//            Log.i(TAG, nameTv.isEnabled() + "");
+//            if (nameTv.isEnabled()) {
+//                renameBtn.setText(getText(R.string.bluetooth_rename));
+//                nameTv.setEnabled(false);
+//                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
+//                if (deviceViewModel != null) {
+//                    if ("".equals(nameTv.getText().toString().trim())) {
+//                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+//                    } else {
+//                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
+//                    }
+//                }
+//            } else {
+//                renameBtn.setText(getText(R.string.str_finish));
+//                nameTv.setEnabled(true);
+//                nameTv.requestFocus();
+//                nameTv.setSelection(nameTv.getText().length());
+//                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+//            }
+//        });
+//        scanBtn.setOnClickListener(v -> {
+//            searchDevice();
+//            hideKeyboard(v);
+//        });
+//        nameTv.setImeOptions(EditorInfo.IME_ACTION_DONE);
+//        nameTv.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+//                // 文本变化前的回调
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+//                // 文本变化中的回调
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                // 文本变化后的回调
+//                // 获取当前文本长度
+//                int textLength = editable.length();
+//                int maxLength = 21;
+//                if (textLength > maxLength) {
+//                    // 如果超过限制，截取前面的限制字符
+//                    editable.delete(maxLength, textLength);
+//                }
+//            }
+//        });
+//        nameTv.setOnEditorActionListener((v, actionId, event) -> {
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                renameBtn.setText(getText(R.string.bluetooth_rename));
+//                nameTv.setEnabled(false);
+//                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(renameBtn.getWindowToken(), 0);
+//                if (deviceViewModel != null) {
+//                    if ("".equals(nameTv.getText().toString().trim())) {
+//                        nameTv.setText(deviceViewModel.getBluetoothName().getValue());
+//                    } else {
+//                        deviceViewModel.setBluetoothName(nameTv.getText() + "");
+//                    }
+//                }
+//                return true;
+//            }
+//            return false;
+//        });
+//        view.setOnClickListener(this::hideKeyboard);
+//        view.setOnTouchListener((v, event) -> {
+//            hideKeyboard(v);
+//            return false;
+//        });
+//        if (bluetoothAdapter.isEnabled()) {
+//            if (isFirstOpen) {
+//                isFirstOpen = false;
+//                searchDevice();
+//            }
+//        }
         return view;
     }
 
@@ -283,7 +284,7 @@ public class DeviceFragment extends BaseFragment {
             switchImg.setSelected(true);
             searchDevice();
         } else if (state == BluetoothAdapter.STATE_OFF){
-            deviceViewModel.setDeviceList(new ArrayList<>());
+//            deviceViewModel.setDeviceList(new ArrayList<>());
             renameBtn.setEnabled(false);
             renameBtn.setText(getText(R.string.bluetooth_rename));
             scanBtn.setEnabled(false);
@@ -316,7 +317,7 @@ public class DeviceFragment extends BaseFragment {
             EventBus.getDefault().register(this);
         }
         recyclerView.setLayoutManager(new MyLinearLayoutManager(getContext()));
-        deviceAdapter = new DeviceAdapter(deviceList, deviceViewModel, recyclerView);
+        deviceAdapter = new DeviceAdapter();
         recyclerView.setAdapter(deviceAdapter);
         recyclerView.setItemViewCacheSize(20);
         IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);;
@@ -332,21 +333,21 @@ public class DeviceFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG, "onDestroyView");
-        deviceAdapter.removeHandler();
-        bluetoothAdapter.cancelDiscovery();
-        if (getActivity() != null) {
-            getActivity().unregisterReceiver(pairReceiver);
-            getActivity().unregisterReceiver(connectReceiver);
-        }
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        Log.i(TAG, "onDestroyView");
+//        deviceAdapter.removeHandler();
+//        bluetoothAdapter.cancelDiscovery();
+//        if (getActivity() != null) {
+//            getActivity().unregisterReceiver(pairReceiver);
+//            getActivity().unregisterReceiver(connectReceiver);
+//        }
+//    }
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_device1;
+        return R.layout.fragment_device;
     }
 
     @Override
@@ -355,27 +356,32 @@ public class DeviceFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy");
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
+    public DeviceViewModel initViewModel() {
+        return new DeviceViewModel(BluetoothApplication.getInstance());
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(switchImg.isSelected()){
-            deviceAdapter.notifyDataSetChanged();
-        }
-
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Log.i(TAG, "onDestroy");
+//        if (EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().unregister(this);
+//        }
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if(switchImg.isSelected()){
+//            deviceAdapter.notifyDataSetChanged();
+//        }
+//
+//    }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
@@ -391,22 +397,22 @@ public class DeviceFragment extends BaseFragment {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
-
-    private void updateList(BluetoothDevice device) {
-        if (deviceViewModel.getDeviceList() != null
-                && deviceViewModel.getDeviceList().getValue() != null) {
-            deviceList = deviceViewModel.getDeviceList().getValue();
-        }
-        int index = deviceList.indexOf(device);
-        if (index != -1) {
-            deviceList.remove(device);
-            deviceList.add(index, device);
-        }
-        if (deviceViewModel != null) {
-            deviceViewModel.setDeviceList(deviceList);
-        }
-        deviceAdapter.moveListToDevice(device);
-    }
+//
+//    private void updateList(BluetoothDevice device) {
+//        if (deviceViewModel.getDeviceList() != null
+//                && deviceViewModel.getDeviceList().getValue() != null) {
+//            deviceList = deviceViewModel.getDeviceList().getValue();
+//        }
+//        int index = deviceList.indexOf(device);
+//        if (index != -1) {
+//            deviceList.remove(device);
+//            deviceList.add(index, device);
+//        }
+//        if (deviceViewModel != null) {
+//            deviceViewModel.setDeviceList(deviceList);
+//        }
+//        deviceAdapter.moveListToDevice(device);
+//    }
 
 
     class mHandler extends Handler {
@@ -438,28 +444,28 @@ public class DeviceFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.i(TAG, "接收到广播");
-            if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-                int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (bondState == BluetoothDevice.BOND_BONDED) {
-                    Log.d(TAG, "配对完成, 移动列表至顶部");
-                    updateList(device);
-                } else if (bondState == BluetoothDevice.BOND_NONE) {
-                    Log.d(TAG, "取消配对");
-                    if (deviceViewModel.getDeviceList() != null
-                            && deviceViewModel.getDeviceList().getValue() != null) {
-                        deviceList = deviceViewModel.getDeviceList().getValue();
-                    }
-                    deviceList.remove(device);
-                    deviceList.add(device);
-                    if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceList(deviceList);
-                    }
-                    deviceAdapter.moveListToDevice(device);
-                } else if (bondState == BluetoothDevice.BOND_BONDING) {
-                    updateList(device);
-                }
-            }
+//            if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+//                int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
+//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                if (bondState == BluetoothDevice.BOND_BONDED) {
+//                    Log.d(TAG, "配对完成, 移动列表至顶部");
+//                    updateList(device);
+//                } else if (bondState == BluetoothDevice.BOND_NONE) {
+//                    Log.d(TAG, "取消配对");
+//                    if (deviceViewModel.getDeviceList() != null
+//                            && deviceViewModel.getDeviceList().getValue() != null) {
+//                        deviceList = deviceViewModel.getDeviceList().getValue();
+//                    }
+//                    deviceList.remove(device);
+//                    deviceList.add(device);
+//                    if (deviceViewModel != null) {
+//                        deviceViewModel.setDeviceList(deviceList);
+//                    }
+//                    deviceAdapter.moveListToDevice(device);
+//                } else if (bondState == BluetoothDevice.BOND_BONDING) {
+//                    updateList(device);
+//                }
+//            }
         }
     }
 
@@ -477,13 +483,13 @@ public class DeviceFragment extends BaseFragment {
                 int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1);
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device != null) {
-                    if (state == BluetoothProfile.STATE_DISCONNECTED) {
-                        updateList(device);
-                    } else if (state == BluetoothProfile.STATE_CONNECTING) {
-                        updateList(device);
-                    } else if (state == BluetoothProfile.STATE_CONNECTED) {
-                        updateList(device);
-                    }
+//                    if (state == BluetoothProfile.STATE_DISCONNECTED) {
+//                        updateList(device);
+//                    } else if (state == BluetoothProfile.STATE_CONNECTING) {
+//                        updateList(device);
+//                    } else if (state == BluetoothProfile.STATE_CONNECTED) {
+//                        updateList(device);
+//                    }
                 }
             }
 

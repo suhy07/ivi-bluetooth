@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import com.jancar.bluetooth.BR;
 import com.jancar.bluetooth.R;
 import com.jancar.bluetooth.adapters.AddressTabPagerAdapter;
+import com.jancar.bluetooth.app.BluetoothApplication;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
+import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**
  * @author suhy
@@ -32,7 +34,8 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_address, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View root = binding.getRoot();
         initView(root);
         init();
 
@@ -41,12 +44,17 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_address1;
+        return R.layout.fragment_address;
     }
 
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public AddressViewModel initViewModel() {
+        return new AddressViewModel(BluetoothApplication.getInstance());
     }
 
     private void initView(View root) {

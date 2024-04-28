@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">Блютуз</string>
-    <string name="str_title_device">Управление устройствами</string>
+    <string name="title_device">Управление устройствами</string>
     <string name="title_phone">Bluetooth-телефон</string>
     <string name="title_music">Музыка по Bluetooth</string>
     <string name="title_address">Телефонный справочник</string>

@@ -80,7 +80,8 @@ public class BluetoothUtil {
         return bluetoothAdapter.getBondedDevices();
     }
 
-    public static String getPairingStatus(int bondState) {
+    public static String getPairingStatus(BluetoothDevice device) {
+        int bondState = device.getBondState();
         String pairingStatus;
         switch (bondState) {
             case BluetoothDevice.BOND_BONDED:
@@ -104,20 +105,6 @@ public class BluetoothUtil {
 
     public static String getConnectStatus(BluetoothDevice device) {
         String connectStatus = context.getString(R.string.conn_status_not);
-        /*switch (status) {
-            case Global.NOT_CONNECTED:
-                connectStatus = context.getString(R.string.conn_status_not);
-                break;
-            case Global.CONNECTING:
-                connectStatus = context.getString(R.string.conn_status_connecting);
-                break;
-            case Global.CONNECTED:
-                connectStatus = context.getString(R.string.conn_status_connected);
-                break;
-        }
-        if(status == Global.CONNECTED && !CallUtil.getInstance().isDeviceConnected(device)){
-            connectStatus = context.getString(R.string.conn_status_not);
-        }*/
         if(CallUtil.getInstance().isDeviceConnected(device)){
             connectStatus = context.getString(R.string.conn_status_connected);
         }else if(CallUtil.getInstance().isDeviceConnecting(device)){

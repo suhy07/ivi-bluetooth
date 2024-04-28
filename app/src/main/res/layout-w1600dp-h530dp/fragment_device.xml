@@ -1,160 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bluetooth_switch"
-        android:textAppearance="@style/MyTabLayoutText"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+<layout>
 
-    <ImageView
-        android:id="@+id/switchImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        android:src="@drawable/switch_img_selector"
-        android:paddingLeft="10dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="18dp"
-        />
+    <data>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bluetooth_name"
-        android:textAppearance="@style/MyTabLayoutText"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        <import type="com.jancar.bluetooth.ui.device.DeviceViewModel" />
 
-    <EditText
-        android:id="@+id/tv_bluetooth_name"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:enabled="false"
-        android:gravity="right"
-        android:singleLine="true"
-        android:text="@string/bluetooth_name"
-        android:textAppearance="@style/CallLogText"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guideline9"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        <variable
+            name="viewModel"
+            type="DeviceViewModel" />
 
-    <Button
-        android:id="@+id/btn_bluetooth_name"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_rounded_button_blue"
-        android:singleLine="true"
-        android:text="@string/bluetooth_rename"
-        android:textAppearance="@style/MyTabLayoutText"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guideline9"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"></Button>
+    </data>
 
-    <ProgressBar
-        android:id="@+id/pb_scan"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_bluetooth_scan"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_rounded_button_blue"
-        android:text="@string/bluetooth_scan"
-        android:textAppearance="@style/MyTabLayoutText"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline9">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth_switch"
+            android:textAppearance="@style/MyTabLayoutText"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    </Button>
+        <ImageView
+            android:id="@+id/switchImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:src="@drawable/switch_img_selector"
+            android:paddingLeft="10dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_bluetooth_devices"
-        android:layout_width="1500dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline16" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth_name"
+            android:textAppearance="@style/MyTabLayoutText"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
+        <EditText
+            android:id="@+id/tv_bluetooth_name"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:enabled="false"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="@string/bluetooth_name"
+            android:textAppearance="@style/CallLogText"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideline9"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="10dp" />
+        <Button
+            android:id="@+id/btn_bluetooth_name"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rounded_button_blue"
+            android:singleLine="true"
+            android:text="@string/bluetooth_rename"
+            android:textAppearance="@style/MyTabLayoutText"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideline9"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"></Button>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="60dp" />
+        <ProgressBar
+            android:id="@+id/pb_scan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
+            app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="110dp" />
+        <Button
+            android:id="@+id/btn_bluetooth_scan"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rounded_button_blue"
+            android:text="@string/bluetooth_scan"
+            android:textAppearance="@style/MyTabLayoutText"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideline16"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline9">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="160dp" />
+        </Button>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="50dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="200dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="50dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="320dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_bluetooth_devices"
+            android:layout_width="1500dp"
+            android:layout_height="240dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline16"
+            app:adapter="@{adapter}"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.deviceList}"
+            app:layoutManager="@{LayoutManagers.linear()}"
+            app:lineManager="@{LineManagers.horizontal()}"/>
 
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="60dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="110dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="160dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="50dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="200dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="50dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="320dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

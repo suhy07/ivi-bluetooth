@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">藍牙</string>
-    <string name="str_title_device">設備管理</string>
+    <string name="title_device">設備管理</string>
     <string name="title_phone">藍牙電話</string>
     <string name="title_music">藍牙音樂</string>
     <string name="title_address">電話簿</string>

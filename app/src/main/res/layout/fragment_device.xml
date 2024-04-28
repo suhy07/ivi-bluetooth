@@ -4,17 +4,25 @@
     <data>
 
         <import type="com.jancar.bluetooth.ui.device.DeviceViewModel" />
+        <import type="com.jancar.bluetooth.ui.device.DeviceAdapter" />
+        <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+        <import type="me.goldze.mvvmhabit.binding.viewadapter.recyclerview.LineManagers" />
 
         <variable
             name="viewModel"
             type="DeviceViewModel" />
+        <variable
+            name="adapter"
+            type="DeviceAdapter" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:id="@+id/textView"
@@ -38,6 +46,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            app:onClickCommand="@{viewModel.pressOnOff}"
+            android:selected="@{viewModel.onOff}"
             />
 
 
@@ -56,12 +66,13 @@
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:enabled="false"
+            android:enabled="@{viewModel.renameTvEnable}"
             android:gravity="right"
             android:singleLine="true"
-            android:text="@string/bluetooth_name"
+            android:text="@{viewModel.bluetoothName}"
             android:textAppearance="@style/CallLogText"
             android:textColor="@color/white"
+            android:afterTextChanged="@{viewModel.afterTextChanged}"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />
@@ -72,19 +83,22 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_rounded_button_blue"
             android:singleLine="true"
-            android:text="@string/bluetooth_rename"
+            android:text="@{viewModel.renameBtnStr}"
             android:textAppearance="@style/MyTabLayoutText"
             android:textColor="@color/white"
+            android:enabled="@{viewModel.onOff}"
+            app:onClickCommand="@{viewModel.pressRename}"
+            app:isThrottleFirst="@{Boolean.TRUE}"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"></Button>
+            app:layout_constraintTop_toTopOf="@+id/guideline3"/>
 
         <ProgressBar
             android:id="@+id/pb_scan"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
-            android:visibility="invisible"
+            android:visibility="@{viewModel.scanVis}"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
@@ -96,6 +110,7 @@
             android:text="@string/bluetooth_scan"
             android:textAppearance="@style/MyTabLayoutText"
             android:textColor="@color/white"
+            app:onClickCommand="@{viewModel.pressScan}"
             app:layout_constraintBottom_toTopOf="@+id/guideline16"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline9">
@@ -110,7 +125,13 @@
             android:layout_marginEnd="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline16" />
+            app:layout_constraintTop_toTopOf="@+id/guideline16"
+            app:adapter="@{adapter}"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.deviceList}"
+            app:layoutManager="@{LayoutManagers.linear()}"
+            app:lineManager="@{LineManagers.horizontal()}"
+            />
 
 
         <android.support.constraint.Guideline

@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">Bluetooth</string>
-    <string name="str_title_device">Quản lý thiết bị</string>
+    <string name="title_device">Quản lý thiết bị</string>
     <string name="title_phone">Điện thoại Bluetooth</string>
     <string name="title_music">Nhạc Bluetooth</string>
     <string name="title_address">Danh bạ điện thoại</string>

@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-
-        <import type="com.jancar.bluetooth.ui.main.MainViewModel"/>
-        <import type="com.jancar.bluetooth.ui.main.MainBindingAdapter"/>
-
-        <variable
-            name="viewModel"
-            type="MainViewModel" />
-        <variable
-            name="adapter"
-            type="MainBindingAdapter" />
-
-    </data>
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:binding="http://schemas.android.com/apk/res-auto"
@@ -39,13 +25,12 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#12131f"
-            binding:adapter="@{adapter}"
-            binding:items="@{viewModel.items}"
-            binding:itemBinding="@{viewModel.itemBinding}"
-            binding:onPageSelectedCommand="@{viewModel.onPageSelectedCommand}"
-            binding:pageTitles="@{viewModel.pageTitles}"
-            />
+            android:background="#12131f"/>
+<!--            binding:adapter="@{adapter}"-->
+<!--            binding:items="@{viewModel.items}"-->
+<!--            binding:itemBinding="@{viewModel.itemBinding}"-->
+<!--            binding:onPageSelectedCommand="@{viewModel.onPageSelectedCommand}"-->
+<!--            binding:pageTitles="@{viewModel.pageTitles}"-->
 
     </LinearLayout>
 

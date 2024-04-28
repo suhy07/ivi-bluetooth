@@ -5,7 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-
-import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.app.BluetoothApplication;
 import com.jancar.bluetooth.utils.CallUtil;
 import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
 import com.jancar.sdk.bluetooth.BluetoothManager;
@@ -26,10 +25,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import me.goldze.mvvmhabit.base.BaseFragment;
+import me.tatarka.bindingcollectionadapter2.BR;
+
 /**
  * @author suhy
  */
-public class PhoneFragment extends Fragment {
+public class PhoneFragment extends BaseFragment {
     private final static String TAG = "PhoneFragment";
     private final int btnCount = 10;
     private final Button[] num = new Button[btnCount];
@@ -46,7 +48,8 @@ public class PhoneFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_phone, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = binding.getRoot();
         initView(rootView);
         init();
         if (phoneViewModel != null) {
@@ -249,6 +252,21 @@ public class PhoneFragment extends Fragment {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    @Override
+    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return R.layout.fragment_phone;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.viewModel;
+    }
+
+    @Override
+    public PhoneViewModel initViewModel() {
+        return new PhoneViewModel(BluetoothApplication.getInstance());
     }
 
     public void setPhoneViewModel(PhoneViewModel phoneViewModel) {

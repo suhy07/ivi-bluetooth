@@ -95,7 +95,6 @@ public class BluetoothService extends Service {
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
         this.deviceViewModel = deviceViewModel;
-        bluetoothScanReceiver.setDeviceViewModel(deviceViewModel);
         bluetoothPairReceiver.setDeviceViewModel(deviceViewModel);
         bluetoothStateReceiver.setDeviceViewModel(deviceViewModel);
         bluetoothConnectionReceiver.setDeviceViewModel(deviceViewModel);

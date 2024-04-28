@@ -58,7 +58,7 @@ public class ContactListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
         initView(rootView);
-        init();
+//        init();
         if (addressViewModel != null) {
             addressViewModel.getContactList().observe(getViewLifecycleOwner(), contacts -> {
                 Log.d(TAG, "观察到contact变化");

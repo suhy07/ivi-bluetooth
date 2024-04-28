@@ -2,7 +2,7 @@
 <resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <!--2023-11-22 16:45 >> start-->
     <string name="app_name">Rozhraní Bluetooth</string>
-    <string name="str_title_device">Správa zařízení</string>
+    <string name="title_device">Správa zařízení</string>
     <string name="title_phone">Telefon Bluetooth</string>
     <string name="title_music">Hudba Bluetooth</string>
     <string name="title_address">telefonní seznam</string>

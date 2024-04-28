@@ -1,0 +1,355 @@
+package com.jancar.bluetooth.ui.device;
+
+import static com.jancar.bluetooth.utils.BluetoothUtil.getConnectStatus;
+import static com.jancar.bluetooth.utils.BluetoothUtil.getPairingStatus;
+
+import android.annotation.NonNull;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.databinding.ViewDataBinding;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.SystemProperties;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.jancar.bluetooth.app.BluetoothApplication;
+import com.jancar.bluetooth.R;
+import com.jancar.bluetooth.global.Global;
+import com.jancar.bluetooth.utils.CallUtil;
+import com.jancar.btservice.bluetooth.IBluetoothExecCallback;
+import com.jancar.sdk.bluetooth.BluetoothManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import me.goldze.mvvmhabit.base.MultiItemViewModel;
+import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
+
+/**
+ * @author suhy
+ */
+public class DeviceAdapter extends BindingRecyclerViewAdapter<DeviceItemViewModel> {
+
+    private final static String TAG = "DeviceAdapter";
+//    private List<BluetoothDevice> deviceList;
+//    private DeviceViewModel deviceViewModel;
+//    private BluetoothAdapter bluetoothAdapter;
+//    private BluetoothManager jancarBluetoothManager;
+//    private RecyclerView recyclerView;
+//    private final static int UPDATE_LIST = 0;
+//    private final static int MOVE_LIST = 1;
+//    private final DeviceAdapter.mHandler mHandler = new DeviceAdapter.mHandler();
+//    CyclicBarrier cyclicBarrier;
+//
+//    private StartPairOrConnectCallback mStartPairOrConnectCallback;
+
+//    public DeviceAdapter() {
+//        super();
+//        this.cyclicBarrier = new CyclicBarrier(2);
+//        this.deviceList = new ArrayList<>();
+//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        jancarBluetoothManager = BluetoothApplication.getInstance().getBluetoothManager();
+//    }
+
+//    @Override
+//    public void onBindBinding(ViewDataBinding binding, int variableId, int layoutRes, int position, DeviceItemViewModel item) {
+//        super.onBindBinding(binding, variableId, layoutRes, position, item);
+//    }
+
+//    public void setmStartPairOrConnectCallback(StartPairOrConnectCallback mStartPairOrConnectCallback) {
+//        this.mStartPairOrConnectCallback = mStartPairOrConnectCallback;
+//    }
+
+//    @NonNull
+//    @Override
+//    public DeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_item, parent, false);
+//        return new DeviceViewHolder(view);
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
+//        this.holder = holder;
+//        BluetoothDevice device = (BluetoothDevice) deviceList.toArray()[position];
+//        String deviceName = device.getName();
+//        String deviceAddress = device.getAddress();
+//        int devicePairStatus = device.getBondState();
+//        if(deviceName == null || "".equals(deviceName)) {
+//            deviceName = BluetoothApplication.getInstance().getString(R.string.str_unknown_device);
+//        }
+//        holder.deviceName.setText(deviceName);
+//        holder.deviceAddress.setText(deviceAddress);
+//        holder.pairingStatus.setText(getPairingStatus(devicePairStatus));
+//        holder.connectStatus.setText(getConnectStatus(device));
+//        if(CallUtil.getInstance().isDeviceConnecting(device) || CallUtil.getInstance().isDeviceConnected(device) ||
+//                devicePairStatus == BluetoothDevice.BOND_BONDING) {
+//            holder.deviceName.setTextColor(0xFF00C2C2);
+//            holder.deviceAddress.setTextColor(0xFF00C2C2);
+//            holder.pairingStatus.setTextColor(0xFF00C2C2);
+//            holder.connectStatus.setTextColor(0xFF00C2C2);
+//        } else {
+//            holder.deviceName.setTextColor(0xFFFFFFFF);
+//            holder.deviceAddress.setTextColor(0xFFFFFFFF);
+//            holder.pairingStatus.setTextColor(0xFFFFFFFF);
+//            holder.connectStatus.setTextColor(0xFFFFFFFF);
+//        }
+//        if(device.isConnected()) {
+//            Global.connStatus = Global.CONNECTED;
+//        }
+//        holder.itemView.setOnClickListener( v -> {
+//            if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
+//                BluetoothApplication.showToast(BluetoothApplication.getInstance().getString(R.string.str_block_connection_tips));
+//                return;
+//            }
+//            if (CallUtil.getInstance().isPairing(deviceList) ||
+//            CallUtil.getInstance().isConnecting()) {
+//                return;
+//            }
+//            Log.i(TAG, "已点击");
+//            if (CallUtil.getInstance().isDeviceConnected(device)) {
+//                //已连接，只断开
+//                jancarBluetoothManager.unlinkDevice(unlinkStub);
+//                Log.i(TAG, "点击断开中");
+////                reFreshDeviceSet(device);
+//            } else {
+//                //未连接
+//                //已配对
+//                if (device.getBondState() == BluetoothDevice.BOND_BONDED){
+//                    if(CallUtil.getInstance().isConnected()){
+//                        jancarBluetoothManager.unlinkDevice(unlinkStub);
+//                        waitConnectMac = device.getAddress();
+//                        mHandler.removeCallbacks(connectRunnable);
+//                        mHandler.postDelayed(connectRunnable,500);
+//                    }else{
+//                        startConnect(device);
+//                    }
+//                //未配对
+//                } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
+//                    startPair(device);
+//                } else if (device.getBondState() == BluetoothDevice.BOND_BONDING) {
+//                    holder.pairingStatus.setText(getPairingStatus(device.getBondState()));
+//                }
+//            }
+//        });
+//        holder.itemView.setOnLongClickListener((view) -> {
+//            if (isBtTransmitMode() && device.getBluetoothClass().getMajorDeviceClass() == 512) {
+//                BluetoothApplication.showToast(BluetoothApplication.getInstance().getString(R.string.str_block_connection_tips));
+//                return true;
+//            }
+//            if (CallUtil.getInstance().isPairing(deviceList) ||
+//                    CallUtil.getInstance().isConnecting()) {
+//                return true;
+//            }
+//            showOptionsDialog(device, view.getContext());
+//            holder.itemView.getParent().requestDisallowInterceptTouchEvent(true);
+//            return true;
+//        });
+//    }
+
+//    @Override
+//    public int getItemCount() {
+//        return deviceList.size();
+//    }
+
+//
+//
+//    private void showOptionsDialog(BluetoothDevice device, Context context) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//
+//        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_options, null);
+//        builder.setView(dialogView);
+//        final AlertDialog dialog = builder.create();
+//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//
+//        Button connectButton = dialogView.findViewById(R.id.btn_connect);
+//        Button pairButton = dialogView.findViewById(R.id.btn_pair);
+//        int bondState = device.getBondState();
+//        //boolean isConnected = device.isConnected();
+//        if (CallUtil.getInstance().isDeviceConnected(device)) {
+//            connectButton.setText(context.getString(R.string.disconnect));
+//        } else {
+//            connectButton.setText(context.getString(R.string.connect));
+//        }
+//        if (bondState == BluetoothDevice.BOND_BONDED) {
+//            pairButton.setText(context.getString(R.string.unpair));
+//        } else {
+//            pairButton.setText(context.getString(R.string.pair_status_pair));
+//        }
+//
+//        //处理配对
+//        pairButton.setOnClickListener(v -> {
+//            Log.i(TAG, "处理配对");
+//            if (bondState == BluetoothDevice.BOND_BONDED){
+//                Log.i(TAG, "取消配对");
+//                device.removeBond();
+//            }
+//            else if (bondState == BluetoothDevice.BOND_NONE) {
+//                startPair(device);
+//            }
+//            dialog.dismiss();
+//        });
+//        //处理连接
+//        connectButton.setOnClickListener(v -> {
+//            Log.i(TAG, "处理连接");
+//            if (bondState == BluetoothDevice.BOND_NONE) {
+//                startPair(device);
+//            } else if (bondState == BluetoothDevice.BOND_BONDED) {
+//                Log.i(TAG, "断开上一次的连接");
+//                jancarBluetoothManager.unlinkDevice(unlinkStub);
+//                if(!CallUtil.getInstance().isDeviceConnected(device)){
+//                    startConnect(device);
+//                }
+//            }
+//            dialog.dismiss();
+//        });
+//        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+//            dialog.show();
+//            dialog.getWindow().setLayout(300, 200);
+//        }
+//    }
+//
+//    @Override
+//    public int getItemViewType(int position) {
+//        return position;
+//    }
+//
+//    IBluetoothExecCallback.Stub unlinkStub = new IBluetoothExecCallback.Stub() {
+//        @Override
+//        public void onSuccess(String s) {
+//
+//        }
+//
+//        @Override
+//        public void onFailure(int i) {
+//
+//        }
+//    };
+//
+//    private void startConnect(BluetoothDevice device) {
+//        if(!CallUtil.getInstance().isConnecting()) {
+//            Log.i(TAG, "开始连接");
+//            Global.connStatus = Global.CONNECTING;
+//            if(mStartPairOrConnectCallback!=null){
+//                mStartPairOrConnectCallback.startPairOrConnect();
+//            }
+//            jancarBluetoothManager.linkDevice(device.getAddress(), stub);
+//        }
+//    }
+//
+//    private String waitConnectMac = "";
+//
+//    private Runnable connectRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            if(mStartPairOrConnectCallback!=null){
+//                mStartPairOrConnectCallback.startPairOrConnect();
+//            }
+//            if(waitConnectMac!=null && !waitConnectMac.equals("")){
+//                jancarBluetoothManager.linkDevice(waitConnectMac, stub);
+//            }
+//
+//        }
+//    };
+//
+//    private void startPair(BluetoothDevice device) {
+//        if (!CallUtil.getInstance().isPairing(deviceList)) {
+//            Log.i(TAG, "开始配对");
+//            if(mStartPairOrConnectCallback!=null){
+//                mStartPairOrConnectCallback.startPairOrConnect();
+//            }
+//            Log.i(TAG, "断开上一次的连接");
+//            jancarBluetoothManager.unlinkDevice(unlinkStub);
+//            device.createBond();
+//        }
+//    }
+//
+//    public void moveListToDevice(BluetoothDevice device) {
+//        BluetoothApplication.getInstance().executor.execute(()->{
+//            try {
+//                cyclicBarrier.await();
+//            } catch (BrokenBarrierException | InterruptedException e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//            int index = deviceList.indexOf(device);
+//            if (index != -1) {
+////                runOnUiThread(()-> recyclerView.smoothScrollToPosition(index));
+//            }
+//        });
+//    }
+//
+//    class mHandler extends Handler {
+//        //重写handleMessage（）方法
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            //执行的UI操作
+//            switch (msg.what) {
+//                case UPDATE_LIST:
+//                    Log.d(TAG, "UPDATE_LIST");
+//                    List<BluetoothDevice> deviceList1 = (List<BluetoothDevice>) msg.obj;
+//                    deviceList = new ArrayList<>(deviceList1);
+//                    notifyDataSetChanged();
+//                    BluetoothApplication.getInstance().executor.execute(()->{
+//                        try {
+//                            cyclicBarrier.await(1000, TimeUnit.SECONDS);
+//                        } catch (BrokenBarrierException | InterruptedException | TimeoutException e) {
+//                            Log.e(TAG, e.getMessage());
+//                        }
+//                    });
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//        public void postUpdateList(List<BluetoothDevice> deviceSet) {
+//            post(() -> {
+//                Message msg = obtainMessage(UPDATE_LIST, deviceSet);
+//                handleMessage(msg);
+//            });
+//        }
+//    }
+//    IBluetoothExecCallback.Stub stub = new IBluetoothExecCallback.Stub() {
+//        @Override
+//        public void onSuccess(String s) {
+//            Log.i(TAG, "onSuccess:" + s);
+//        }
+//
+//        @Override
+//        public void onFailure(int i) {
+//            Log.i(TAG,"onFailure:"+i);
+//            if (!CallUtil.getInstance().isConnected()) {
+//                Log.i(TAG, "tips" + BluetoothApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+////                MainApplication.showToast(MainApplication.getInstance().getString(R.string.str_connect_on_failure_tips));
+//            }
+//        }
+//    };
+//
+//    public void removeHandler() {
+//        mHandler.removeCallbacksAndMessages(this);
+//    }
+//
+//    public interface StartPairOrConnectCallback{
+//        void startPairOrConnect();
+//    }
+//
+//    public static boolean isBtTransmitMode() {
+//        return "enable".equals(SystemProperties.get("persist.atc.bt.a2dpsourcerole", "disable"));
+//    }
+//
+//    public class DeviceViewHolder {
+//    }
+}

@@ -28,45 +28,45 @@ public class BluetoothStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction())) {
-            int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-
-            switch (state) {
-                case BluetoothAdapter.STATE_OFF:
-                    // 蓝牙已关闭
-                    if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceList(new ArrayList<>());
-                        deviceViewModel.setOnOff(false);
-                    }
-                    Log.i(TAG, "蓝牙已关闭");
-                    Global.setContactList(new ArrayList<>());
-                    if (addressViewModel != null) {
-                        addressViewModel.setCallLogList(new ArrayList<>());
-                        addressViewModel.setContactList(new ArrayList<>());
-                    }
-                    if (musicViewModel != null) {
-                        musicViewModel.setMusicName("");
-                        musicViewModel.setArtist("");
-                        musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
-                    }
-                    Global.connStatus = Global.NOT_CONNECTED;
-                    CallUtil.getInstance().setA2dpStatus(BluetoothProfile.STATE_DISCONNECTED);
-                    CallUtil.getInstance().setHfpStatus(BluetoothProfile.STATE_DISCONNECTED);
-                    CallUtil.getInstance().setContactList(null);
-                    break;
-
-                case BluetoothAdapter.STATE_ON:
-                    CallUtil.getInstance().init();
-                    if (deviceViewModel != null) {
-                        deviceViewModel.setDeviceList(new ArrayList<>(BluetoothUtil.getBondedDevices()));
-                        deviceViewModel.setOnOff(true);
-                    }
-                    Log.i(TAG, "蓝牙已打开");
-                    break;
-                default:
-                    break;
-            }
-        }
+//        if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction())) {
+//            int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+//
+//            switch (state) {
+//                case BluetoothAdapter.STATE_OFF:
+//                    // 蓝牙已关闭
+//                    if (deviceViewModel != null) {
+////                        deviceViewModel.setDeviceList(new ArrayList<>());
+////                        deviceViewModel.setOnOff(false);
+//                    }
+//                    Log.i(TAG, "蓝牙已关闭");
+//                    Global.setContactList(new ArrayList<>());
+//                    if (addressViewModel != null) {
+//                        addressViewModel.setCallLogList(new ArrayList<>());
+//                        addressViewModel.setContactList(new ArrayList<>());
+//                    }
+//                    if (musicViewModel != null) {
+//                        musicViewModel.setMusicName("");
+//                        musicViewModel.setArtist("");
+//                        musicViewModel.setA2dpStatus(IVIBluetooth.BluetoothA2DPStatus.READY);
+//                    }
+//                    Global.connStatus = Global.NOT_CONNECTED;
+//                    CallUtil.getInstance().setA2dpStatus(BluetoothProfile.STATE_DISCONNECTED);
+//                    CallUtil.getInstance().setHfpStatus(BluetoothProfile.STATE_DISCONNECTED);
+//                    CallUtil.getInstance().setContactList(null);
+//                    break;
+//
+//                case BluetoothAdapter.STATE_ON:
+//                    CallUtil.getInstance().init();
+//                    if (deviceViewModel != null) {
+////                        deviceViewModel.setDeviceList(new ArrayList<>(BluetoothUtil.getBondedDevices()));
+////                        deviceViewModel.setOnOff(true);
+//                    }
+//                    Log.i(TAG, "蓝牙已打开");
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
     }
 
     public void setDeviceViewModel(DeviceViewModel deviceViewModel) {
